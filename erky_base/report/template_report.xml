@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <report
+                id="action_report_template_erky"
+                string="Erky Template Report"
+                model="erky.contract"
+                name="erky_base.report_erky_template_report"
+                file="mrp_repair.report_erky_template_report"
+                report_type="qweb-pdf"
+                menu="False"
+        />
+
+        <template id="report_erky_template_report">
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                <div class="page" style="position:relative;">
+                    <p><t t-raw="docs"/></p>
+                </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

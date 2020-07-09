@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_export_import_form" model="ir.ui.view">
+        <field name="name">res.partner.export.import.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <field name="user_id" position="before">
+                <field name="is_export_import"/>
+            </field>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="erky_base.partner_export_import_action">
+        <field name="name">Export/Import Companies</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+      <field name="context">{'default_is_export_import': True,
+                             'default_company_type': 'company',
+                             'default_customer': False}</field>
+      <field name="domain">[('is_export_import', '=', True)]</field>
+    </record>
+
+    <menuitem name="Import/Export Companies" id="erky_base.menu_erky_export_import_companies" parent="erky_base.menu_erky_partners"
+              action="erky_base.partner_export_import_action"/>
+
+</odoo>

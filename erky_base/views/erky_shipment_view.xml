@@ -1,0 +1,176 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="form_view_erky_vehicle_shipment">
+            <field name="name">vehicle.shipment.form.view</field>
+            <field name="model">erky.vehicle.shipment</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,in_transit,delivered,container,done"/>
+                        <button name="action_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
+                        <button name="action_delivered" string="Delivered" class="oe_highlight" type="object" states="in_transit"/>
+                        <button name="action_check_container" string="Containers Checked" class="oe_highlight" type="object" states="delivered"/>
+                        <button name="action_done" string="Done" class="oe_highlight" type="object" states="container"/>
+                        <button name="action_canceled" string="Cancel" type="object" states="draft,in_transit,delivered"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="shipment_type"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="contract_id"/>
+                                <field name="export_form_id"/>
+                                <field name="agent_id" readonly="0"/>
+                            </group>
+                            <group>
+                                <field name="driver_id" readonly="0"/>
+                                <field name="phone_no" readonly="0"/>
+                                <field name="back_plate_no"/>
+                                <field name="front_plate_no"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="product_id" readonly="1"/>
+                                <label for="package_qty"/>
+                                <div class="o_row">
+                                    <field name="package_qty" readonly="0"/>
+                                    <field name="package_uom_id" options="{'no_create': True, 'no_open': True}" readonly="0"/>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="unit_packing_weight" readonly="1"/>
+                                <label for="packing_weight"/>
+                                <div class="o_row">
+                                    <field name="packing_weight"/>
+                                    <field name="packing_weight_uom_id" readonly="1"/>
+                                </div>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="source_location"/>
+                            </group>
+                            <group>
+                                <field name="destination_location"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="currency_id" invisible="0"/>
+                            <field name="shipment_cost" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <field name="note"/>
+                        </group>
+                        <field name="shipment_container_ids" context="{'default_contract_id': contract_id,
+                            'default_export_form_id': export_form_id, 'default_shipment_uom_id': package_uom_id}"
+                            attrs="{'invisible': [('shipment_type', '!=', 'container_shipment'),'|',('state', '!=', 'delivered')]}">
+                            <tree editable="bottom">
+                                <field name="contract_id" invisible="1"/>
+                                <field name="export_form_id" invisible="1"/>
+                                <field name="vehicle_shipment_id" invisible="1"/>
+                                <field name="name"/>
+                                <field name="container_size"/>
+                                <field name="shipment_qty" sum="Shipment Qty"/>
+                                <field name="shipment_uom_id"/>
+                                <field name="packing_weight" sum="Packing Weight"/>
+                                <field name="packing_uom_id"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tree_view_erky_vehicle_shipment">
+            <field name="name">vehicle.shipment.tree.view</field>
+            <field name="model">erky.vehicle.shipment</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="contract_id"/>
+                    <field name="export_form_id"/>
+                    <field name="agent_id"/>
+                    <field name="driver_id"/>
+                    <field name="product_id"/>
+                    <field name="qty" sum="Total Qty"/>
+                    <field name="shipment_cost" sum="Total Shipment Cost"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_erky_vehicle_shipment">
+            <field name="name">Vehicle Shipment</field>
+            <field name="res_model">erky.vehicle.shipment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+        </record>
+
+        <record id="action_erky_create_new_shipment" model="ir.actions.act_window">
+            <field name="name">Create New Shipment</field>
+            <field name="res_model">erky.vehicle.shipment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+           <field name="view_id" ref="form_view_erky_vehicle_shipment"/>
+           <field name="target">new</field>
+        </record>
+
+        <menuitem name="Vehicle Shipment" id="menu_erky_vehicle_shipment" parent="menu_erky_base" action="action_erky_vehicle_shipment" sequence="3"/>
+
+        <record model="ir.ui.view" id="form_view_erky_container_shipment">
+            <field name="name">container.shipment.form.view</field>
+            <field name="model">erky.container.shipment</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1><field name="name"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="contract_id"/>
+                                <field name="container_size"/>
+                            </group>
+                            <group>
+                                <field name="export_form_id" readonly="0"/>
+                                <label for="shipment_qty"/>
+                                <div class="o_row">
+                                    <field name="shipment_qty"/>
+                                    <field name="shipment_uom_id"/>
+                                </div>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="tree_view_erky_container_shipment">
+            <field name="name">vehicle.shipment.tree.view</field>
+            <field name="model">erky.container.shipment</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="contract_id"/>
+                    <field name="export_form_id"/>
+                    <field name="name"/>
+                    <field name="container_size"/>
+                    <field name="shipment_qty" sum="Shipment Qty"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_erky_container_shipment">
+            <field name="name">Container Shipment</field>
+            <field name="res_model">erky.container.shipment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+        </record>
+
+        <menuitem name="Container Shipment" id="menu_erky_container_shipment" parent="menu_erky_base" action="action_erky_container_shipment" sequence="4"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,31 @@
+<odoo>
+
+    <record id="wizard_set_container_form" model="ir.ui.view">
+        <field name="name">generate.container.wiz.form</field>
+        <field name="model">erky.template.report.wiz</field>
+        <field name="arch" type="xml">
+            <form string="Template Report Erky Wiz:">
+                <group>
+                    <field name="export_form_id" invisible="1"/>
+                    <field name="template_from"/>
+                    <field name="template_content"/>
+                </group>
+                <footer>
+                    <button string='Print Report' name="print_report" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="erky_template_report_wiz_action" model="ir.actions.act_window">
+        <field name="name">Template Report Wiz</field>
+        <field name="res_model">erky.template.report.wiz</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_set_container_form"/>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

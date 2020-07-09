@@ -1,0 +1,38 @@
+<odoo>
+    <data>
+        <record id="view_erky_template_config_settings" model="ir.ui.view">
+            <field name="name">Erky Template settings</field>
+            <field name="model">erky.template.settings</field>
+            <field name="arch" type="xml">
+                <form string="Configure Erky Template" class="oe_form_configuration">
+                    <header>
+                        <button string="Apply" type="object" name="execute" class="oe_highlight"/>
+                        <button string="Cancel" type="object" name="cancel" class="oe_link" special="cancel"/>
+                    </header>
+                    <group string="Report Template" name="report_template">
+                        <field name="form_request_temp_ar"/>
+                        <field name="form_request_temp_en"/>
+                        <field name="pledge_request_temp_ar"/>
+                        <field name="pledge_request_temp_en"/>
+                        <field name="certificate_analysis_temp"/>
+                        <field name="commercial_invoice_temp"/>
+                        <field name="shipping_instruction_temp"/>
+                        <field name="certificate_origin_temp"/>
+                        <field name="purchase_contract_temp"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_erky_report_template_config_settings" model="ir.actions.act_window">
+            <field name="name">Templates</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">erky.template.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+        </record>
+
+        <menuitem id="menu_erky_report_template_settings" name="Template" parent="menu_erky_setting"
+            sequence="3" action="action_erky_report_template_config_settings"/>
+    </data>
+</odoo>

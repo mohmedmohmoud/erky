@@ -1,0 +1,138 @@
+<odoo>
+  <data>
+    <!-- Erky Contract -->
+    <record model="ir.ui.view" id="erky_base.erky_contract_tree_view">
+      <field name="name">erky.contract.tree.view</field>
+      <field name="model">erky.contract</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="date"/>
+          <field name="to_partner_id"/>
+          <field name="product_id"/>
+          <field name="total_amount"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="erky_base.erky_contract_form_view">
+      <field name="name">erky.contract.form.view</field>
+      <field name="model">erky.contract</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <button name="generate_sale_order" class="oe_highlight" type="object" string="Generate Sale Order"/>
+          </header>
+          <sheet>
+            <div class="oe_button_box" name="button_box">
+                <button name="action_open_export_form" string="Export Form" type="object"
+                        icon="fa-file-text-o"
+                        context="{'default_contract_id': id}" class="oe_stat_button"
+                 >
+                    <field name="export_form_no" invisible="0"/>
+                </button>
+                <button name="action_open_ministry_trade" string="Trade Of Ministry" type="object"
+                        icon="fa-thumb-tack"
+                        context="{'default_contract_id': id}" class="oe_stat_button"
+                 >
+                </button>
+            </div>
+            <div class="oe_title">
+                <label for="name" class="oe_edit_only"/>
+                <h1><field name="name"/></h1>
+            </div>
+            <group>
+              <group>
+                <field name="date"/>
+                <field name="from_partner_id"/>
+                <field name="to_partner_id"/>
+                <field name="product_id"/>
+                <label for="qty"/>
+                <div name="erky_contract_qty_div" class="o_row">
+                  <field name="qty"/>
+                  <field name="product_uom_id" options="{'no_create': True, 'no_open': True}"/>
+                  <span style="color:brown">(Increase/Decrease 5%)</span>
+                </div>
+                <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="remaining_qty"/>
+              </group>
+              <group>
+                <field name="tax_id"/>
+                <label for="import_partner_details" string="Import Details"/>
+                <div>
+                    <div name="import_partner_details" class="o_address_format">
+                        <field name="to_street" placeholder="Street" class="o_address_street"/>
+                        <field name="to_street2" placeholder="Street2" class="o_address_street"/>
+                        <field name="to_city" placeholder="City" class="o_address_city"/>
+                        <field name="to_zip" placeholder="ZIP" class="o_address_zip"/>
+                        <field name="to_state_id" placeholder="State" class="o_address_country"/>
+                        <field name="to_country_id" placeholder="Country" class="o_address_country"/>
+                    </div>
+                </div>
+              </group>
+            </group>
+            <group>
+              <label for="total_amount"/>
+              <div name="erky_contract_amount_div" class="o_row">
+                  <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                  <field name="currency_id" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency"/>
+              </div>
+            </group>
+            <group>
+              <group>
+                <field name="port_from"/>
+                <field name="shipment_method"/>
+                <field name="bank"/>
+              </group>
+              <group>
+                <field name="port_to"/>
+                <field name="payment_method"/>
+                <field name="bank_branch" domain="[('bank_id', '=', bank)]"/>
+              </group>
+            </group>
+            <group attrs="{'invisible': [('sale_order_id', '=', False)]}">
+              <field name="sale_order_id"/>
+            </group>
+            <notebook>
+<!--              <page string="Ministry Of Trade">-->
+<!--                <group>-->
+<!--                    <field name="export_contract"/>-->
+<!--                    <field name="export_issue_date"/>-->
+<!--                    <field name="export_expire_date"/>-->
+<!--                </group>-->
+<!--              </page>-->
+              <page string="Export Form">
+                <group>
+                  <field name="export_form_ids" nolabel="1">
+                  <tree editable="bottom">
+                    <field name="form_no"/>
+                    <field name="contract_no"/>
+                    <field name="issue_date"/>
+                    <field name="expire_date"/>
+                    <field name="bank"/>
+                  </tree>
+                  </field>
+                </group>
+              </page>
+              <page string="Required Form">
+                <group>
+                  <field name="required_form_ids"/>
+                </group>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="erky_base.erky_contract_action">
+      <field name="name">Erky Contract window</field>
+      <field name="res_model">erky.contract</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Contract" id="erky_base.menu_erky_contract" parent="erky_base.menu_erky_base"
+              action="erky_base.erky_contract_action" sequence="1"/>
+
+  </data>
+</odoo>

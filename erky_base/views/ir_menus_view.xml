@@ -1,0 +1,10 @@
+<odoo>
+    <data>
+       <!-- Top menu item -->
+        <menuitem name="Erky" id="erky_base.menu_erky_root"/>
+            <!-- menu categories -->
+            <menuitem name="Erky Base" id="erky_base.menu_erky_base" parent="erky_base.menu_erky_root" sequence="1"/>
+            <menuitem name="Partners" id="erky_base.menu_erky_partners" parent="erky_base.menu_erky_root" sequence="2"/>
+            <menuitem name="Setting" id="erky_base.menu_erky_setting" parent="erky_base.menu_erky_root" sequence="3"/>
+    </data>
+</odoo>

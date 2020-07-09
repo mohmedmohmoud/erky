@@ -1,0 +1,34 @@
+<odoo>
+    <data>
+        <record id="view_res_bank_branch_form" model="ir.ui.view">
+            <field name="name">res.bank.form</field>
+            <field name="model">res.bank</field>
+            <field name="inherit_id" ref="base.view_res_bank_form"></field>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="inside">
+                    <field name="branch_ids">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                        </tree>
+                    </field>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_res_bank_branch_form" model="ir.actions.act_window">
+            <field name="name">Banks</field>
+            <field name="res_model">res.bank</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new bank.
+              </p><p>
+                Manage bank records you want to be used in the system.
+              </p>
+            </field>
+        </record>
+
+        <menuitem name="Banks/Branches" id="erky_base.menu_erky_bank" parent="erky_base.menu_erky_setting" action="action_res_bank_branch_form" sequence="4"/>
+    </data>
+</odoo>

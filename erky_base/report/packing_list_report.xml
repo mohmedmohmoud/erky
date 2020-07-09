@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="action_report_packing_list_erky"
+                string="Packing List"
+                model="erky.export.form"
+                name="erky_base.report_packing_list_erky"
+                file="mrp_repair.report_packing_list_erky"
+                report_type="qweb-html"
+        />
+
+        <template id="report_packing_list_erky">
+            <t t-call="report.html_container">
+<!--            <t t-foreach="docs" t-as="o">-->
+                <t t-call="report.external_layout">
+                <div class="page" style="position:relative;">
+                    <h2><center><t t-esc="res_company.name"/></center></h2>
+                    <h2><center>Erky Integrated Solutions Co. Ltd.</center></h2>
+                    <h2><center>PACKING LIST</center></h2>
+
+                    <br/><br/><br/>
+                    <br/><br/><br/>
+
+                    <table class="table table-bordered mb64">
+                        <tr>
+                            <td colspan="4">
+                                <p><strong><t t-esc="docs['importer_id'].name"/></strong></p>
+                                <p><strong><t t-esc="docs['importer_id'].street"/>, <t t-esc="docs['importer_id'].street2"/></strong></p>
+                                <p><strong>City, <t t-esc="docs['importer_id'].city"/> - <t t-esc="docs['importer_id'].country_id.name"/></strong></p>
+                            </td>
+                            <td style="border-top: 2px solid white !important;"></td>
+                            <td colspan="2">
+                                <p><strong>DATE: <t t-esc="docs['current_date']"/></strong> </p>
+                                <p><strong>INVOICE NO: <t t-esc="docs['invoice_no']"/></strong></p>
+                                <p><strong>B/L NO: <t t-esc="docs['bl_no']"/></strong></p>
+                                <p><strong>CONTRACT NO: <t t-esc="docs['contract_no']"/></strong></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>ITEM NO</th>
+                            <th>DESCRIPTION</th>
+                            <th>CONTAINER NO</th>
+                            <th>CONT</th>
+                            <th>WEIGHT/(NET)</th>
+                            <th>WEIGHT/(GROSS)</th>
+                            <th>TOTAL/BAGS</th>
+                        </tr>
+                        <t t-set="is_item_no" t-value="False"/>
+                        <t t-set="is_desc" t-value="False"/>
+                        <tr t-foreach="docs['containers']" t-as="c">
+                            <td t-if="not is_item_no" rowspan="5" style="vertical-align: middle;text-align:center">
+                                <t t-if="not is_item_no">
+                                    <t t-esc="docs['item_no']"/>
+                                    <t t-set="is_item_no" t-value="True"/>
+                                </t>
+                            </td>
+                            <td t-if="not is_desc" rowspan="5" style="vertical-align: middle;text-align:center">
+                                <t t-if="not is_desc">
+                                    <t t-esc="docs['desc']"/>
+                                    <t t-set="is_desc" t-value="True"/>
+                                </t>
+                            </td>
+                            <td><t t-esc="c.name.name"/></td>
+                            <td>1</td>
+                            <td><t t-esc="c.shipment_qty"/></td>
+                            <td><t t-esc="c.shipment_qty"/></td>
+                            <td>000</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>TOTAL CONTAINER</strong></td>
+                            <td colspan="3"><t t-esc="docs['total_words_container']"/></td>
+                            <td colspan="2" style="text-align:center;"><t t-esc="docs['total_container']"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>TOTAL BAGS</strong></td>
+                            <td colspan="3"><t t-esc="docs['total_bags_words']"/> </td>
+                            <td colspan="2" style="text-align:center;"><t t-esc="docs['total_bags']"/> </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>TOTAL WEIGHT/GROSS</strong></td>
+                            <td colspan="3"><t t-esc="docs['gross_weight_words']"/></td>
+                            <td colspan="2" style="text-align:center;"><t t-esc="docs['gross_weight']"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>TOTAL WEIGHT/NET</strong></td>
+                            <td colspan="3"><t t-esc="docs['net_weight_words']"/></td>
+                            <td colspan="2" style="text-align:center;"><t t-esc="docs['net_weight']"/></td>
+                        </tr>
+                    </table>
+                </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

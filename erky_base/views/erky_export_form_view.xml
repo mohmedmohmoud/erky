@@ -1,0 +1,181 @@
+<odoo>
+    <data>
+        <!-- Erky Export Form -->
+        <record model="ir.ui.view" id="erky_base.erky_export_form_tree_view">
+          <field name="name">erky.export.form.tree.view</field>
+          <field name="model">erky.export.form</field>
+          <field name="arch" type="xml">
+            <tree>
+              <field name="contract_id"/>
+              <field name="form_no"/>
+              <field name="issue_date"/>
+              <field name="expire_date"/>
+              <field name="bank"/>
+            </tree>
+          </field>
+        </record>
+
+        <record model="ir.ui.view" id="erky_base.erky_export_form_view">
+          <field name="name">erky.export.form.view</field>
+          <field name="model">erky.export.form</field>
+          <field name="arch" type="xml">
+            <form>
+              <header>
+                <button name="action_submit" string="Submit" type="object" class="oe_highlight" states="draft"/>
+                <button name="action_ssmo_confirm" string="Confirm" type="object" class="oe_highlight" states="ssmo"/>
+                <button name="action_shipment" string="Apply Shipment" type="object" class="oe_highlight" states="shipment"/>
+                <button name="action_cancel" string="Cancel" type="object" class="oe_highlight" states="ssmo,shipment"/>
+                <button name="%(action_erky_create_new_shipment)d" context="{'default_product_uom_id': product_uom_id, 'default_export_form_id': id, 'default_package_uom_id': package_uom_id}" string="Create New Shipment" type="action" states="draft" class="oe_highlight"/>
+                <button name="%(erky_template_report_wiz_action)d" string="Print Report" context="{'default_export_form_id': id}" type="action" class="oe_highlight"/>
+                <field name="state" widget="statusbar" statusbar_visible="draft,ssmo,shipment,done" nolabel="1" readonly="1"/>
+              </header>
+              <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_open_shipment_form" string="Shipments" type="object" icon="fa-truck" class="oe_stat_button">
+                      <field name="shipment_count" invisible="0"/>
+                    </button>
+                </div>
+                <div class="oe_title">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1><field name="name"/></h1>
+                </div>
+                <group>
+                  <group>
+                    <field name="contract_id"/>
+                    <field name="form_no"/>
+                    <field name="issue_date"/>
+                    <field name="bank"/>
+                    <field name="shipment_port"/>
+                  </group>
+                  <group>
+                    <field name="contract_no"/>
+                    <field name="export_name"/>
+                    <field name="expire_date"/>
+                    <field name="bank_branch" domain="[('bank_id', '=', bank)]"/>
+                  </group>
+                </group>
+                <group>
+                  <group string="Product">
+                    <field name="product_id"/>
+                    <label for="qty"/>
+                    <div name="erky_contract_qty_div" class="o_row">
+                      <field name="qty"/>
+                      <field name="product_uom_id" options="{'no_create': True, 'no_open': True}"/>
+                    </div>
+                  </group>
+                  <group string="Packaging And Shipments">
+                    <field name="package_uom_id"/>
+                    <field name="net_shipment_qty"/>
+                    <label for="total_weight_packing_qty"/>
+                    <div class="o_row">
+                      <field name="total_weight_packing_qty"/>
+                      <field name="packing_weight_uom_id"/>
+                      <span>--></span>
+                      <field name="weight_in_package_uom"/>
+                    </div>
+                    <label for="gross_shipment_qty"/>
+                    <div class="o_row">
+                      <field name="gross_shipment_qty_text" nolabel="1"/>
+                      <span>--></span>
+                      <field name="gross_shipment_qty"/>
+                    </div>
+                  </group>
+                </group>
+                <group>
+                  <field name="declarant_id"/>
+                </group>
+                <notebook>
+                  <!--=======================SSMO====================-->
+                  <page string="SSMO">
+                    <group>
+                      <group>
+                        <field name="ssmo_reference"/>
+                        <field name="ssmo_massage_validation"/>
+                        <field name="ssmo_issue_date"/>
+                      </group>
+                      <group>
+                        <field name="voucher_no"/>
+                        <field name="voucher_date"/>
+                      </group>
+                    </group>
+                  </page>
+                  <page string="Required Forms">
+                    <field name="required_export_form_ids">
+                      <tree editable="bottom">
+                        <field name="name"/>
+                        <field name="desc"/>
+                        <field name="attachment_ids" widget="many2many_binary"/>
+                      </tree>
+                    </field>
+                  </page>
+                  <!--=======================Vehicle Shipment====================-->
+                  <page string="Vehicle Shipment">
+                    <group>
+                      <field name="vehicle_shipment_ids" nolabel="1" readonly="1"/>
+                    </group>
+                  </page>
+                  <!--=======================Container Shipment====================-->
+                  <page string="Available Containers">
+                    <br/>
+                    <p>
+                      <button name="%(generate_container_wizard_action)d" context="{'default_export_form_id': id}"
+                                string="Generate New Containers" type="action" class="oe_highlight"/>
+                    </p>
+                    <field name="container_ids" readonly="1">
+                      <tree>
+                        <field name="name"/>
+                        <field name="export_form_id" invisible="1"/>
+                        <field name="size"/>
+                      </tree>
+                    </field>
+                  </page>
+                  <page string="Form Cost">
+                    <field name="cost_ids">
+                      <tree editable="bottom">
+                        <field name="partner_id"/>
+                        <field name="name"/>
+                        <field name="cost" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                      </tree>
+                    </field>
+                  </page>
+                  <!--=======================Bills====================-->
+                  <page string="Bills">
+                    <field name="bill_ids"/>
+                  </page>
+                  <!--=======================Expenses====================-->
+                  <page string="Form Expense">
+                    <field name="hr_expense_ids">
+                      <tree>
+                        <field name="name"/>
+                        <field name="product_id"/>
+                        <field name="reference"/>
+                        <field name="description"/>
+                        <field name="quantity"/>
+                        <field name="unit_amount"/>
+                        <field name="state" invisible="0"/>
+                      </tree>
+                    </field>
+                  </page>
+                  <!--=======================Picking====================-->
+                  <page string="Picking">
+                    <group>
+                      <field name="picking_ids" nolabel="1"/>
+                    </group>
+                  </page>
+                </notebook>
+              </sheet>
+            </form>
+          </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="erky_base.erky_export_form_action">
+          <field name="name">Erky Export Form</field>
+          <field name="res_model">erky.export.form</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- actions -->
+        <menuitem name="Export Form" id="erky_base.menu_erky_export_form" parent="erky_base.menu_erky_base"
+                  action="erky_base.erky_export_form_action" sequence="2"/>
+    </data>
+</odoo>

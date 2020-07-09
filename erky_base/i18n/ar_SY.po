@@ -1,0 +1,1434 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* erky_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-22 14:53+0000\n"
+"PO-Revision-Date: 2020-06-22 14:53+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: erky_base
+#: selection:erky.container,size:0
+#: selection:erky.generate.container.line.wiz,container_size:0
+msgid "20 Feet"
+msgstr "20 قدم"
+
+#. module: erky_base
+#: selection:erky.container,size:0
+#: selection:erky.generate.container.line.wiz,container_size:0
+msgid "40 Feet"
+msgstr "40 قدم"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_contract_form_view
+msgid "<span style=\"color:brown\">(Increase/Decrease 5%)</span>"
+msgstr "<span style=\"color:brown\">(زيادة/نقصان فقط %5)</span>"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_agent_id
+msgid "Agent"
+msgstr "الوكيل"
+
+#. module: erky_base
+#: selection:erky.contract,shipment_method:0
+msgid "All"
+msgstr "الكل"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.view_erky_template_config_settings
+msgid "Apply"
+msgstr "التقدم"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Apply Shipment"
+msgstr "الموافقة على الشحنة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_required_forms_attachment_ids
+msgid "Attachment"
+msgstr "المرفقات"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Available Containers"
+msgstr "الحاويات المتوفرة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_back_plate_no
+msgid "Back Plate No"
+msgstr "رقم اللوحة الخلفية"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_res_bank
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_bank
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_bank
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry_bank_id
+msgid "Bank"
+msgstr "المصرف"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_bank_branch
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_bank_branch
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry_bank_branch_id
+msgid "Bank Branch"
+msgstr "الفرع"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_res_bank_branch_ids
+msgid "Bank Branches"
+msgstr "الفرع"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_res_bank_branch_bank_id
+msgid "Bank id"
+msgstr "البنك"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Bank:"
+msgstr "البنك"
+
+#. module: erky_base
+#: model:ir.actions.act_window,name:erky_base.action_res_bank_branch_form
+msgid "Banks"
+msgstr "البنوك"
+
+#. module: erky_base
+#: model:ir.ui.menu,name:erky_base.menu_erky_bank
+msgid "Banks/Branches"
+msgstr "البنوك / الفروع"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_bill_ids
+msgid "Bill ids"
+msgstr "الفواتير"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Bills"
+msgstr "الفواتير"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_res_bank_branch_name
+msgid "Branch Name"
+msgstr "اسم الفرع"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+#: model:ir.ui.view,arch_db:erky_base.form_view_erky_vehicle_shipment
+#: model:ir.ui.view,arch_db:erky_base.view_erky_template_config_settings
+#: model:ir.ui.view,arch_db:erky_base.wizard_erky_template_report_wiz_form
+#: model:ir.ui.view,arch_db:erky_base.wizard_set_container_form
+msgid "Cancel"
+msgstr "إلغاء"
+
+#. module: erky_base
+#: selection:erky.export.form,state:0
+#: selection:erky.vehicle.shipment,state:0
+msgid "Canceled"
+msgstr "تم الغاءها"
+
+#. module: erky_base
+#: code:addons/erky_base/models/erky_export_form.py:129
+#, python-format
+msgid "Category of package uom must by same as product uom category"
+msgstr "الصنف الرئيسي لكل من وحدة الحزمة و وحدة المنتح يجب ان تكون واحدة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_to_city
+#: model:ir.ui.view,arch_db:erky_base.erky_contract_form_view
+msgid "City"
+msgstr "المدينة"
+
+#. module: erky_base
+#: model:ir.actions.act_window,help:erky_base.action_res_bank_branch_form
+msgid "Click to create a new bank."
+msgstr "اضعط هنا لانشاء بنك جديد."
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_res_company
+msgid "Companies"
+msgstr "المؤسسات"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.view_erky_template_config_settings
+msgid "Configure Erky Template"
+msgstr "اعداد قوالب"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Confirm"
+msgstr "تأكيد"
+
+#. module: erky_base
+#: selection:erky.vehicle.shipment,state:0
+msgid "Container Checked"
+msgstr "تم التحقق من الحاويات"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_line_wiz_container_ref
+msgid "Container Ref"
+msgstr "مرجعية الحاوية"
+
+#. module: erky_base
+#: selection:erky.vehicle.shipment,shipment_type:0
+#: model:ir.actions.act_window,name:erky_base.action_erky_container_shipment
+#: model:ir.ui.menu,name:erky_base.menu_erky_container_shipment
+msgid "Container Shipment"
+msgstr "شحن على الحاوية"
+
+#. module: erky_base
+#: code:addons/erky_base/models/erky_shipment.py:94
+#, python-format
+msgid "Container Shipment Qty Can't Be Greater Than Vehicle Shipment Qty"
+msgstr "الكمية المشحونة في الحاوية لا يمكن ان تكون اكبر الكمية الموجودة على العربة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_line_wiz_container_size
+msgid "Container Size"
+msgstr "مساحة الحاوية"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_container_ids
+msgid "Container ids"
+msgstr "الحاويات"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_wiz_container_lines_ids
+msgid "Container lines ids"
+msgstr "الحاويات"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_container_shipment_ids
+msgid "Container shipment ids"
+msgstr "شحنة الحاويات"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.form_view_erky_vehicle_shipment
+msgid "Containers Checked"
+msgstr "تم التحقق من الحاويات"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment_contract_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry_contract_id
+#: model:ir.ui.menu,name:erky_base.menu_erky_contract
+msgid "Contract"
+msgstr "العقد"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_contract_no
+msgid "Contract No"
+msgstr "رقم العقد"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Contract No:"
+msgstr "رقم العقد"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_contract_id
+msgid "Contract Ref"
+msgstr "مرجعية العقد"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_export_form_cost_cost
+msgid "Cost"
+msgstr "التكلفة"
+
+#. module: erky_base
+#: code:addons/erky_base/models/erky_export_form.py:223
+#, python-format
+msgid "Cost For Export Form [%s] - Shipment Company [%s] "
+msgstr "تكلفة استمارة الصادر [%s] - الشركة الشاحنة [%s] "
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_cost_ids
+msgid "Cost ids"
+msgstr "التكاليف"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_to_country_id
+#: model:ir.ui.view,arch_db:erky_base.erky_contract_form_view
+msgid "Country"
+msgstr "دولة"
+
+#. module: erky_base
+#: model:ir.actions.act_window,name:erky_base.action_erky_create_new_shipment
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Create New Shipment"
+msgstr "انشاء شحنة جديدة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_form_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_line_wiz_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_wiz_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_port_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_required_forms_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_report_wiz_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_settings_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_export_form_cost_create_uid
+#: model:ir.model.fields,field_description:erky_base.field_res_bank_branch_create_uid
+msgid "Created by"
+msgstr "أنشئ بواسطة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_create_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment_create_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_create_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_create_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_form_create_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_line_wiz_create_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_wiz_create_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_port_create_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_required_forms_create_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_report_wiz_create_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_settings_create_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry_create_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_create_date
+#: model:ir.model.fields,field_description:erky_base.field_export_form_cost_create_date
+#: model:ir.model.fields,field_description:erky_base.field_res_bank_branch_create_date
+msgid "Created on"
+msgstr "أنشئ في"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_currency_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_currency_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_currency_id
+msgid "Currency"
+msgstr "العملة"
+
+#. module: erky_base
+#: selection:erky.contract,payment_method:0
+msgid "D/A"
+msgstr "D/A"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_date
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Date:"
+msgstr "التاريخ:"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_declarant_id
+msgid "Declarant"
+msgstr "المخلص"
+
+#. module: erky_base
+#: model:ir.model.fields,help:erky_base.field_erky_contract_product_uom_id
+#: model:ir.model.fields,help:erky_base.field_erky_export_form_product_uom_id
+msgid "Default Unit of Measure used for all stock operation."
+msgstr "وحدة القياس الافتراضية تستخدم لجميع العمليات المالية."
+
+#. module: erky_base
+#: selection:erky.vehicle.shipment,state:0
+#: model:ir.ui.view,arch_db:erky_base.form_view_erky_vehicle_shipment
+msgid "Delivered"
+msgstr "تم توصيلها"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_required_forms_desc
+msgid "Desc"
+msgstr "وصف"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_export_form_cost_name
+msgid "Description"
+msgstr "الوصف"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_destination_location
+msgid "Destination"
+msgstr "الوجهة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_res_company_location_dest_id
+msgid "Destination Location"
+msgstr "الموقع المخصص"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Destination Port:"
+msgstr "ميناء الوجهة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_display_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment_display_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_display_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_display_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_form_display_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_line_wiz_display_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_wiz_display_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_port_display_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_required_forms_display_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_report_wiz_display_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_settings_display_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry_display_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_display_name
+#: model:ir.model.fields,field_description:erky_base.field_export_form_cost_display_name
+#: model:ir.model.fields,field_description:erky_base.field_report_erky_base_report_erky_template_report_display_name
+#: model:ir.model.fields,field_description:erky_base.field_res_bank_branch_display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: erky_base
+#: selection:erky.export.form,state:0
+#: selection:erky.vehicle.shipment,state:0
+#: model:ir.ui.view,arch_db:erky_base.form_view_erky_vehicle_shipment
+msgid "Done"
+msgstr "منتهي"
+
+#. module: erky_base
+#: selection:erky.export.form,state:0
+#: selection:erky.vehicle.shipment,state:0
+msgid "Draft"
+msgstr "مسودة"
+
+#. module: erky_base
+#: model:ir.actions.report.xml,name:erky_base.action_report_draft_erky_contract
+msgid "Draft Contract"
+msgstr "مسودة العقد"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_driver_id
+msgid "Driver Name"
+msgstr "اسم السائق"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_phone_no
+msgid "Driver Phone"
+msgstr "رقم السائق"
+
+#. module: erky_base
+#: model:ir.ui.menu,name:erky_base.menu_erky_root
+msgid "Erky"
+msgstr "اركي"
+
+#. module: erky_base
+#: model:ir.ui.menu,name:erky_base.menu_erky_base
+msgid "Erky Base"
+msgstr "القائمة الرئيسية"
+
+#. module: erky_base
+#: model:ir.actions.act_window,name:erky_base.erky_contract_action
+msgid "Erky Contract window"
+msgstr "نافذة العقد"
+
+#. module: erky_base
+#: model:ir.actions.act_window,name:erky_base.erky_export_form_action
+msgid "Erky Export Form"
+msgstr "ناقدة استمارة صادر"
+
+#. module: erky_base
+#: model:ir.actions.report.xml,name:erky_base.action_report_template_erky
+msgid "Erky Template Report"
+msgstr "نافدة قوالب التقارير"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_hr_expense
+msgid "Expense"
+msgstr "المصروفات"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_expire_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry_expire_date
+msgid "Expire Date"
+msgstr "يسري حتى"
+
+#. module: erky_base
+#: model:ir.actions.report.xml,name:erky_base.action_report_erky_export_form
+#: model:ir.model.fields,field_description:erky_base.field_account_invoice_export_form_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment_export_form_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_wiz_export_form_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_report_wiz_export_form_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_report_wiz_template_from
+#: model:ir.model.fields,field_description:erky_base.field_hr_expense_export_form_id
+#: model:ir.ui.menu,name:erky_base.menu_erky_export_form
+#: model:ir.ui.view,arch_db:erky_base.erky_contract_form_view
+msgid "Export Form"
+msgstr "استمارة صادر"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_erky_export_form
+msgid "Export Form Details For Item:"
+msgstr "Export Form Details For Item:"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_export_form_id
+msgid "Export Form Ref"
+msgstr "مرجعية استمارة صادر"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_erky_export_form
+msgid "Export Form Report"
+msgstr "تقارير استمارة صادر"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_from_partner_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_export_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_import_name
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry_export_name_id
+msgid "Export Name"
+msgstr "اسم التصدير"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Export Name:"
+msgstr "اسم المصدر:"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Export Signature: .............................."
+msgstr ".............................اسم المصدر."
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_export_form_id
+#: model:ir.model.fields,field_description:erky_base.field_export_form_cost_export_form_id
+#: model:ir.model.fields,field_description:erky_base.field_stock_picking_export_form_id
+msgid "Export form id"
+msgstr "استمارة صادر"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_export_form_ids
+msgid "Export form ids"
+msgstr "استمارة صادر"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_export_form_no
+msgid "Export form no"
+msgstr "رقم استمارة صادر"
+
+#. module: erky_base
+#: model:ir.actions.act_window,name:erky_base.partner_export_import_action
+msgid "Export/Import Companies"
+msgstr "شركات الصادر/الوارد"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_required_forms_name
+#: model:ir.ui.view,arch_db:erky_base.report_erky_export_form
+msgid "Form"
+msgstr "الاستمارة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_contract_id
+msgid "Form Contract"
+msgstr "استمارة عقد"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Form Cost"
+msgstr "تكلقة الاستمارة"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Form Expense"
+msgstr "مصاريف الاستمارة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_form_name
+msgid "Form Name"
+msgstr "اسم الاستمارة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_form_no
+msgid "Form No"
+msgstr "رقم الاستمارة"
+
+#. module: erky_base
+#: selection:erky.template.report.wiz,template_from:0
+msgid "Form Request"
+msgstr "طلب استمارة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_settings_form_request_temp_ar
+msgid "Form Request Template [AR]"
+msgstr "قالب طلب استمارة [عربي]"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_settings_form_request_temp_en
+msgid "Form Request Template [EN]"
+msgstr "قالب طلب استمارة [انجليزي]"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_required_forms_form_id
+msgid "Form id"
+msgstr "الاستمارة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_port_from
+msgid "From Port"
+msgstr "من ميناء"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_front_plate_no
+msgid "Front Plate No"
+msgstr "رقم اللوحة الامامية"
+
+#. module: erky_base
+#: model:ir.actions.act_window,name:erky_base.generate_container_wizard_action
+msgid "Generate Container"
+msgstr "اضافة حاوية"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.wizard_erky_template_report_wiz_form
+msgid "Generate Container:"
+msgstr "اصافة حاوية"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+#: model:ir.ui.view,arch_db:erky_base.wizard_erky_template_report_wiz_form
+msgid "Generate New Containers"
+msgstr "اضافة حاوية جديدة"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_contract_form_view
+msgid "Generate Sale Order"
+msgstr "انشاء طلب بيع"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_line_wiz_generate_container_id
+msgid "Generate container id"
+msgstr "الحاويات"
+
+#. module: erky_base
+#: selection:erky.vehicle.shipment,shipment_type:0
+msgid "Good Shipment"
+msgstr "شحن بضاعة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_product_product_hs_code
+msgid "HS Code"
+msgstr "الكود العالمي"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_hr_expense_ids
+msgid "Hr expense ids"
+msgstr "المصروف"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_form_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_line_wiz_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_wiz_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_port_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_required_forms_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_report_wiz_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_settings_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_id
+#: model:ir.model.fields,field_description:erky_base.field_export_form_cost_id
+#: model:ir.model.fields,field_description:erky_base.field_report_erky_base_report_erky_template_report_id
+#: model:ir.model.fields,field_description:erky_base.field_res_bank_branch_id
+msgid "ID"
+msgstr "المعرف"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Import Address:"
+msgstr "عنوان المورد"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_contract_form_view
+msgid "Import Details"
+msgstr "تفاصيل المورد"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_to_partner_id
+msgid "Import Name"
+msgstr "اسم المورد"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Import Name:"
+msgstr "اسم المورد:"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Import Signature: .............................."
+msgstr "..............................توقيع المورد"
+
+#. module: erky_base
+#: model:ir.ui.menu,name:erky_base.menu_erky_export_import_companies
+msgid "Import/Export Companies"
+msgstr "شركات الصادر/الوارد"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_in_container_qty
+msgid "In Container Qty"
+msgstr "الكمية بالحاوية"
+
+#. module: erky_base
+#: selection:erky.vehicle.shipment,state:0
+msgid "In Transit"
+msgstr "في الطريق"
+
+#. module: erky_base
+#: model:ir.ui.menu,name:erky_base.menu_erky_international_port
+msgid "International Port"
+msgstr "المواني"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_account_invoice
+msgid "Invoice"
+msgstr "الفاتورة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_res_partner_is_export_import
+#: model:ir.model.fields,field_description:erky_base.field_res_users_is_export_import
+msgid "Is export import"
+msgstr "مصدر/مورد"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_issue_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry_issue_date
+msgid "Issue Date"
+msgstr "تاريخ الانشاء"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container___last_update
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment___last_update
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract___last_update
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form___last_update
+#: model:ir.model.fields,field_description:erky_base.field_erky_form___last_update
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_line_wiz___last_update
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_wiz___last_update
+#: model:ir.model.fields,field_description:erky_base.field_erky_port___last_update
+#: model:ir.model.fields,field_description:erky_base.field_erky_required_forms___last_update
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_report_wiz___last_update
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_settings___last_update
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry___last_update
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment___last_update
+#: model:ir.model.fields,field_description:erky_base.field_export_form_cost___last_update
+#: model:ir.model.fields,field_description:erky_base.field_report_erky_base_report_erky_template_report___last_update
+#: model:ir.model.fields,field_description:erky_base.field_res_bank_branch___last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_form_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_line_wiz_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_wiz_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_port_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_required_forms_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_report_wiz_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_settings_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_export_form_cost_write_uid
+#: model:ir.model.fields,field_description:erky_base.field_res_bank_branch_write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment_write_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_write_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_write_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_write_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_form_write_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_line_wiz_write_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_generate_container_wiz_write_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_port_write_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_required_forms_write_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_report_wiz_write_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_settings_write_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry_write_date
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_write_date
+#: model:ir.model.fields,field_description:erky_base.field_export_form_cost_write_date
+#: model:ir.model.fields,field_description:erky_base.field_res_bank_branch_write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_res_company_location_id
+msgid "Location"
+msgstr "المكان"
+
+#. module: erky_base
+#: model:ir.actions.act_window,help:erky_base.action_res_bank_branch_form
+msgid "Manage bank records you want to be used in the system."
+msgstr "إدارة السجلات البنكية التي تريد تسجيلها على النظام."
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_ssmo_massage_validation
+msgid "Message Validity To Technical Reference"
+msgstr "Message Validity To Technical Reference"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_ministry_trade_id
+msgid "Ministry trade id"
+msgstr "Ministry trade id"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment_name
+msgid "Name"
+msgstr "الاسم"
+
+#. module: erky_base
+#: code:addons/erky_base/models/erky_contract.py:55
+#: code:addons/erky_base/models/erky_contract.py:56
+#: code:addons/erky_base/models/erky_export_form.py:61
+#: code:addons/erky_base/models/erky_export_form.py:62
+#: code:addons/erky_base/models/erky_shipment.py:45
+#: code:addons/erky_base/models/erky_shipment.py:46
+#, python-format
+msgid "New"
+msgstr "جديد"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_note
+msgid "Note"
+msgstr "الملاحظة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_source_location
+msgid "Origin"
+msgstr "المصدر"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_package_qty
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_package_qty
+#: model:ir.ui.view,arch_db:erky_base.report_erky_export_form
+msgid "Package Qty"
+msgstr "كمية التعبئة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_package_uom_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_package_uom_id
+msgid "Package UOM"
+msgstr "وحدة التعبئة"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Packaging"
+msgstr "التعبئة"
+
+#. module: erky_base
+#: selection:erky.contract,shipment_method:0
+msgid "Parial"
+msgstr "جزئي"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_res_partner
+#: model:ir.model.fields,field_description:erky_base.field_export_form_cost_partner_id
+msgid "Partner"
+msgstr "شريك"
+
+#. module: erky_base
+#: model:ir.ui.menu,name:erky_base.menu_erky_partners
+msgid "Partners"
+msgstr "الشركاء"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_payment_method
+#: model:ir.model.fields,field_description:erky_base.field_erky_trade_ministry_payment_method
+msgid "Payment Method"
+msgstr "طرق السداد"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Payment Method:"
+msgstr "طرق السداد"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Picking"
+msgstr "الاستلام"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_res_company_picking_type_id
+msgid "Picking Type"
+msgstr "نوع الاستلام"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_picking_ids
+msgid "Picking ids"
+msgstr "الاستلامات"
+
+#. module: erky_base
+#: code:addons/erky_base/models/erky_export_form.py:161
+#, python-format
+msgid "Please Check Picking Type In Company Configuration"
+msgstr "من فضلك تاكد من نوع الاستلام في اعدادت الشركة"
+
+#. module: erky_base
+#: code:addons/erky_base/models/erky_export_form.py:163
+#, python-format
+msgid "Please Check Stock Location Is Set On Company Configuration."
+msgstr "من فضلك تاكد من انه تم اختيار مخزن معين في اعدادت الشركة"
+
+#. module: erky_base
+#: code:addons/erky_base/models/erky_shipment.py:78
+#, python-format
+msgid "Please transfer good to containers first"
+msgstr "الكمية يجب تحويله للحاوية اولا"
+
+#. module: erky_base
+#: selection:erky.template.report.wiz,template_from:0
+msgid "Pledge Request"
+msgstr "طلب تعهد"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_settings_pledge_request_temp_ar
+msgid "Pledge Request Template [AR]"
+msgstr "قالب طلب التعهد [بالعربي]"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_settings_pledge_request_temp_en
+msgid "Pledge Request Template [EN]"
+msgstr "قالب طلب التعهد [انجليزي]"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_port_name
+msgid "Port Name"
+msgstr "اسم الميناء"
+
+#. module: erky_base
+#: model:ir.actions.act_window,name:erky_base.erky_forms_action
+#: model:ir.actions.act_window,name:erky_base.erky_port_action
+msgid "ناقدة الميناء"
+msgstr "Port Window"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_template_report_wiz_template_content
+msgid "Preview"
+msgstr "عرض"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Price:"
+msgstr "السعر:"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+#: model:ir.ui.view,arch_db:erky_base.wizard_set_container_form
+msgid "Print Report"
+msgstr "طباعة التقرير"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_product_product
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_product_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_product_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_product_id
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Product"
+msgstr "منتج"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Product Name:"
+msgstr "اسم المنتج"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_product_uom_id
+msgid "Product UOM"
+msgstr "وحدة المنتج"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_product_uom_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_product_uom_id
+msgid "Product Unit of Measure"
+msgstr "وحدة قياس المنتج"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_qty
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_qty
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_qty
+#: model:ir.ui.view,arch_db:erky_base.report_erky_export_form
+msgid "Qty"
+msgstr "الكمية"
+
+#. module: erky_base
+#: code:addons/erky_base/models/erky_shipment.py:86
+#, python-format
+msgid "Qty Must Be Greater Than Zero"
+msgstr "الكمية يجب ان تكون اكبر من صفر"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Qty as package unit"
+msgstr "الكمية بوحدة التعبئة"
+
+#. module: erky_base
+#: code:addons/erky_base/models/erky_export_form.py:234
+#, python-format
+msgid "Qty must be greater than zero"
+msgstr "الكمية يجب ان تكون اكبر من صفر"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Qty:"
+msgstr "الكمية:"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_name
+msgid "Ref"
+msgstr "المرجعية"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_remaining_qty
+msgid "Remaining Qty"
+msgstr "الكميه المتبقيه "
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.view_erky_template_config_settings
+msgid "Report Template"
+msgstr "قوالب التقارير"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_contract_form_view
+msgid "Required Form"
+msgstr "المستندات المطلوبة"
+
+#. module: erky_base
+#: model:ir.ui.menu,name:erky_base.menu_erky_required_form_config
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Required Forms"
+msgstr "المستندات المطلوبة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_required_export_form_ids
+msgid "Required export form ids"
+msgstr "المستندات المطلوبة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_required_form_ids
+msgid "Required form ids"
+msgstr "المستندات المطلوبة"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "SSMO"
+msgstr "المواصفات والمقاييس"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_ssmo_issue_date
+msgid "SSMO Certificate Issue Date"
+msgstr "تاريخ اصدار شهادة المواصفات"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_ssmo_reference
+msgid "SSMO Reference"
+msgstr "مرجع المواصفات والمقاييس"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_sale_order_id
+msgid "Sale Order"
+msgstr "أمر البيع"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_name
+msgid "Sequence"
+msgstr "المسلسل"
+
+#. module: erky_base
+#: model:ir.ui.menu,name:erky_base.menu_erky_setting
+msgid "Setting"
+msgstr "الاعدادات"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_shipment_cost
+msgid "Shipment Cost"
+msgstr "تكلفة الشحنة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_vehicle_shipment_ids
+msgid "Shipment Details"
+msgstr "تفاصيل الشحنة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_shipment_method
+msgid "Shipment Method"
+msgstr "طرق الشحن"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Shipment Method:"
+msgstr "طرق الشحن"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_shipment_port
+msgid "Shipment Port"
+msgstr "ميناء الشحن"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment_shipment_qty
+#: model:ir.ui.view,arch_db:erky_base.tree_view_erky_container_shipment
+msgid "Shipment Qty"
+msgstr "الكمية المشحونة"
+
+#. module: erky_base
+#: code:addons/erky_base/models/erky_shipment.py:90
+#, python-format
+msgid "Shipment Qty Can't Be Greater Than Form Package Qty"
+msgstr "الكمية المشحونة لا يمكن ان تكون اكبر من اكبر من كمية التعبئة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_shipment_type
+msgid "Shipment Type"
+msgstr "نوع الشحن"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment_shipment_uom_id
+msgid "Shipment UOM"
+msgstr "وحدة الشحن"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_shipment_container_ids
+msgid "Shipment container ids"
+msgstr "حاويات الشحن"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_shipment_count
+msgid "Shipment count"
+msgstr "رقم الشحنات"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Shipments"
+msgstr "الشحنات"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment_container_size
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_size
+msgid "Size"
+msgstr "الحجم"
+
+#. module: erky_base
+#: code:addons/erky_base/models/erky_export_form.py:123
+#, python-format
+msgid "Some Required Form Missing [%s]"
+msgstr "بعض من المستندات المطلوبة مفقودة [%s]"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Source Port:"
+msgstr "ميناء الصادر:"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Source:"
+msgstr "المصدر:"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_to_state_id
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_state
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_state
+#: model:ir.ui.view,arch_db:erky_base.erky_contract_form_view
+msgid "State"
+msgstr "المحافظة"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.res_company_stock_inherit_form_view
+msgid "Stock"
+msgstr "المخزن"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_to_street
+#: model:ir.ui.view,arch_db:erky_base.erky_contract_form_view
+msgid "Street"
+msgstr "الشارع"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_to_street2
+#: model:ir.ui.view,arch_db:erky_base.erky_contract_form_view
+msgid "Street2"
+msgstr "الشارع ٢"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+#: model:ir.ui.view,arch_db:erky_base.form_view_erky_vehicle_shipment
+msgid "Submit"
+msgstr "ارسال"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_tax_id
+msgid "Tax ID"
+msgstr "رقم الضرائب"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Tax ID:"
+msgstr "الرقم الضريبي"
+
+#. module: erky_base
+#: model:ir.ui.menu,name:erky_base.menu_erky_report_template_settings
+msgid "Template"
+msgstr "القالب"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.wizard_set_container_form
+msgid "Template Report Erky Wiz:"
+msgstr "التقارير"
+
+#. module: erky_base
+#: model:ir.actions.act_window,name:erky_base.erky_template_report_wiz_action
+msgid "Template Report Wiz"
+msgstr "نافدة التقاير"
+
+#. module: erky_base
+#: model:ir.actions.act_window,name:erky_base.action_erky_report_template_config_settings
+msgid "Templates"
+msgstr "قوالب"
+
+#. module: erky_base
+#: sql_constraint:erky.container.shipment:0
+msgid "The container ref must be unique !"
+msgstr "رقم الحاوية لا يمكن ان يتكرر"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_port_to
+msgid "To Port"
+msgstr "الى ميناء"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_total_amount
+msgid "Total Amount"
+msgstr "إجمالي المبلغ"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_draft_erky_contract
+msgid "Total Amount:"
+msgstr "اجمالي المبلغ"
+
+#. module: erky_base
+#: code:addons/erky_base/models/erky_export_form.py:115
+#, python-format
+msgid "Total Export Form Qty Can't Be Greater Than Contact Qty"
+msgstr "اجمالي الكمية في الاستمارة لا يمكن ان يكون اكبر من الكمية الموجودة بالعقد"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.tree_view_erky_vehicle_shipment
+msgid "Total Qty"
+msgstr "الكمية ككل"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.tree_view_erky_vehicle_shipment
+msgid "Total Shipment Cost"
+msgstr "تكلفة الشحنة الاجمالية"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_contract_form_view
+msgid "Trade Of Ministry"
+msgstr "وزارة التجارة والصناعة"
+
+#. module: erky_base
+#: model:ir.actions.act_window,name:erky_base.action_erky_trade_of_ministry
+msgid "Trade Of Ministry Window"
+msgstr "شاشة وزارة التجارة والصناعة"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_stock_picking
+msgid "Transfer"
+msgstr "نقل"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_unit_price
+msgid "Unit Price"
+msgstr "سعر الوحده "
+
+#. module: erky_base
+#: model:ir.actions.act_window,name:erky_base.action_erky_vehicle_shipment
+#: model:ir.model.fields,field_description:erky_base.field_erky_container_shipment_vehicle_shipment_id
+#: model:ir.ui.menu,name:erky_base.menu_erky_vehicle_shipment
+#: model:ir.ui.view,arch_db:erky_base.erky_export_form_view
+msgid "Vehicle Shipment"
+msgstr "شحنة العربة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_vehicle_size
+msgid "Vehicle Size"
+msgstr "مساحة العربة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_vehicle_shipment_vehicle_uom
+msgid "Vehicle uom"
+msgstr "وحدة مساحة العربة"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_voucher_date
+msgid "Voucher Date"
+msgstr "تاريخ الايصال"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_export_form_voucher_no
+msgid "Voucher No"
+msgstr "رقم الايصال"
+
+#. module: erky_base
+#: selection:erky.export.form,state:0
+msgid "Waiting SSMO"
+msgstr "في انتطار SSMO"
+
+#. module: erky_base
+#: selection:erky.export.form,state:0
+msgid "Waiting Shipment"
+msgstr "في انتظار الشحن"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.report_erky_export_form
+msgid "With Contract No ["
+msgstr "برقم القعد ["
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.erky_contract_form_view
+msgid "ZIP"
+msgstr "الرمز البريدي"
+
+#. module: erky_base
+#: model:ir.model.fields,field_description:erky_base.field_erky_contract_to_zip
+msgid "Zip"
+msgstr "الرمز البريدي"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_container_container
+msgid "container.container"
+msgstr "container.container"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_container_log
+msgid "container.log"
+msgstr "container.log"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_container
+msgid "erky.container"
+msgstr "erky.container"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_container_shipment
+msgid "erky.container.shipment"
+msgstr "erky.container.shipment"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_contract
+msgid "erky.contract"
+msgstr "erky.contract"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_export_contract
+msgid "erky.export.contract"
+msgstr "erky.export.contract"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_export_form
+msgid "erky.export.form"
+msgstr "erky.export.form"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_form
+msgid "erky.form"
+msgstr "erky.form"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_generate_container_line_wiz
+msgid "erky.generate.container.line.wiz"
+msgstr "erky.generate.container.line.wiz"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_generate_container_wiz
+msgid "erky.generate.container.wiz"
+msgstr "erky.generate.container.wiz"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_port
+msgid "erky.port"
+msgstr "erky.port"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_required_forms
+msgid "erky.required.forms"
+msgstr "erky.required.forms"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_shipment_container
+msgid "erky.shipment.container"
+msgstr "erky.shipment.container"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_shipment_tracking
+msgid "erky.shipment.tracking"
+msgstr "erky.shipment.tracking"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_template_report_wiz
+msgid "erky.template.report.wiz"
+msgstr "erky.template.report.wiz"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_template_settings
+msgid "erky.template.settings"
+msgstr "erky.template.settings"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_trade_ministry
+msgid "erky.trade.ministry"
+msgstr "erky.trade.ministry"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_erky_vehicle_shipment
+msgid "erky.vehicle.shipment"
+msgstr "erky.vehicle.shipment"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_export_form_cost
+msgid "export.form.cost"
+msgstr "export.form.cost"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_export_form_expense
+msgid "export.form.expense"
+msgstr "export.form.expense"
+
+#. module: erky_base
+#: model:ir.ui.view,arch_db:erky_base.wizard_erky_template_report_wiz_form
+#: model:ir.ui.view,arch_db:erky_base.wizard_set_container_form
+msgid "or"
+msgstr "أو"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_report_erky_base_report_erky_template_report
+msgid "report.erky_base.report_erky_template_report"
+msgstr "report.erky_base.report_erky_template_report"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_res_bank_branch
+msgid "res.bank.branch"
+msgstr "res.bank.branch"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_shipment_container
+msgid "shipment.container"
+msgstr "shipment.container"
+
+#. module: erky_base
+#: model:ir.model,name:erky_base.model_shipment_container_wiz
+msgid "shipment.container.wiz"
+msgstr "shipment.container.wiz"
+

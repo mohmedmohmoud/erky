@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="action_report_erky_export_form"
+                string="Export Form"
+                model="erky.contract"
+                name="erky_base.report_erky_export_form"
+                file="mrp_repair.report_erky_export_form"
+                report_type="qweb-pdf"
+        />
+
+        <template id="report_erky_export_form">
+            <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="report.external_layout">
+                <div class="page" style="position:relative;">
+                    <h2><center><t t-esc="res_company.name"/></center></h2>
+                    <h2><center>Export Form Report</center></h2>
+                    <table class="table table-bordered mb64">
+                        <tr>
+                            <th colspan="3">Export Form Details For Item: <t t-esc="o.product_id.name"/> With Contract No [<t t-esc="o.name"/>]</th>
+                        </tr>
+                        <tr>
+                            <th>Form</th>
+                            <th>Qty</th>
+                            <th>Package Qty</th>
+                        </tr>
+                        <t t-foreach="o.export_form_ids" t-as="form">
+                            <tr>
+                                <td><t t-esc="form.name"/> </td>
+                                <td><t t-esc="form.qty"/> <t t-esc="form.product_uom_id.name"/> </td>
+                                <td><t t-esc="form.package_qty"/> <t t-esc="form.package_uom_id.name"/> </td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+                </t>
+            </t>
+            </t>
+        </template>
+    </data>
+</odoo>
