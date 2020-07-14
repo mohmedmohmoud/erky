@@ -35,9 +35,9 @@ class PackingListReport(models.AbstractModel):
         total_container_words_no = """(""" + str(number_to_words(total_container).upper()) + """ ONLY)"""
         total_bags = sum(record.container_shipment_ids.mapped('shipment_qty'))
         total_bags_words = """(""" + str(number_to_words(total_bags).upper()) + """ ONLY)"""
-        gross_weight = sum(record.container_shipment_ids.mapped('shipment_qty'))
+        gross_weight = sum(record.container_shipment_ids.mapped('gross_weight'))
         gross_weight_words = """(""" + str(number_to_words(gross_weight).upper()) + """ ONLY)"""
-        net_weight = sum(record.container_shipment_ids.mapped('shipment_qty'))
+        net_weight = sum(record.container_shipment_ids.mapped('packing_weight'))
         net_weight_words = """(""" + str(number_to_words(net_weight).upper()) + """ ONLY)"""
 
         print "tatal container", total_container_words_no

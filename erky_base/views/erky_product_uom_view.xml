@@ -12,6 +12,7 @@
                         <field name="packing_weight" attrs="{'invisible': [('is_packing_unit', '=', False)], 'required': [('is_packing_unit', '=', True)]}"/>
                         <field name="packing_uom_id" attrs="{'invisible': [('is_packing_unit', '=', False)], 'required': [('is_packing_unit', '=', True)]}"/>
                     </div>
+                    <field name="unit_weight" attrs="{'invisible': [('is_packing_unit', '=', False)], 'required': [('is_packing_unit', '=', True)]}"/>
                 </field>
             </field>
         </record>

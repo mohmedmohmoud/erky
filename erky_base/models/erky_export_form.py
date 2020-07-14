@@ -22,9 +22,9 @@ class ExportForm(models.Model):
         readonly=True, required=True, store=True)
     package_uom_id = fields.Many2one("product.uom", "Package UOM", required=1)
     net_shipment_qty = fields.Float(string="Net Shipment Qty", compute="_compute_all_form_qty")
-    total_weight_packing_qty = fields.Float(string="Packing Total Weight", compute="_compute_all_form_qty")
+    # total_weight_packing_qty = fields.Float(string="Packing Total Weight", compute="_compute_all_form_qty")
     packing_weight_uom_id = fields.Many2one(related="package_uom_id.packing_uom_id", string="Packing Weight UOM")
-    gross_shipment_qty_text = fields.Text(string="Gross Shipment Qty Text", compute="_compute_all_form_qty")
+    # gross_shipment_qty_text = fields.Text(string="Gross Shipment Qty Text", compute="_compute_all_form_qty")
     gross_shipment_qty = fields.Text(string="Gross Shipment Qty", compute="_compute_all_form_qty")
     weight_in_package_uom = fields.Text(string="Weight Package UOM", compute="_compute_weight_in_package_uom")
     # package_qty = fields.Float("Package Qty", compute="_compute_product_qty", store=True)
@@ -76,18 +76,15 @@ class ExportForm(models.Model):
                           '40_feet_len': len(feet40_shipment), '20_feet_qty': sum(feet40_shipment.mapped('shipment_qty'))}
         return container_info
 
-    @api.depends("vehicle_shipment_ids")
+    @api.depends("vehicle_shipment_ids", "qty")
     def _compute_all_form_qty(self):
         for rec in self:
             shipment_ids = rec.vehicle_shipment_ids
             if shipment_ids:
-                net_shipment_qty = sum(shipment_ids.mapped('package_qty'))
-                total_weight_packing_qty = sum(shipment_ids.mapped('packing_weight'))
-                gross_shipment_qty_text = "[" +str(net_shipment_qty) + " " + rec.package_uom_id.name + "] + [" + str(total_weight_packing_qty) + " " + rec.packing_weight_uom_id.name + "]"
+                net_shipment_qty = sum(shipment_ids.mapped('packing_weight'))
+                gross_shipment_qty = sum(shipment_ids.mapped('gross_weight'))
                 rec.net_shipment_qty = net_shipment_qty
-                rec.total_weight_packing_qty = total_weight_packing_qty
-                rec.gross_shipment_qty_text = gross_shipment_qty_text
-                rec.gross_shipment_qty = float(net_shipment_qty) + float(rec.weight_in_package_uom)
+                rec.gross_shipment_qty = gross_shipment_qty
 
     @api.model
     def create(self, vals):
@@ -167,12 +164,12 @@ class ExportForm(models.Model):
             rounding_method = self._context.get('rounding_method', 'UP')
             self.package_qty = self.product_uom_id._compute_quantity(self.qty, self.package_uom_id, rounding_method=rounding_method)
 
-    @api.depends("package_uom_id", "total_weight_packing_qty", "packing_weight_uom_id")
-    def _compute_weight_in_package_uom(self):
-        if self.package_uom_id:
-            rounding_method = self._context.get('rounding_method', 'UP')
-            self.weight_in_package_uom = self.package_uom_id._compute_quantity(self.total_weight_packing_qty, self.packing_weight_uom_id,
-                                                                     rounding_method=rounding_method)
+    # @api.depends("package_uom_id", "packing_weight_uom_id")
+    # def _compute_weight_in_package_uom(self):
+    #     if self.package_uom_id:
+    #         rounding_method = self._context.get('rounding_method', 'UP')
+    #         self.weight_in_package_uom = self.package_uom_id._compute_quantity(self.total_weight_packing_qty, self.packing_weight_uom_id,
+    #                                                                  rounding_method=rounding_method)
 
     # @api.multi
     # def create_sale_order(self):

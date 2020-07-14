@@ -66,19 +66,20 @@
                   <group string="Packaging And Shipments">
                     <field name="package_uom_id"/>
                     <field name="net_shipment_qty"/>
-                    <label for="total_weight_packing_qty"/>
-                    <div class="o_row">
-                      <field name="total_weight_packing_qty"/>
-                      <field name="packing_weight_uom_id"/>
-                      <span>--></span>
-                      <field name="weight_in_package_uom"/>
-                    </div>
-                    <label for="gross_shipment_qty"/>
-                    <div class="o_row">
-                      <field name="gross_shipment_qty_text" nolabel="1"/>
-                      <span>--></span>
-                      <field name="gross_shipment_qty"/>
-                    </div>
+<!--                    <label for="total_weight_packing_qty"/>-->
+<!--                    <div class="o_row">-->
+<!--&lt;!&ndash;                      <field name="total_weight_packing_qty"/>&ndash;&gt;-->
+<!--                      <field name="packing_weight_uom_id"/>-->
+<!--                      <span>&ndash;&gt;</span>-->
+<!--                      <field name="weight_in_package_uom"/>-->
+<!--                    </div>-->
+<!--                    <label for="gross_shipment_qty"/>-->
+<!--                    <div class="o_row">-->
+<!--                      <field name="gross_shipment_qty_text" nolabel="1"/>-->
+<!--                      <span/>&ndash;&gt;</span>-->
+<!--                      <field name="gross_shipment_qty"/>-->
+<!--                    </div>-->
+                    <field name="gross_shipment_qty"/>
                   </group>
                 </group>
                 <group>

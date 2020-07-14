@@ -7,11 +7,11 @@
                 model="erky.contract"
                 name="erky_base.report_draft_erky_contract"
                 file="mrp_repair.report_draft_erky_contract"
-                report_type="qweb-pdf"
+                report_type="qweb-html"
         />
 
         <template id="report_draft_erky_contract">
-            <t t-call="report.html_container">
+<!--            <t t-call="report.html_container">-->
             <t t-foreach="docs" t-as="o">
                 <t t-call="report.external_layout">
                 <div class="page" style="position:relative;">
@@ -91,7 +91,7 @@
                 </div>
                 </t>
             </t>
-            </t>
+<!--            </t>-->
         </template>
 
 

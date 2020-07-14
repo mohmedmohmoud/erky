@@ -21,6 +21,7 @@ class Shipment(models.Model):
     package_qty = fields.Float("Package Qty", required=1)
     unit_packing_weight = fields.Float(related="package_uom_id.packing_weight", string="Unit Packing Weight")
     packing_weight = fields.Float("Total Packing Weight", compute="_compute_shipment_qty", store=True)
+    gross_weight = fields.Float("Gross Weight", compute="_compute_shipment_qty", store=True)
     packing_weight_uom_id = fields.Many2one(related="package_uom_id.packing_uom_id", store=True, string="Packing Weight UOM")
     front_plate_no = fields.Char("Front Plate No")
     back_plate_no = fields.Char("Back Plate No")
@@ -107,6 +108,7 @@ class Shipment(models.Model):
                 packing_weight = rec.unit_packing_weight
                 print "Unit - Packing Weight =================", packing_weight
                 rec.packing_weight = shipment_qty * packing_weight
+                rec.gross_weight = shipment_qty * rec.package_uom_id.unit_weight
 
 class ShipmentContainer(models.Model):
     _name = "erky.container.shipment"
@@ -115,6 +117,8 @@ class ShipmentContainer(models.Model):
     vehicle_shipment_id = fields.Many2one("erky.vehicle.shipment", "Vehicle Shipment")
     container_size = fields.Selection(related="name.size", readonly=1, store=True)
     shipment_qty = fields.Integer("Shipment Qty", required=1)
+    packing_weight = fields.Float("Total Packing Weight", compute="_compute_shipment_qty", store=True)
+    gross_weight = fields.Float("Gross Weight", compute="_compute_shipment_qty", store=True)
     shipment_uom_id = fields.Many2one("product.uom", "Shipment UOM", required=1)
     unit_packing_weight = fields.Float(related="vehicle_shipment_id.unit_packing_weight", store="True",
                                        string="Unit Packing Weight")
@@ -141,3 +145,14 @@ class ShipmentContainer(models.Model):
                 unit_packing_weight = rec.unit_packing_weight
                 print "========================qty==============", shipment_qty, unit_packing_weight
                 rec.packing_weight = shipment_qty * unit_packing_weight
+                rec.gross_weight = shipment_qty * rec.shipment_uom_id.unit_weight
+
+    # @api.depends("package_qty", "package_uom_id")
+    # def _compute_shipment_qty(self):
+    #     for rec in self:
+    #         if rec.package_uom_id.is_packing_unit:
+    #             shipment_qty = rec.package_qty
+    #             packing_weight = rec.unit_packing_weight
+    #             print "Unit - Packing Weight =================", packing_weight
+    #             rec.packing_weight = shipment_qty * packing_weight
+    #             rec.gross_weight = shipment_qty * rec.package_uom_id.unit_weight

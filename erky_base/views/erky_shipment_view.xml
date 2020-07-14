@@ -51,6 +51,7 @@
                                     <field name="packing_weight"/>
                                     <field name="packing_weight_uom_id" readonly="1"/>
                                 </div>
+                                <field name="gross_weight"/>
                             </group>
                         </group>
                         <group>
@@ -78,6 +79,7 @@
                                 <field name="shipment_qty" sum="Shipment Qty"/>
                                 <field name="shipment_uom_id"/>
                                 <field name="packing_weight" sum="Packing Weight"/>
+                                <field name="gross_weight" sum="Gross Weight"/>
                                 <field name="packing_uom_id"/>
                             </tree>
                         </field>

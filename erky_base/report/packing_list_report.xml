@@ -63,9 +63,9 @@
                             </td>
                             <td><t t-esc="c.name.name"/></td>
                             <td>1</td>
+                            <td><t t-esc="c.packing_weight"/></td>
+                            <td><t t-esc="c.gross_weight"/></td>
                             <td><t t-esc="c.shipment_qty"/></td>
-                            <td><t t-esc="c.shipment_qty"/></td>
-                            <td>000</td>
                         </tr>
                         <tr>
                             <td colspan="2"><strong>TOTAL CONTAINER</strong></td>
