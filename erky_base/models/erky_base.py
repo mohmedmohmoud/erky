@@ -30,6 +30,6 @@ class ErkyContainer(models.Model):
     size = fields.Selection([('20_feet', "20 Feet"), ('40_feet', '40 Feet')], required=1)
 
 class ErkyForms(models.Model):
-    _name = "erky.form"
+    _name = "erky.required.document"
 
-    name = fields.Char(string="Form Name", required=1)
+    name = fields.Char(string="Document Name", required=1)

@@ -176,7 +176,7 @@
         </record>
 
         <!-- actions -->
-        <menuitem name="Export Form" id="erky_base.menu_erky_export_form" parent="erky_base.menu_erky_base"
+        <menuitem name="Export Form" id="erky_base.menu_erky_export_form" parent="erky_base.menu_erky_contracts"
                   action="erky_base.erky_export_form_action" sequence="2"/>
     </data>
 </odoo>

@@ -46,8 +46,6 @@ class ErkyContract(models.Model):
     export_form_ids = fields.One2many("erky.export.form", "contract_id")
     export_form_no = fields.Integer(compute="_compute_number_of_export_form")
     ministry_trade_id = fields.Many2one("erky.ministry.trade")
-    # Required Forms
-    required_form_ids = fields.Many2many("erky.form")
     sale_order_id = fields.Many2one("sale.order", string="Sale Order", readonly=1)
 
     @api.model

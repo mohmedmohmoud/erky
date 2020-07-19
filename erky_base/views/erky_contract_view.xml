@@ -114,11 +114,6 @@
                   </field>
                 </group>
               </page>
-              <page string="Required Form">
-                <group>
-                  <field name="required_form_ids"/>
-                </group>
-              </page>
             </notebook>
           </sheet>
         </form>
@@ -131,8 +126,8 @@
       <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem name="Contract" id="erky_base.menu_erky_contract" parent="erky_base.menu_erky_base"
-              action="erky_base.erky_contract_action" sequence="1"/>
+    <menuitem name="Contract" id="erky_base.menu_erky_contract" parent="erky_base.menu_erky_contracts"
+              action="erky_base.erky_contract_action" sequence="2"/>
 
   </data>
 </odoo>

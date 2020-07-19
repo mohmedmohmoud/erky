@@ -284,7 +284,7 @@ class RequiredExportForm(models.Model):
     _name = "erky.required.forms"
 
     form_id = fields.Many2one("erky.export.form")
-    name = fields.Many2one("erky.form", string="Form", required=1)
+    name = fields.Many2one("erky.required.document", string="Required Document", required=1)
     desc = fields.Text("Desc")
     attachment_ids = fields.Many2many("ir.attachment", string="Attachment")
 

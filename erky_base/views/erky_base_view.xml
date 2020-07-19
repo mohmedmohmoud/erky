@@ -58,13 +58,13 @@
         <menuitem name="International Port" id="erky_base.menu_erky_international_port" parent="erky_base.menu_erky_setting" action="erky_port_action" sequence="1"/>
 
         <!-- Erky Forms -->
-        <record model="ir.actions.act_window" id="erky_base.erky_forms_action">
-          <field name="name">Port Window</field>
-          <field name="res_model">erky.form</field>
+        <record model="ir.actions.act_window" id="erky_base.erky_required_document_action">
+          <field name="name">Required Document Window</field>
+          <field name="res_model">erky.required.document</field>
           <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem name="Required Forms" id="erky_base.menu_erky_required_form_config" parent="erky_base.menu_erky_setting" action="erky_forms_action" sequence="2"/>
+        <menuitem name="Required Documents" id="erky_base.menu_erky_required_document_config" parent="erky_base.menu_erky_setting" action="erky_required_document_action" sequence="2"/>
 
     <!--    <record model="ir.ui.view" id="erky_base.erky_container_form_view">-->
     <!--      <field name="name">container.container.form.view</field>-->

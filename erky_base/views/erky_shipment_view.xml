@@ -120,7 +120,7 @@
            <field name="target">new</field>
         </record>
 
-        <menuitem name="Vehicle Shipment" id="menu_erky_vehicle_shipment" parent="menu_erky_base" action="action_erky_vehicle_shipment" sequence="3"/>
+        <menuitem name="Vehicle Shipment" id="menu_erky_vehicle_shipment" parent="menu_erky_contracts" action="action_erky_vehicle_shipment" sequence="3"/>
 
         <record model="ir.ui.view" id="form_view_erky_container_shipment">
             <field name="name">container.shipment.form.view</field>
@@ -172,7 +172,7 @@
             <field name="view_type">form</field>
         </record>
 
-        <menuitem name="Container Shipment" id="menu_erky_container_shipment" parent="menu_erky_base" action="action_erky_container_shipment" sequence="4"/>
+        <menuitem name="Container Shipment" id="menu_erky_container_shipment" parent="menu_erky_contracts" action="action_erky_container_shipment" sequence="4"/>
 
     </data>
 </odoo>
