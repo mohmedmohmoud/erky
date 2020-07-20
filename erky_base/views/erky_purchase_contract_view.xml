@@ -41,10 +41,9 @@
                   <field name="product_uom_id" options="{'no_create': True, 'no_open': True}"/>
                   <span style="color:brown">(10% plus minus allowed)</span>
                 </div>
-                <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
               </group>
               <group>
-                <field name="tax_id"/>
+                <field name="phone_no"/>
                 <label for="import_partner_details" string="Importer Details"/>
                 <div>
                     <div name="import_partner_details" class="o_address_format">
@@ -56,15 +55,27 @@
                         <field name="to_country_id" placeholder="Country" class="o_address_country"/>
                     </div>
                 </div>
-                <field name="currency_id" options="{'no_create': True, 'no_open': True}"/>
-                <field name="importer_currency_id" options="{'no_create': True, 'no_open': True}"/>
               </group>
             </group>
             <group>
-              <label for="total_amount"/>
-              <div name="erky_contract_amount_div" class="o_row">
-                  <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-              </div>
+              <group>
+                <field name="currency_id" options="{'no_create': True, 'no_open': True}"/>
+                <field name="importer_currency_id" options="{'no_create': True, 'no_open': True}"/>
+              </group>
+              <group>
+                <label for="unit_price"/>
+                <div class="o_row">
+                  <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                  -->
+                  <field name="unit_price_in_importer_curr" widget="monetary" options="{'currency_field': 'importer_currency_id'}"/>
+                </div>
+                <label for="total_amount"/>
+                <div name="erky_contract_amount_div" class="o_row">
+                    <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    -->
+                    <field name="total_amount_in_importer_curr" widget="monetary" options="{'currency_field': 'importer_currency_id'}"/>
+                </div>
+              </group>
             </group>
             <group>
               <group>

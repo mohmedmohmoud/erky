@@ -1,0 +1,127 @@
+<odoo>
+    <data>
+        <report
+                id="action_report_erky_purchase_contract"
+                string="Purchase Contract"
+                model="erky.purchase.contract"
+                name="erky_base.report_erky_purchase_contract"
+                file="erky_base.report_erky_purchase_contract"
+                report_type="qweb-pdf"
+        />
+
+        <template id="report_erky_purchase_contract">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page" style="position:relative;">
+                            <h2><center>PURCHASING CONTRACT</center></h2>
+                            <table>
+                                <tr>
+                                    <th>Contract No:</th>
+                                    <td><t t-esc="o.contract_no"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Contract Date:</th>
+                                    <td><t t-esc="o.date"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Seller:</th>
+                                    <td><t t-esc="o.exporter_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Address:</th>
+                                    <td><t t-esc="o.exporter_id.street"/>,
+                                        <t t-esc="o.exporter_id.street2"/>,
+                                        <t t-esc="o.exporter_id.city"/>,
+                                        <t t-esc="o.exporter_id.country_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Buyer:</th>
+                                    <td><t t-esc="o.importer_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Address:</th>
+                                    <td><t t-esc="o.importer_id.street"/>,
+                                        <t t-esc="o.importer_id.street2"/>,
+                                        <t t-esc="o.importer_id.city"/>,
+                                        <t t-esc="o.importer_id.country_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Phone:</th>
+                                    <td><t t-esc="o.phone_no"/></td>
+                                </tr>
+                                <tr>
+                                    <th colspan="2">The undersigned seller and buyer have confirm this contract in accordance with the terms and conditions
+                                    stipulated below</th>
+                                </tr>
+                                <tr>
+                                    <th>Commodity:</th>
+                                    <td><t t-esc="o.product_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Specification:</th>
+                                    <td>
+                                        <t t-foreach="o.product_specification_ids" t-as="sp">
+                                            <p><t t-esc="sp.name.name"/>: <t t-esc="sp.value"/> </p>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Quantity:</th>
+                                    <td><t t-esc="o.qty"/>/<t t-esc="o.product_uom_id.name"/> (10% plus minus allowed.) </td>
+                                </tr>
+                                <tr>
+                                    <th>Price Per Ton:</th>
+                                    <td>
+                                        <t t-esc="o.unit_price"/>/<t t-esc="o.currency_id.symbol"/>
+                                        --
+                                        <t t-esc="o.unit_price_in_importer_curr"/>/<t t-esc="o.importer_currency_id.symbol"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Payment:</th>
+                                    <td><t t-esc="o.payment_condition"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Account:</th>
+                                    <td>
+                                        <p>Account Name :<t t-esc="o.payment_account_id.name"/></p>
+                                        <p>Account No   :<t t-esc="o.account_no"/></p>
+                                        <p>Company Add  :<t t-esc="o.partner_id.street"/>, <t t-esc="o.partner_id.street2"/>, <t t-esc="o.partner_id.city"/>, <t t-esc="o.partner_id.country_id.name"/> </p>
+                                        <p>Bank Name    :<t t-esc="o.account_bank_id.name"/></p>
+                                        <p>Swift Code   :<t t-esc="o.swift_code"/></p>
+                                        <p>IBAN         :<t t-esc="o.iban"/></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Shipment:</th>
+                                    <td><t t-esc="o.shipment_condition"/> </td>
+                                </tr>
+                                <tr>
+                                    <th>Port of Discharge:</th>
+                                    <td><t t-esc="o.port_of_discharge.name"/> </td>
+                                </tr>
+                                <tr>
+                                    <th>Packing:</th>
+                                    <td><t t-esc="o.packing_condition"/> </td>
+                                </tr>
+                                <tr>
+                                    <th>Documents:</th>
+                                    <td>
+                                        <ol>
+                                            <t t-foreach="o.required_document_ids" t-as="dc">
+                                                <li><t t-esc="dc.name"/></li>
+                                            </t>
+                                        </ol>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

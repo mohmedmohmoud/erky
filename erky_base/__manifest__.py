@@ -41,6 +41,7 @@
         'views/config_templates_view.xml',
         'views/erky_product_uom_view.xml',
         'views/erky_payment_account_view.xml',
+        'report/erky_purchase_contract_report.xml',
         'report/draft_contract_report.xml',
         'report/template_report.xml',
         'report/export_form_report.xml',
