@@ -17,7 +17,8 @@ class ErkyContract(models.Model):
     def _get_default_export_partner(self):
         return self.env.user.company_id.partner_id
 
-    name = fields.Char(string="Contract No", default="New", readonly=1)
+    name = fields.Char(string="Contract No", required=1, readonly=1)
+    purchase_contract_id = fields.Many2one("erky.purchase.contract", "Purchase Contract", readonly=1, required=1)
     date = fields.Date("Date", default=datetime.today())
     tax_id = fields.Char(string="Tax ID", required=1, default=_get_default_tax_id_number)
     to_partner_id = fields.Many2one("res.partner", string="Import Name", required=1, domain=[('is_export_import', '=', True)])
@@ -46,13 +47,14 @@ class ErkyContract(models.Model):
     export_form_ids = fields.One2many("erky.export.form", "contract_id")
     export_form_no = fields.Integer(compute="_compute_number_of_export_form")
     ministry_trade_id = fields.Many2one("erky.ministry.trade")
-    sale_order_id = fields.Many2one("sale.order", string="Sale Order", readonly=1)
+    erky_request_ids = fields.One2many("erky.request", "internal_contract_id")
 
     @api.model
     def create(self, vals):
-        if vals.get('name', _('New')) == _('New'):
-            vals['name'] = self.env['ir.sequence'].next_by_code('erky.contract') or _('New')
-        return super(ErkyContract, self).create(vals)
+        res = super(ErkyContract, self).create(vals)
+        res.purchase_contract_id.state = "internal_contract"
+        res.purchase_contract_id.internal_contract_id = res.id
+        return res
 
     @api.constrains('qty', 'unit_price')
     def check_qty_and_price(self):
@@ -77,17 +79,6 @@ class ErkyContract(models.Model):
             export_from_qty = sum(rec.export_form_ids.mapped('qty'))
             rec.remaining_qty = rec.qty - export_from_qty
 
-    def generate_sale_order(self):
-        qty = sum(self.export_form_ids.mapped('qty'))
-        vals = {'partner_id': self.to_partner_id.id,
-                'order_date': datetime.now(),
-                'order_line': [(0, 0, {'product_id': self.product_id.id,
-                                       'product_uom_qty': qty,
-                                       'price_unit': self.unit_price})]
-                }
-        sale_order_id = self.env['sale.order'].create(vals)
-        if sale_order_id:
-            self.sale_order_id = sale_order_id.id
 
     def action_open_export_form(self):
         form_ids = self.mapped('export_form_ids')
@@ -109,4 +100,79 @@ class ErkyContract(models.Model):
         res['domain'] = [('id', '=', self.ministry_trade_id.id)]
         res['res_id'] = self.ministry_trade_id.id or False
         return res
+
+    @api.multi
+    def action_create_request(self):
+        ctx = self.env.context.copy()
+        ctx.update({'default_internal_contract_id': self.id,
+                    'default_purchase_contract_id': self.purchase_contract_id.id,
+                    })
+        return {
+            'name': "Erky Request",
+            'res_model': 'erky.request',
+            'type': 'ir.actions.act_window',
+            'context': ctx,
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': self.env.ref("erky_base.erky_request_view").id,
+            'target': 'current'
+        }
+
+    @api.multi
+    def action_open_requests(self):
+        request_ids = self.mapped('erky_request_ids')
+        action = self.env.ref('erky_base.erky_request_action').read()[0]
+        action['domain'] = [('id', 'in', request_ids.ids)]
+        return action
+
+
+class ErkyRequests(models.Model):
+    _name = "erky.request"
+
+    _rec_name = "request_type"
+
+    internal_contract_id = fields.Many2one("erky.contract", "M.C Contract", required=1, readonly=1)
+    purchase_contract_id = fields.Many2one("erky.purchase.contract", "Purchase Contract", required=1, readonly=1)
+    state = fields.Selection([('draft', "Draft"), ('done', "Done")], default='draft', readonly=1)
+    request_type = fields.Selection([('from_request', "Form Request"),
+                                     ('pledge_request', "Pledge request")], required=1,
+                                    string="Request Type", readonly=1, states={'draft': [('readonly', False)]})
+    request_body = fields.Html("Body", readonly=1, states={'draft': [('readonly', False)]})
+
+
+    @api.onchange('request_type')
+    def get_request_body_from_template(self):
+        template_body = False
+        user_lang = self.env.user.partner_id.lang
+
+        if self.request_type == "from_request" and user_lang == "ar_SY":
+            template_body = self.env['ir.values'].get_default('erky.template.settings',
+                                                                            'form_request_temp_ar')
+        if self.request_type == "from_request" and user_lang == "en_US":
+            template_body = self.env['ir.values'].get_default('erky.template.settings',
+                                                                            'form_request_temp_en')
+        if self.request_type == "pledge_request" and user_lang == "ar_SY":
+            template_body = self.env['ir.values'].get_default('erky.template.settings',
+                                                                            'pledge_request_temp_ar')
+        if self.request_type == "pledge_request" and user_lang == "en_US":
+            template_body = self.env['ir.values'].get_default('erky.template.settings',
+                                                                            'pledge_request_temp_en')
+        if template_body:
+            template_body = self.get_render_template_content(self, template_body)
+        self.request_body = template_body
+
+    @api.multi
+    def action_set_to_done(self):
+        for rec in self:
+            rec.state = 'done'
+
+    @api.multi
+    def get_render_template_content(self, obj, content):
+        self.ensure_one()
+        if obj:
+            body_msg = self.env["mail.template"].with_context(
+                lang=self.env.user.partner_id.lang).sudo().render_template(
+                str(content), 'erky.request', [obj.id])
+            return body_msg[obj.id]
+
 

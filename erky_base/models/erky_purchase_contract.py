@@ -8,6 +8,19 @@ from odoo.exceptions import ValidationError
 class ErkyContract(models.Model):
     _name = 'erky.purchase.contract'
 
+    STATUS = [('draft', "Purchase Contract"),
+              ('internal_contract', 'M.C Contract'),
+              ('bank', "Bank"),
+              ('bank_form', "Bank Form"),
+              ('ssmo', "SSMO"),
+              ('shipment_inst', "Shipment Instruction"),
+              ('bl', "B/L"),
+              ('invoice', "Invoice"),
+              ('packing_list', "Packing List"),
+              ('payment', "Payment"),
+              ('done', "Done"),
+              ('cancel', "Canceled")]
+
     def _get_default_currency_id(self):
         return self.env.user.company_id.currency_id.id
 
@@ -62,6 +75,8 @@ class ErkyContract(models.Model):
     payment_condition = fields.Text("Payment Condition")
     shipment_condition = fields.Text("Shipment Condition")
     packing_condition = fields.Text("Packing Condition")
+    state = fields.Selection(STATUS, default="draft", readonly=True)
+    internal_contract_id = fields.Many2one("erky.contract")
 
     @api.model
     def create(self, vals):
@@ -94,6 +109,39 @@ class ErkyContract(models.Model):
             if rec.currency_id.id != rec.importer_currency_id.id:
                 ctx = ctx.copy()
                 rec.unit_price_in_importer_curr = rec.currency_id.with_context(ctx).compute(rec.unit_price, rec.importer_currency_id)
+
+    @api.multi
+    def action_create_mc_contract(self):
+        ctx = self.env.context.copy()
+        ctx.update({'default_purchase_contract_id': self.id,
+                    'default_name': self.contract_no,
+                    'default_to_partner_id': self.importer_id.id,
+                    'default_from_partner_id': self.exporter_id.id,
+                    'default_product_id': self.product_id.id,
+                    'default_qty': self.qty,
+                    'default_port_to': self.port_of_discharge.id})
+        return {
+               'res_model': 'erky.contract',
+               'type': 'ir.actions.act_window',
+               'context': ctx,
+               'view_mode': 'form',
+               'view_type': 'form',
+               'view_id': self.env.ref("erky_base.erky_contract_form_view").id,
+               'target': 'current'
+                }
+
+    @api.multi
+    def action_cancel(self):
+        for rec in self:
+            rec.state = "cancel"
+
+    def action_internal_contract(self):
+        res = self.env['ir.actions.act_window'].for_xml_id('erky_base', 'erky_contract_action')
+        view = self.env.ref('erky_base.erky_contract_form_view', False)
+        res['views'] = [(view and view.id or False, 'form')]
+        res['domain'] = [('id', '=', self.internal_contract_id.id)]
+        res['res_id'] = self.internal_contract_id.id or False
+        return res
 
 class ContractProductSpecification(models.Model):
     _name = "contract.product.specification"

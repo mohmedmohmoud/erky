@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <report
+                id="action_report_erky_request"
+                string="Request Report"
+                model="erky.request"
+                name="erky_base.report_erky_request"
+                file="mrp_repair.report_erky_request"
+                report_type="qweb-pdf"
+        />
+
+        <template id="report_erky_request">
+            <t t-call="report.html_container">
+                <t t-call="report.external_layout">
+                <div class="page" style="position:relative;">
+                    <t t-foreach="docs" t-as="o">
+                        <p><t t-raw="o.request_body"/></p>
+                    </t>
+                </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
