@@ -8,45 +8,46 @@ class ExportForm(models.Model):
     _name = "erky.export.form"
 
     name = fields.Char(string="Sequence", default="New", readonly=1)
-    contract_id = fields.Many2one("erky.contract", string="Form Contract", required=1)
-    form_no = fields.Char("Form No", required=0)
-    contract_no = fields.Char(related="contract_id.name", string="Contract No", readonly=1)
-    issue_date = fields.Date("Issue Date", default=datetime.today(), required=1)
-    expire_date = fields.Date("Expire Date", required=1)
-    export_name = fields.Many2one(related="contract_id.from_partner_id", string="Export Name")
-    import_name = fields.Many2one(related="contract_id.to_partner_id", string="Export Name")
-    qty = fields.Integer("Qty", required=1, default=1)
-    product_id = fields.Many2one(related="contract_id.product_id", required=1, store=True)
+    contract_id = fields.Many2one("erky.contract", string="Contract", required=1)
+    purchase_contract_id = fields.Many2one("purchase.contract.id", required=1)
+    form_no = fields.Char("Form No")
+    contract_no = fields.Char(related="contract_id.name", store=True, string="Contract No", readonly=1)
+    issue_date = fields.Date("Issue Date")
+    expire_date = fields.Date("Expire Date")
+    exporter_id = fields.Many2one(related="contract_id.exporter_id", store=True, string="Exporter")
+    importer_id = fields.Many2one(related="contract_id.importer_id", store=True, string="Importer")
+    qty = fields.Integer("Qty", default=1)
+    product_id = fields.Many2one(related="contract_id.product_id", store=True)
     product_uom_id = fields.Many2one(
         'product.uom', 'Product Unit of Measure', related='product_id.uom_id',
-        readonly=True, required=True, store=True)
-    package_uom_id = fields.Many2one("product.uom", "Package UOM", required=1)
-    net_shipment_qty = fields.Float(string="Net Shipment Qty", compute="_compute_all_form_qty")
-    # total_weight_packing_qty = fields.Float(string="Packing Total Weight", compute="_compute_all_form_qty")
-    packing_weight_uom_id = fields.Many2one(related="package_uom_id.packing_uom_id", string="Packing Weight UOM")
-    # gross_shipment_qty_text = fields.Text(string="Gross Shipment Qty Text", compute="_compute_all_form_qty")
-    gross_shipment_qty = fields.Text(string="Gross Shipment Qty", compute="_compute_all_form_qty")
+        readonly=True, store=True)
+    package_uom_id = fields.Many2one("product.uom", "Package UOM")
+    packing_weight_uom_id = fields.Many2one(related="package_uom_id.packing_uom_id", store=True, string="Packing Weight UOM")
+    net_shipment_qty = fields.Float(string="Net Shipment Qty", store=True, compute="_compute_all_form_qty")
+    gross_shipment_qty = fields.Text(string="Gross Shipment Qty", store=True, compute="_compute_all_form_qty")
     weight_in_package_uom = fields.Text(string="Weight Package UOM", compute="_compute_weight_in_package_uom")
-    # package_qty = fields.Float("Package Qty", compute="_compute_product_qty", store=True)
-    # reminding_package_qty = fields.Float("Remain Package Qty", compute="")
-    # package_shipment = fields.Selection([('carry_shipment', "Carry and Shipment"), ('direct_shipment', "Direct Shipment")], string="Package Shipment", default="carry_shipment", required=1)
-    bank = fields.Many2one(related="contract_id.bank", string="Bank", required=1)
-    bank_branch = fields.Many2one(related="contract_id.bank_branch", string="Bank Branch")
-    shipment_port = fields.Many2one(related="contract_id.port_from", string="Shipment Port")
+    bank_id = fields.Many2one(related="contract_id.bank_id", store=True, string="Bank", required=1)
+    bank_branch_id = fields.Many2one(related="contract_id.bank_branch_id", store=True, string="Bank Branch")
+    exporter_port_id = fields.Many2one(related="contract_id.exporter_port_id", store=True, string="Exporter Port")
     state = fields.Selection([('draft', "Draft"),
-                              ('ssmo', "Waiting SSMO"),
-                              ('shipment', "Waiting Shipment"),
+                              ('mc', "Trade Of Ministry"),
+                              ('bank', "Bank"),
+                              ('ssmo', "SSMO"),
                               ('done', "Done"),
                               ('canceled', "Canceled")], default="draft")
-    declarant_id = fields.Many2one("res.partner", string="Declarant")
+    shipment_method = fields.Selection([('partial', "Parial"), ('all', "All")], string="Shipment Method",
+                                       default="partial")
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True,
                                   default=lambda self: self.env.user.company_id.currency_id)
+    mc_attachment_id = fields.Binary(string='MC attachment', attachment=True)
+    bank_attachment_id = fields.Binary(string='Bank attachment', attachment=True)
     # ===================SSMO==================
     ssmo_reference = fields.Char(string="SSMO Reference", states={'ssmo': [('required', True)]})
     ssmo_massage_validation = fields.Char(string="Message Validity To Technical Reference")
     ssmo_issue_date = fields.Date(string="SSMO Certificate Issue Date", default=datetime.today())
     voucher_no = fields.Char(string="Voucher No", states={'ssmo': [('required', True)]})
     voucher_date = fields.Date(string="Voucher Date", default=datetime.today(), states={'ssmo': [('required', True)]})
+    ssmo_attachment_id = fields.Binary(string='SSMO attachment', attachment=True)
     # =================Shipment================
     vehicle_shipment_ids = fields.One2many("erky.vehicle.shipment", "export_form_id", string="Shipment Details")
     container_shipment_ids = fields.One2many("erky.container.shipment", "export_form_id")
@@ -60,8 +61,8 @@ class ExportForm(models.Model):
     hr_expense_ids = fields.One2many("hr.expense", "export_form_id")
     # =================Picking================
     picking_ids = fields.One2many("stock.picking", "export_form_id")
-    # Required Forms
-    required_export_form_ids = fields.One2many("erky.required.forms", 'form_id')
+
+    erky_request_ids = fields.One2many("erky.request", "export_form_id")
 
     def number_to_words(self, num):
         engine = inflect.engine()
@@ -93,14 +94,19 @@ class ExportForm(models.Model):
         return super(ExportForm, self).create(vals)
 
     @api.multi
-    def action_submit(self):
+    def action_to_bank(self):
         for rec in self:
-            rec.state = "ssmo"
+            rec.state = "bank"
 
     @api.multi
-    def action_ssmo_confirm(self):
+    def action_submit_trade_ministry(self):
         for rec in self:
-            rec.state = "shipment"
+            rec.state = "mc"
+
+    @api.multi
+    def action_ssmo(self):
+        for rec in self:
+            rec.state = "ssmo"
 
     @api.multi
     def action_shipment(self):
@@ -155,8 +161,16 @@ class ExportForm(models.Model):
     @api.constrains('package_uom_id')
     def package_uom_check(self):
         for res in self:
-            if res.product_uom_id.category_id.id != res.package_uom_id.category_id.id:
+            if res.product_uom_id.category_id.id != res.package_uom_id.category_id.id and res.state not in ['draft', 'mc', 'bank', 'ssmo']:
                 raise ValidationError(_("Category of package uom must by same as product uom category"))
+
+    def action_open_ministry_trade(self):
+        res = self.env['ir.actions.act_window'].for_xml_id('erky_base', 'action_erky_trade_of_ministry')
+        view = self.env.ref('erky_base.view_erky_ministry_of_trade_form', False)
+        res['views'] = [(view and view.id or False, 'form')]
+        res['domain'] = [('id', '=', self.ministry_trade_id.id)]
+        res['res_id'] = self.ministry_trade_id.id or False
+        return res
 
     @api.depends("qty")
     def _compute_product_qty(self):
@@ -188,7 +202,7 @@ class ExportForm(models.Model):
 
     @api.multi
     def create_shipment_picking(self):
-        customer_id = self.contract_id.to_partner_id
+        customer_id = self.contract_id.importer_id
         picking_type_id = self.env.user.company_id.picking_type_id
         location_id = self.env.user.company_id.location_id
         location_dest_id = self.env.user.company_id.location_dest_id
@@ -222,6 +236,31 @@ class ExportForm(models.Model):
             picking_id = self.env['stock.picking'].create(vals)
             print "PICKING-ID {+}================{+}", picking_id
             picking_id.write({'export_form_id': self.id})
+
+    @api.multi
+    def action_create_request(self):
+        ctx = self.env.context.copy()
+        ctx.update({'default_internal_contract_id': self.contract_id.id,
+                    'default_purchase_contract_id': self.purchase_contract_id.id,
+                    'default_export_form_id': self.id,
+                    })
+        return {
+            'name': "Erky Request",
+            'res_model': 'erky.request',
+            'type': 'ir.actions.act_window',
+            'context': ctx,
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': self.env.ref("erky_base.erky_request_form_view").id,
+            'target': 'current'
+        }
+
+    @api.multi
+    def action_open_requests(self):
+        request_ids = self.mapped('erky_request_ids')
+        action = self.env.ref('erky_base.erky_request_action').read()[0]
+        action['domain'] = [('id', 'in', request_ids.ids)]
+        return action
 
     @api.multi
     def create_vendor_bill(self):
@@ -304,3 +343,59 @@ class RequiredExportForm(models.Model):
 #     qty = fields.Integer("Qty", default=1, required=1)
 #     price = fields.Float("Price", default=1, required=1)
     # expense_id = fields.Many2one("hr.expense", "Expense")
+
+class ErkyRequests(models.Model):
+    _name = "erky.request"
+
+    _rec_name = "request_type"
+
+    export_form_id = fields.Many2one("erky.export.form")
+    internal_contract_id = fields.Many2one("erky.contract", "M.C Contract", required=1, readonly=1)
+    purchase_contract_id = fields.Many2one("erky.purchase.contract", "Purchase Contract", required=1, readonly=1)
+    state = fields.Selection([('draft', "Draft"), ('done', "Done")], default='draft', readonly=1)
+    request_type = fields.Selection([('from_request', "Form Request"),
+                                     ('pledge_request', "Pledge request")], required=1,
+                                    string="Request Type")
+    request_body = fields.Html("Body")
+
+    @api.model
+    def create(self, vals):
+        if vals.get('name', _('New')) == _('New'):
+            vals['name'] = self.env['ir.sequence'].next_by_code('erky.request') or _('New')
+        return super(ErkyRequests, self).create(vals)
+
+
+    @api.onchange('request_type')
+    def get_request_body_from_template(self):
+        template_body = False
+        user_lang = self.env.user.partner_id.lang
+
+        if self.request_type == "from_request" and user_lang == "ar_SY":
+            template_body = self.env['ir.values'].get_default('erky.template.settings',
+                                                                            'form_request_temp_ar')
+        if self.request_type == "from_request" and user_lang == "en_US":
+            template_body = self.env['ir.values'].get_default('erky.template.settings',
+                                                                            'form_request_temp_en')
+        if self.request_type == "pledge_request" and user_lang == "ar_SY":
+            template_body = self.env['ir.values'].get_default('erky.template.settings',
+                                                                            'pledge_request_temp_ar')
+        if self.request_type == "pledge_request" and user_lang == "en_US":
+            template_body = self.env['ir.values'].get_default('erky.template.settings',
+                                                                            'pledge_request_temp_en')
+        if template_body:
+            template_body = self.get_render_template_content(self, template_body)
+        self.request_body = template_body
+
+    @api.multi
+    def action_set_to_done(self):
+        for rec in self:
+            rec.state = 'done'
+
+    @api.multi
+    def get_render_template_content(self, obj, content):
+        self.ensure_one()
+        if obj:
+            body_msg = self.env["mail.template"].with_context(
+                lang=self.env.user.partner_id.lang).sudo().render_template(
+                str(content), 'erky.request', [obj.id])
+            return body_msg[obj.id]

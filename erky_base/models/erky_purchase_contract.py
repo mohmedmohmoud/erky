@@ -33,15 +33,15 @@ class ErkyContract(models.Model):
     name = fields.Char(string="Sequence", default="New", readonly=1)
     contract_no = fields.Char(stirng="Contract No", required=1)
     date = fields.Date("Date", default=datetime.today(), required=1)
-    importer_id = fields.Many2one("res.partner", string="Importer Name", required=1, domain=[('is_export_import', '=', True)])
+    importer_id = fields.Many2one("res.partner", string="Importer Name", required=1, domain=[('is_importer', '=', True)])
     phone_no = fields.Char(related="importer_id.phone", store=True, string="Phone")
-    exporter_id = fields.Many2one("res.partner", string="Exporter Name", required=1, domain=[('is_export_import', '=', True)], default=_get_default_export_partner)
-    to_street = fields.Char(related="importer_id.street", string='Street')
-    to_street2 = fields.Char(related="importer_id.street2", string='Street2')
-    to_zip = fields.Char(related="importer_id.zip", string='Zip', change_default=True)
-    to_city = fields.Char(related="importer_id.city", string='City')
-    to_state_id = fields.Many2one(related="importer_id.state_id", string='State')
-    to_country_id = fields.Many2one(related="importer_id.country_id", string='Country')
+    exporter_id = fields.Many2one("res.partner", string="Exporter Name", required=1, domain=[('is_exporter', '=', True)], default=_get_default_export_partner)
+    importer_street = fields.Char(related="importer_id.street", string='Street')
+    importer_street2 = fields.Char(related="importer_id.street2", string='Street2')
+    importer_zip = fields.Char(related="importer_id.zip", string='Zip', change_default=True)
+    importer_city = fields.Char(related="importer_id.city", string='City')
+    importer_state_id = fields.Many2one(related="importer_id.state_id", string='State')
+    importer_country_id = fields.Many2one(related="importer_id.country_id", string='Country')
     product_id = fields.Many2one("product.product", "Product",  required=1, domain=[('type', '=', 'product')])
     product_uom_id = fields.Many2one(
         'product.uom', 'Product Unit of Measure', related='product_id.uom_id',
@@ -54,7 +54,7 @@ class ErkyContract(models.Model):
     importer_currency_id = fields.Many2one("res.currency", string="Importer Currency", required=1)
     total_amount = fields.Float("Total Amount", compute="_compute_amount_total")
     total_amount_in_importer_curr = fields.Float("Total Amount In Importer Currency", compute="_compute_amount_total")
-    port_of_discharge = fields.Many2one("erky.port", "Discharge Port", required=1)
+    importer_port_id = fields.Many2one("erky.port", "Discharge Port", required=1)
     shipment_method = fields.Selection([('partial', "Parial"), ('all', "All")], string="Shipment Method", default="partial")
     payment_method = fields.Selection([('d_a', "D/A")], string="Payment Method", dafault='d_a')
     payment_account_id = fields.Many2one("erky.payment.account", string="Account Name", required=1)
@@ -115,11 +115,11 @@ class ErkyContract(models.Model):
         ctx = self.env.context.copy()
         ctx.update({'default_purchase_contract_id': self.id,
                     'default_name': self.contract_no,
-                    'default_to_partner_id': self.importer_id.id,
-                    'default_from_partner_id': self.exporter_id.id,
+                    'default_importer_id': self.importer_id.id,
+                    'default_exporter_id': self.exporter_id.id,
                     'default_product_id': self.product_id.id,
                     'default_qty': self.qty,
-                    'default_port_to': self.port_of_discharge.id})
+                    'default_importer_port_id': self.importer_port_id.id})
         return {
                'res_model': 'erky.contract',
                'type': 'ir.actions.act_window',

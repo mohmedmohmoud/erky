@@ -1,53 +1,5 @@
 <odoo>
     <data>
-        <record model="ir.ui.view" id="view_erky_ministry_of_trade_form">
-            <field name="name">view.erky.ministry.trade.form</field>
-            <field name="model">erky.trade.ministry</field>
-            <field name="arch" type="xml">
-                <form>
-                    <sheet>
-                        <group>
-                            <group>
-                                <field name="contract_id"/>
-                                <field name="export_name_id"/>
-                            </group>
-                            <group>
-                                <field name="issue_date"/>
-                            </group>
-                        </group>
-                        <group>
-                            <group>
-                                <field name="bank_id"/>
-                                <field name="expire_date"/>
-                            </group>
-                            <group>
-                                <field name="bank_branch_id"/>
-                            </group>
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
-
-        <record model="ir.ui.view" id="view_erky_ministry_of_trade_tree">
-            <field name="name">view.erky.ministry.trade.tree</field>
-            <field name="model">erky.trade.ministry</field>
-            <field name="arch" type="xml">
-                <tree>
-                    <field name="contract_id"/>
-                    <field name="issue_date"/>
-                    <field name="expire_date"/>
-                    <field name="bank_id"/>
-                </tree>
-            </field>
-        </record>
-
-        <record model="ir.actions.act_window" id="erky_base.action_erky_trade_of_ministry">
-          <field name="name">Trade Of Ministry Window</field>
-          <field name="res_model">erky.trade.ministry</field>
-          <field name="view_mode">tree,form</field>
-        </record>
-
          <!-- Erky Ports -->
         <record model="ir.actions.act_window" id="erky_base.erky_port_action">
           <field name="name">Port Window</field>
@@ -65,40 +17,6 @@
         </record>
 
         <menuitem name="Required Documents" id="erky_base.menu_erky_required_document_config" parent="erky_base.menu_erky_setting" action="erky_required_document_action" sequence="2"/>
-
-    <!--    <record model="ir.ui.view" id="erky_base.erky_container_form_view">-->
-    <!--      <field name="name">container.container.form.view</field>-->
-    <!--      <field name="model">container.container</field>-->
-    <!--      <field name="arch" type="xml">-->
-    <!--        <form>-->
-    <!--          <sheet>-->
-    <!--            <group>-->
-    <!--            <field name="name"/>-->
-    <!--          </group>-->
-    <!--          <group>-->
-    <!--            <group>-->
-    <!--              <field name="partner_id"/>-->
-    <!--            </group>-->
-    <!--            <group>-->
-    <!--              <label for="size"/>-->
-    <!--              <div class="o_row">-->
-    <!--                <field name="size"/>-->
-    <!--                <field name="uom" options="{'no_create': True, 'no_open': True}"/>-->
-    <!--              </div>-->
-    <!--            </group>-->
-    <!--          </group>-->
-    <!--          </sheet>-->
-    <!--        </form>-->
-    <!--      </field>-->
-    <!--    </record>-->
-
-    <!--    <record model="ir.actions.act_window" id="erky_base.erky_container_action">-->
-    <!--      <field name="name">Container Window</field>-->
-    <!--      <field name="res_model">container.container</field>-->
-    <!--      <field name="view_mode">tree,form</field>-->
-    <!--    </record>-->
-
-    <!--    <menuitem name="Shipment Container" id="erky_base.menu_erky_shipment_container" parent="erky_base.menu_erky_setting" action="erky_container_action"/>-->
 
     </data>
 </odoo>

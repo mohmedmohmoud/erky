@@ -45,7 +45,7 @@ class PackingListReport(models.AbstractModel):
                        'invoice_no': record.voucher_no,
                        'bl_no': "",
                        'contract_no': record.contract_id.name,
-                       'importer_id': record.contract_id.to_partner_id,
+                       'importer_id': record.contract_id.importer_id,
                        'item_no': record.contract_id.product_id.default_code,
                        'desc': record.contract_id.product_id.name,
                        'containers': record.container_shipment_ids,

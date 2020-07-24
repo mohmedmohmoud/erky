@@ -34,5 +34,16 @@
             <field eval="False" name="company_id"/>
             <field name="padding">4</field>
         </record>
+
+        <record id="sequence_erky_internal_contract" model="ir.sequence">
+            <field name="name">Erky Internal Contract</field>
+            <field name="code">erky.internal.contract</field>
+            <field name="prefix">%(range_year)s/CV/</field>
+            <field eval="1" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+            <field eval="True" name="use_date_range"/>
+            <field eval="False" name="company_id"/>
+            <field name="padding">4</field>
+        </record>
     </data>
 </odoo>

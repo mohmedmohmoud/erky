@@ -7,8 +7,8 @@ from . import account_invoice
 from . import hr_expense
 from . import product_product
 from . import erky_base
-from . import erky_purchase_contract
 from . import erky_contract
+from . import erky_purchase_contract
 from . import erky_export_form
 from . import erky_shipment
 from . import stock_picking

@@ -101,7 +101,7 @@
                                 </tr>
                                 <tr>
                                     <th>Port of Discharge:</th>
-                                    <td><t t-esc="o.port_of_discharge.name"/> </td>
+                                    <td><t t-esc="o.importer_port_id.name"/> </td>
                                 </tr>
                                 <tr>
                                     <th>Packing:</th>

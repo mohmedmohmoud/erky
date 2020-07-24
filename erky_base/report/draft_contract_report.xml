@@ -11,89 +11,131 @@
         />
 
         <template id="report_draft_erky_contract">
-<!--            <t t-call="report.html_container">-->
-            <t t-foreach="docs" t-as="o">
-                <t t-call="report.external_layout">
-                <div class="page" style="position:relative;">
-                    <h2><center><t t-esc="res_company.name"/></center></h2>
-                    <h2><center>عقد صادر</center></h2>
-                    <table class="table mb64" style="padding:10px">
-                        <tr>
-                            <td>Date:</td>
-                            <td><t t-esc="o.date"/></td>
-                        </tr>
-                        <tr>
-                            <td>Contract No:</td>
-                            <td><t t-esc="o.name"/></td>
-                        </tr>
-                        <tr>
-                            <td>Export Name:</td>
-                            <td><t t-esc="o.from_partner_id.name"/></td>
-                        </tr>
-                        <tr>
-                            <td>Tax ID:</td>
-                            <td><t t-esc="o.tax_id"/></td>
-                        </tr>
-                        <tr>
-                            <td>Import Name:</td>
-                            <td><t t-esc="o.to_partner_id.name"/></td>
-                        </tr>
-                        <tr>
-                            <td>Import Address:</td>
-                            <td><t t-esc="o.to_country_id.name"/>, <t t-esc="o.to_state_id.name"/>, <t t-esc="o.to_city"/>
-                            <t t-esc="o.to_street"/>,<t t-esc="o.to_street2"/></td>
-                        </tr>
-                        <tr>
-                            <td>Product Name:</td>
-                            <td><t t-esc="o.product_id.name"/></td>
-                        </tr>
-                        <tr>
-                            <td>Source:</td>
-                            <td><t t-esc="res_company.country_id.name"/></td>
-                        </tr>
-                        <tr>
-                            <td>Qty:</td>
-                            <td><t t-esc="o.qty"/><t t-esc="o.product_uom_id.name"/> </td>
-                        </tr>
-                        <tr>
-                            <td>Price:</td>
-                            <td><t t-esc="o.unit_price"/><t t-esc="res_company.currency_id.symbol"/> </td>
-                        </tr>
-                        <tr>
-                            <td>Total Amount:</td>
-                            <td><t t-esc="o.total_amount"/><t t-esc="res_company.currency_id.symbol"/> </td>
-                        </tr>
-                        <tr>
-                            <td>Source Port:</td>
-                            <td><t t-esc="o.port_from.name"/></td>
-                        </tr>
-                        <tr>
-                            <td>Destination Port:</td>
-                            <td><t t-esc="o.port_to.name"/></td>
-                        </tr>
-                        <tr>
-                            <td>Shipment Method:</td>
-                            <td><t t-esc="o.shipment_method"/></td>
-                        </tr>
-                        <tr>
-                            <td>Payment Method:</td>
-                            <td><t t-esc="o.payment_method"/></td>
-                        </tr>
-                        <tr>
-                            <td>Bank:</td>
-                            <td><t t-esc="o.bank.name"/> - <t t-esc="o.bank_branch.name"/> </td>
-                        </tr>
-                    </table>
-                    <div style="margin-top:200px">
-                        <div style="text-align:left">Export Signature: ..............................</div>
-                        <div style="text-align:right">Import Signature: ..............................</div>
-                    </div>
-                </div>
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page" style="position:relative;">
+                            <h2>
+                                <center>
+                                    <t t-esc="res_company.name"/>
+                                </center>
+                            </h2>
+                            <h2>
+                                <center>عقد صادر</center>
+                            </h2>
+                            <table class="table mb64" style="padding:10px">
+                                <tr>
+                                    <td>Date:</td>
+                                    <td>
+                                        <t t-esc="o.date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Contract No:</td>
+                                    <td>
+                                        <t t-esc="o.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Export Name:</td>
+                                    <td>
+                                        <t t-esc="o.exporter_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Tax ID:</td>
+                                    <td>
+                                        <t t-esc="o.tax_id"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Import Name:</td>
+                                    <td>
+                                        <t t-esc="o.importer_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Import Address:</td>
+                                    <td><t t-esc="o.importer_country_id.name"/>,<t t-esc="o.importer_state_id.name"/>,
+                                        <t t-esc="o.importer_city"/>
+                                        <t t-esc="o.importer_street"/>,
+                                        <t t-esc="o.importer_street2"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Product Name:</td>
+                                    <td>
+                                        <t t-esc="o.product_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Source:</td>
+                                    <td>
+                                        <t t-esc="res_company.country_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Qty:</td>
+                                    <td>
+                                        <t t-esc="o.qty"/>
+                                        <t t-esc="o.product_uom_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Price:</td>
+                                    <td>
+                                        <t t-esc="o.unit_price"/>
+                                        <t t-esc="res_company.currency_id.symbol"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Total Amount:</td>
+                                    <td>
+                                        <t t-esc="o.total_amount"/>
+                                        <t t-esc="res_company.currency_id.symbol"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Source Port:</td>
+                                    <td>
+                                        <t t-esc="o.exporter_port_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Destination Port:</td>
+                                    <td>
+                                        <t t-esc="o.importer_port_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Shipment Method:</td>
+                                    <td>
+                                        <t t-esc="o.shipment_method"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Payment Method:</td>
+                                    <td>
+                                        <t t-esc="o.payment_method"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Bank:</td>
+                                    <td>
+                                        <t t-esc="o.bank_id.name"/>
+                                        -
+                                        <t t-esc="o.bank_branch_id.name"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div style="margin-top:200px">
+                                <div style="text-align:left">Export Signature: ..............................</div>
+                                <div style="text-align:right">Import Signature: ..............................</div>
+                            </div>
+                        </div>
+                    </t>
                 </t>
             </t>
-<!--            </t>-->
         </template>
-
-
     </data>
 </odoo>

@@ -6,24 +6,37 @@
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
             <field name="user_id" position="before">
-                <field name="is_export_import"/>
+                <field name="is_exporter"/>
+                <field name="is_importer"/>
             </field>
         </field>
     </record>
 
-    <record model="ir.actions.act_window" id="erky_base.partner_export_import_action">
-        <field name="name">Export/Import Companies</field>
+    <record model="ir.actions.act_window" id="erky_base.partner_importer_action">
+        <field name="name">Importer Companies</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.partner</field>
         <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form</field>
-      <field name="context">{'default_is_export_import': True,
-                             'default_company_type': 'company',
+      <field name="context">{'default_is_importer': True,
                              'default_customer': False}</field>
-      <field name="domain">[('is_export_import', '=', True)]</field>
+      <field name="domain">[('is_importer', '=', True)]</field>
     </record>
 
-    <menuitem name="Import/Export Companies" id="erky_base.menu_erky_export_import_companies" parent="erky_base.menu_erky_partners"
-              action="erky_base.partner_export_import_action"/>
+    <record model="ir.actions.act_window" id="erky_base.partner_exporter_action">
+        <field name="name">Exporter Companies</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+      <field name="context">{'default_is_exporter': True,
+                             'default_customer': False}</field>
+      <field name="domain">[('is_exporter', '=', True)]</field>
+    </record>
+
+    <menuitem name="Importer Companies" id="erky_base.menu_erky_importer_companies" parent="erky_base.menu_erky_partners"
+              action="erky_base.partner_importer_action"/>
+    <menuitem name="Exporter Companies" id="erky_base.menu_erky_exporter_companies" parent="erky_base.menu_erky_partners"
+              action="erky_base.partner_exporter_action"/>
 
 </odoo>
