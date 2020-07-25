@@ -37,7 +37,12 @@
                         <button name="action_create_request" class="oe_highlight" type="object" string="Create Request" states="draft"/>
                         <button name="action_to_bank" class="oe_highlight" type="object" string="To Bank" states="mc"/>
                         <button name="action_ssmo" class="oe_highlight" type="object" string="SSMO" states="bank"/>
-                        <button name="action_cancel" type="object" string="Cancel" states="mc,bank,ssmo"/>
+                        <button name="action_shipment_ins" class="oe_highlight" type="object" string="Submit To Shipment Ins" states="ssmo"/>
+                        <button name="action_shipment" class="oe_highlight" type="object" string="Submit To Shipment" states="shipment_ins"/>
+                        <button name="action_add_shipment" class="oe_highlight" type="object" string="Add Shipment" states="shipment"/>
+                        <button name="action_bl" class="oe_highlight" type="object" string="BL" states="shipment"/>
+                        <button name="action_create_invoice" class="oe_highlight" type="object" string="Create Invoice" states="bl"/>
+                        <button name="action_cancel" type="object" string="Cancel" states="mc,bank,ssmo,shipment_ins,shipment"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,mc,bank,ssmo,done" nolabel="1"
                                readonly="1"/>
                     </header>
@@ -68,38 +73,38 @@
                                                               'required': [('state', '=', 'bank')]}"/>
                                 <field name="exporter_id" readonly="1"/>
                                 <field name="importer_id" readonly="1"/>
-                                <field name="mc_attachment_id" attrs="{'invisible': [('state', 'in', ['draft']),]}"/>
+                                <field name="mc_attachment_id" attrs="{'invisible': [('state', 'in', ['draft'])],'readonly': [('state', '!=', 'mc')]}"/>
                             </group>
                             <group>
-                                <field name="bank_id"/>
-                                <field name="bank_branch_id" domain="[('bank_id', '=', bank_id)]"/>
+                                <field name="bank_id" attrs="{'readonly': [('state', '!=', 'bank')]}"/>
+                                <field name="bank_branch_id" domain="[('bank_id', '=', bank_id)]" attrs="{'readonly': [('state', '!=', 'bank')]}"/>
                                 <field name="issue_date" attrs="{'invisible': [('state', 'in', ['draft'])],
-                                                                 'required': [('state', '=', 'mc')]}"/>
+                                                                 'required': [('state', '=', 'mc')], 'readonly': [('state', '!=', 'bank')]}"/>
                                 <field name="expire_date" attrs="{'invisible': [('state', 'in', ['draft']),],
-                                                                  'required': [('state', '=', 'mc')]}"/>
-                                <field name="bank_attachment_id" attrs="{'invisible': [('state', 'in', ['draft','mc'])]}"/>
+                                                                  'required': [('state', '=', 'mc')], 'readonly': [('state', '!=', 'bank')]}"/>
+                                <field name="bank_attachment_id" attrs="{'invisible': [('state', 'in', ['draft','mc'])], 'readonly': [('state', '!=', 'bank')]}"/>
                             </group>
                         </group>
                         <group>
                             <group>
-                                <field name="exporter_port_id"/>
+                                <field name="exporter_port_id" attrs="{'readonly': [('state', '!=', 'bank')]}"/>
                             </group>
                             <group>
-                                <field name="shipment_method"/>
+                                <field name="shipment_method" attrs="{'readonly': [('state', '!=', 'mc')]}"/>
                             </group>
 
                         </group>
                         <group>
                             <group string="Product" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo'])]}">
-                                <field name="product_id" attrs="{'invisible': [('state', 'in', ['draft'])]}"/>
-                                <label for="qty" attrs="{'invisible': [('state', 'in', ['draft'])]}"/>
+                                    <field name="product_id" attrs="{'required': [('state', 'in', ['shipment_ins'])], 'readonly': [('state', '!=', 'shipment_ins')]}"/>
+                                <label for="qty" attrs="{'required': [('state', 'in', ['shipment_ins'])], 'readonly': [('state', '!=', 'shipment_ins')]}"/>
                                 <div class="o_row" attrs="{'invisible': [('state', 'in', ['draft'])]}">
-                                    <field name="qty"/>
-                                    <field name="product_uom_id" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="qty" attrs="{'required': [('state', 'in', ['shipment_ins'])], 'readonly': [('state', '!=', 'shipment_ins')]}"/>
+                                    <field name="product_uom_id" attrs="{'required': [('state', 'in', ['shipment_ins'])], 'readonly': [('state', '!=', 'shipment_ins')]}" options="{'no_create': True, 'no_open': True}"/>
                                 </div>
                             </group>
                             <group string="Packaging And Shipments" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo'])]}">
-                                <field name="package_uom_id"/>
+                                <field name="package_uom_id" attrs="{'required': [('state', 'in', ['shipment_ins'])], 'readonly': [('state', '!=', 'shipment_ins')]}"/>
                                 <field name="net_shipment_qty"/>
                                 <field name="gross_shipment_qty"/>
                             </group>
@@ -109,26 +114,36 @@
                             <page string="SSMO" attrs="{'invisible': [('state', 'in', ['draft','mc','bank'])]}">
                                 <group>
                                     <group>
-                                        <field name="ssmo_reference"/>
-                                        <field name="ssmo_massage_validation"/>
-                                        <field name="ssmo_issue_date"/>
+                                        <field name="ssmo_reference" attrs="{'readonly': [('state', '!=', 'ssmo')]}"/>
+                                        <field name="ssmo_massage_validation" attrs="{'readonly': [('state', '!=', 'ssmo')]}"/>
+                                        <field name="ssmo_issue_date" attrs="{'readonly': [('state', '!=', 'ssmo')]}"/>
                                     </group>
                                     <group>
-                                        <field name="voucher_no"/>
-                                        <field name="voucher_date"/>
-                                        <field name="ssmo_attachment_id"/>
+                                        <field name="voucher_no" attrs="{'readonly': [('state', '!=', 'ssmo')]}"/>
+                                        <field name="voucher_date" attrs="{'readonly': [('state', '!=', 'ssmo')]}"/>
+                                        <field name="ssmo_attachment_id" attrs="{'readonly': [('state', '!=', 'ssmo')]}"/>
                                     </group>
-                                </group>
-                            </page>
-                            <!--=======================Vehicle Shipment====================-->
-                            <page string="Vehicle Shipment" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo'])]}">
-                                <group>
-                                    <field name="vehicle_shipment_ids" nolabel="1" readonly="1"/>
                                 </group>
                             </page>
                             <!--=======================Container Shipment====================-->
-                            <page string="Available Containers" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo'])]}">
-                                <br/>
+                            <page string="Shipment Instruction" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo'])]}">
+                                <group>
+                                    <group>
+                                       <field name="shipment_partner_id" attrs="{'required': [('state', '=', 'shipment_ins')],
+                                        'readonly': [('state', '!=', 'shipment_ins')]}"/>
+                                        <field name="shipper_partner_id" attrs="{'required': [('state', '=', 'shipment_ins')],
+                                        'readonly': [('state', '!=', 'shipment_ins')]}"/>
+                                        <field name="discharge_port_id" attrs="{'readonly': [('state', '!=', 'shipment_ins')]}"/>
+                                        <field name="notify" attrs="{'readonly': [('state', '!=', 'shipment_ins')]}"/>
+                                    </group>
+                                    <group>
+                                        <field name="shipment_ins_date" attrs="{'required': [('state', '=', 'shipment_ins')],
+                                        'readonly': [('state', '!=', 'shipment_ins')]}"/>
+                                        <field name="consignee_partner_id" attrs="{'required': [('state', '=', 'shipment_ins')],
+                                        'readonly': [('state', '!=', 'shipment_ins')]}"/>
+                                        <field name="freight_term" attrs="{'readonly': [('state', '!=', 'shipment_ins')]}"/>
+                                    </group>
+                                </group>
                                 <p>
                                     <button name="%(generate_container_wizard_action)d"
                                             context="{'default_export_form_id': id}"
@@ -142,7 +157,28 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="Form Cost" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo'])]}">
+                            <!--======================= Bill Of Lading ====================-->
+                            <page string="Bill Of Lading">
+                                <group>
+                                    <group>
+                                        <field name="bl_no" attrs="{'required': [('state', '=', 'bl')],
+                                        'readonly': [('state', '!=', 'bl')]}"/>
+                                        <field name="bl_attachment"/>
+                                    </group>
+                                    <group>
+                                        <field name="bl_booking_no" attrs="{'required': [('state', '=', 'bl')],
+                                        'readonly': [('state', '!=', 'bl')]}"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <!--=======================Vehicle Shipment====================-->
+                            <page string="Vehicle Shipment" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins'])]}">
+                                <group>
+                                    <field name="vehicle_shipment_ids" nolabel="1" readonly="1"/>
+                                </group>
+                            </page>
+
+                            <page string="Form Cost" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins'])]}">
                                 <field name="cost_ids">
                                     <tree editable="bottom">
                                         <field name="partner_id"/>
@@ -153,11 +189,11 @@
                                 </field>
                             </page>
                             <!--=======================Bills====================-->
-                            <page string="Bills" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo'])]}">
+                            <page string="Bills" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins'])]}">
                                 <field name="bill_ids"/>
                             </page>
                             <!--=======================Expenses====================-->
-                            <page string="Form Expense" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo'])]}">
+                            <page string="Form Expense" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins'])]}">
                                 <field name="hr_expense_ids">
                                     <tree>
                                         <field name="name"/>
@@ -171,7 +207,7 @@
                                 </field>
                             </page>
                             <!--=======================Picking====================-->
-                            <page string="Picking" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo'])]}">
+                            <page string="Picking" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins'])]}">
                                 <group>
                                     <field name="picking_ids" nolabel="1"/>
                                 </group>
@@ -212,10 +248,10 @@
                             </group>
                         </group>
                         <group>
-                            <field name="request_type"/>
+                            <field name="request_type" attrs="{'readonly': [('state', '=', 'done')]}"/>
                         </group>
                         <group>
-                            <field name="request_body"/>
+                            <field name="request_body" attrs="{'readonly': [('state', '=', 'done')]}"/>
                         </group>
                     </sheet>
                 </form>

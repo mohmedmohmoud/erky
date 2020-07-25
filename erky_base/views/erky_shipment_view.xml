@@ -6,12 +6,10 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,in_transit,delivered,container,done"/>
                         <button name="action_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
-                        <button name="action_delivered" string="Delivered" class="oe_highlight" type="object" states="in_transit"/>
-                        <button name="action_check_container" string="Containers Checked" class="oe_highlight" type="object" states="delivered"/>
-                        <button name="action_done" string="Done" class="oe_highlight" type="object" states="container"/>
-                        <button name="action_canceled" string="Cancel" type="object" states="draft,in_transit,delivered"/>
+                        <button name="action_discharge" string="Set To Done" class="oe_highlight" type="object" states="discharge"/>
+                        <button name="action_canceled" string="Cancel" type="object" states="draft,discharge"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,discharge,done"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -24,7 +22,8 @@
                         </group>
                         <group>
                             <group>
-                                <field name="contract_id"/>
+                                <field name="internal_contract_id"/>
+                                <field name="purchase_contract_id" invisible="1"/>
                                 <field name="export_form_id"/>
                                 <field name="agent_id" readonly="0"/>
                             </group>
@@ -38,10 +37,16 @@
                         <group>
                             <group>
                                 <field name="product_id" readonly="1"/>
+
                                 <label for="package_qty"/>
                                 <div class="o_row">
                                     <field name="package_qty" readonly="0"/>
                                     <field name="package_uom_id" options="{'no_create': True, 'no_open': True}" readonly="0"/>
+                                </div>
+                                <label for="qty_as_product_unit"/>
+                                <div class="o_row">
+                                    <field name="qty_as_product_unit"/>
+                                    <field name="product_uom_id" readonly="1"/>
                                 </div>
                             </group>
                             <group>
@@ -63,26 +68,74 @@
                             </group>
                         </group>
                         <group>
-                            <field name="currency_id" invisible="0"/>
-                            <field name="shipment_cost" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <group>
+                                <field name="currency_id" invisible="0"/>
+                            </group>
+                            <group>
+                                <field name="unit_cost" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            </group>
+
+                        </group>
+                        <group string="Discharge" attrs="{'invisible': [('state', '=', 'draft')]}">
+                            <group>
+                                <label for="discharged_packing_weight"/>
+                                <div class="o_row">
+                                    <field name="discharged_packing_weight" attrs="{'required': [('state', '=', 'discharge')]}"/>
+                                    <field name="discharged_packing_uom_id" attrs="{'required': [('state', '=', 'discharge')]}"/>
+                                </div>
+                            </group>
+                            <group>
+                                <label for="discharged_qty"/>
+                                <div class="o_row">
+                                    <field name="discharged_qty" attrs="{'required': [('state', '=', 'discharge')]}"/>
+                                    <field name="discharged_uom_id" attrs="{'required': [('state', '=', 'discharge')]}"/>
+                                </div>
+                            </group>
+                        </group>
+                        <group>
                             <field name="note"/>
                         </group>
-                        <field name="shipment_container_ids" context="{'default_contract_id': contract_id,
-                            'default_export_form_id': export_form_id, 'default_shipment_uom_id': package_uom_id}"
-                            attrs="{'invisible': [('shipment_type', '!=', 'container_shipment'),'|',('state', '!=', 'delivered')]}">
-                            <tree editable="bottom">
-                                <field name="contract_id" invisible="1"/>
-                                <field name="export_form_id" invisible="1"/>
-                                <field name="vehicle_shipment_id" invisible="1"/>
-                                <field name="name"/>
-                                <field name="container_size"/>
-                                <field name="shipment_qty" sum="Shipment Qty"/>
-                                <field name="shipment_uom_id"/>
-                                <field name="packing_weight" sum="Packing Weight"/>
-                                <field name="gross_weight" sum="Gross Weight"/>
-                                <field name="packing_uom_id"/>
-                            </tree>
-                        </field>
+                        <notebook>
+                            <page string="Other Costs">
+                                <field name="shipment_cost_ids" context="{'default_internal_contract_id': internal_contract_id,
+                                                                          'default_purchase_contract_id': purchase_contract_id,
+                                                                          'default_export_form_id': export_form_id}">
+                                    <tree editable="bottom">
+                                        <field name="internal_contract_id" invisible="1"/>
+                                        <field name="purchase_contract_id" invisible="1"/>
+                                        <field name="export_form_id" invisible="1"/>
+                                        <field name="service_id"/>
+                                        <field name="amount"/>
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="cost_total">
+                                    <field name="total_packing_cost" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <field name="total_other_cost" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="total_cost" />
+                                    </div>
+                                    <field name="total_cost" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                </group>
+                            </page>
+                            <page string="Containers">
+                                <field name="shipment_container_ids" context="{'default_internal_contract_id': internal_contract_id,
+                                    'default_export_form_id': export_form_id, 'default_shipment_uom_id': package_uom_id}"
+                                    attrs="{'invisible': [('shipment_type', '!=', 'container_shipment'),('state', '!=', 'discharge')]}">
+                                    <tree editable="bottom">
+                                        <field name="internal_contract_id" invisible="1"/>
+                                        <field name="export_form_id" invisible="1"/>
+                                        <field name="vehicle_shipment_id" invisible="1"/>
+                                        <field name="name"/>
+                                        <field name="container_size"/>
+                                        <field name="shipment_qty" sum="Shipment Qty"/>
+                                        <field name="shipment_uom_id"/>
+                                        <field name="packing_weight" sum="Packing Weight"/>
+                                        <field name="gross_weight" sum="Gross Weight"/>
+                                        <field name="packing_uom_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
@@ -93,13 +146,13 @@
             <field name="model">erky.vehicle.shipment</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="contract_id"/>
+                    <field name="internal_contract_id"/>
                     <field name="export_form_id"/>
                     <field name="agent_id"/>
                     <field name="driver_id"/>
                     <field name="product_id"/>
                     <field name="qty" sum="Total Qty"/>
-                    <field name="shipment_cost" sum="Total Shipment Cost"/>
+                    <field name="unit_cost" sum="Total Shipment Cost"/>
                 </tree>
             </field>
         </record>
@@ -134,7 +187,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="contract_id"/>
+                                <field name="internal_contract_id"/>
                                 <field name="container_size"/>
                             </group>
                             <group>
@@ -156,7 +209,7 @@
             <field name="model">erky.container.shipment</field>
             <field name="arch" type="xml">
                 <tree>
-                    <field name="contract_id"/>
+                    <field name="internal_contract_id"/>
                     <field name="export_form_id"/>
                     <field name="name"/>
                     <field name="container_size"/>

@@ -23,8 +23,8 @@ class ExportForm(models.Model):
         readonly=True, store=True)
     package_uom_id = fields.Many2one("product.uom", "Package UOM")
     packing_weight_uom_id = fields.Many2one(related="package_uom_id.packing_uom_id", store=True, string="Packing Weight UOM")
-    net_shipment_qty = fields.Float(string="Net Shipment Qty", store=True, compute="_compute_all_form_qty")
-    gross_shipment_qty = fields.Text(string="Gross Shipment Qty", store=True, compute="_compute_all_form_qty")
+    net_shipment_qty = fields.Float(string="Net Ship Qty", store=True, compute="_compute_all_form_qty")
+    gross_shipment_qty = fields.Float(string="Gross Ship Qty", store=True, compute="_compute_all_form_qty")
     weight_in_package_uom = fields.Text(string="Weight Package UOM", compute="_compute_weight_in_package_uom")
     bank_id = fields.Many2one(related="contract_id.bank_id", store=True, string="Bank", required=1)
     bank_branch_id = fields.Many2one(related="contract_id.bank_branch_id", store=True, string="Bank Branch")
@@ -33,6 +33,11 @@ class ExportForm(models.Model):
                               ('mc', "Trade Of Ministry"),
                               ('bank', "Bank"),
                               ('ssmo', "SSMO"),
+                              ('shipment_ins', "Shipment Instruction"),
+                              ('shipment', "Shipment"),
+                              ('bl', "Bill Of Lading"),
+                              ('invoice', "Invoice"),
+                              ('packing', "Packing List"),
                               ('done', "Done"),
                               ('canceled', "Canceled")], default="draft")
     shipment_method = fields.Selection([('partial', "Parial"), ('all', "All")], string="Shipment Method",
@@ -48,6 +53,18 @@ class ExportForm(models.Model):
     voucher_no = fields.Char(string="Voucher No", states={'ssmo': [('required', True)]})
     voucher_date = fields.Date(string="Voucher Date", default=datetime.today(), states={'ssmo': [('required', True)]})
     ssmo_attachment_id = fields.Binary(string='SSMO attachment', attachment=True)
+    # ==========Shipment Instruction===========
+    shipment_ins_date = fields.Date("Date")
+    shipment_partner_id = fields.Many2one("res.partner", "To")
+    shipper_partner_id = fields.Many2one("res.partner", "Shipper")
+    consignee_partner_id = fields.Many2one("res.partner", "Consignee")
+    discharge_port_id = fields.Many2one("erky.port", "Discharge Port")
+    freight_term = fields.Text("Freight Term")
+    notify = fields.Text("Notify")
+    # =================Bill Of Lading================
+    bl_no = fields.Char("Bill Of Lading No")
+    bl_booking_no = fields.Char("Booking No")
+    bl_attachment = fields.Binary(string='BL attachment', attachment=True)
     # =================Shipment================
     vehicle_shipment_ids = fields.One2many("erky.vehicle.shipment", "export_form_id", string="Shipment Details")
     container_shipment_ids = fields.One2many("erky.container.shipment", "export_form_id")
@@ -109,12 +126,62 @@ class ExportForm(models.Model):
             rec.state = "ssmo"
 
     @api.multi
+    def action_shipment_ins(self):
+        for rec in self:
+            rec.state = "shipment_ins"
+
+    @api.multi
     def action_shipment(self):
         for rec in self:
-            self.create_shipment_picking()
-            self.action_create_cost()
-            self.create_vendor_bill()
-            rec.state = 'done'
+            rec.state = "shipment"
+
+    @api.multi
+    def action_bl(self):
+        for rec in self:
+            rec.state = "bl"
+    
+    @api.multi
+    def action_create_invoice(self):
+        pass
+
+    @api.multi
+    def action_invoice(self):
+        for rec in self:
+            rec.state = 'invoice'
+
+    @api.multi
+    def action_packing_list(self):
+        for rec in self:
+            rec.state = 'packing'
+
+    @api.multi
+    def action_add_shipment(self):
+        ctx = self.env.context.copy()
+        ctx.update({'default_internal_contract_id': self.contract_id.id,
+                    'default_purchase_contract_id': self.purchase_contract_id.id,
+                    'default_export_form_id': self.id,
+                    'default_agent_id': self.shipment_partner_id.id,
+                    'default_product_uom_id': self.product_uom_id.id,
+                    'default_package_uom_id': self.package_uom_id.id,
+                    })
+        return {
+            'name': "Add Shipment",
+            'res_model': 'erky.vehicle.shipment',
+            'type': 'ir.actions.act_window',
+            'context': ctx,
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': self.env.ref("erky_base.form_view_erky_vehicle_shipment").id,
+            'target': 'current'
+        }
+
+    # @api.multi
+    # def action_shipment(self):
+    #     for rec in self:
+    #         self.create_shipment_picking()
+    #         self.action_create_cost()
+    #         self.create_vendor_bill()
+    #         rec.state = 'done'
 
     @api.multi
     def action_cancel(self):
@@ -150,13 +217,13 @@ class ExportForm(models.Model):
         if export_form_qty > contract_qty:
             raise ValidationError(_("Total Export Form Qty Can't Be Greater Than Contact Qty"))
 
-    @api.constrains("required_export_form_ids")
-    def check_required_forms(self):
-        for rec in self:
-            contract_required_forms_ids = rec.contract_id.required_form_ids
-            for c_form in contract_required_forms_ids:
-                if c_form.id not in rec.required_export_form_ids.mapped('name').ids:
-                    raise ValidationError(_("Some Required Form Missing [%s]" % (c_form.name)))
+    # @api.constrains("required_export_form_ids")
+    # def check_required_forms(self):
+    #     for rec in self:
+    #         contract_required_forms_ids = rec.contract_id.required_form_ids
+    #         for c_form in contract_required_forms_ids:
+    #             if c_form.id not in rec.required_export_form_ids.mapped('name').ids:
+    #                 raise ValidationError(_("Some Required Form Missing [%s]" % (c_form.name)))
 
     @api.constrains('package_uom_id')
     def package_uom_check(self):
@@ -164,19 +231,19 @@ class ExportForm(models.Model):
             if res.product_uom_id.category_id.id != res.package_uom_id.category_id.id and res.state not in ['draft', 'mc', 'bank', 'ssmo']:
                 raise ValidationError(_("Category of package uom must by same as product uom category"))
 
-    def action_open_ministry_trade(self):
-        res = self.env['ir.actions.act_window'].for_xml_id('erky_base', 'action_erky_trade_of_ministry')
-        view = self.env.ref('erky_base.view_erky_ministry_of_trade_form', False)
-        res['views'] = [(view and view.id or False, 'form')]
-        res['domain'] = [('id', '=', self.ministry_trade_id.id)]
-        res['res_id'] = self.ministry_trade_id.id or False
-        return res
+    # def action_open_ministry_trade(self):
+    #     res = self.env['ir.actions.act_window'].for_xml_id('erky_base', 'action_erky_trade_of_ministry')
+    #     view = self.env.ref('erky_base.view_erky_ministry_of_trade_form', False)
+    #     res['views'] = [(view and view.id or False, 'form')]
+    #     res['domain'] = [('id', '=', self.ministry_trade_id.id)]
+    #     res['res_id'] = self.ministry_trade_id.id or False
+    #     return res
 
-    @api.depends("qty")
-    def _compute_product_qty(self):
-        if self.product_uom_id:
-            rounding_method = self._context.get('rounding_method', 'UP')
-            self.package_qty = self.product_uom_id._compute_quantity(self.qty, self.package_uom_id, rounding_method=rounding_method)
+    # @api.depends("qty")
+    # def _compute_product_qty(self):
+    #     if self.product_uom_id:
+    #         rounding_method = self._context.get('rounding_method', 'UP')
+    #         self.package_qty = self.product_uom_id._compute_quantity(self.qty, self.package_uom_id, rounding_method=rounding_method)
 
     # @api.depends("package_uom_id", "packing_weight_uom_id")
     # def _compute_weight_in_package_uom(self):

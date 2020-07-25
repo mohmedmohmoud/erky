@@ -23,7 +23,7 @@
           <header>
             <button name="action_close" class="oe_highlight" type="object" string="Close Contract" states="draft"/>
             <button name="action_cancel" type="object" string="Cancel" states="draft"/>
-              <field name="state" widget="statusbar"/>
+              <field name="state" widget="statusbar" statusbar_visible="draft,close"/>
           </header>
           <sheet>
             <div class="oe_button_box" name="button_box">
