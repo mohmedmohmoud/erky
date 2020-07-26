@@ -79,8 +79,8 @@ class ExportForm(models.Model):
     hr_expense_ids = fields.One2many("hr.expense", "export_form_id")
     # =================Picking================
     picking_ids = fields.One2many("stock.picking", "export_form_id")
-
     erky_request_ids = fields.One2many("erky.request", "export_form_id")
+    packing_ids = fields.One2many("erky.packing", "export_form_id")
 
     def number_to_words(self, num):
         engine = inflect.engine()
@@ -139,6 +139,7 @@ class ExportForm(models.Model):
     @api.multi
     def action_bl(self):
         for rec in self:
+            self.create_packing()
             rec.state = "bl"
 
     @api.multi
@@ -188,6 +189,28 @@ class ExportForm(models.Model):
     def action_done(self):
         for rec in self:
             rec.state = "done"
+
+    @api.multi
+    def create_packing(self):
+        for rec in self:
+            container_ship_ids = rec.container_shipment_ids
+            if container_ship_ids:
+                container_ids = set(container_ship_ids.mapped("name").ids)
+                for ctn in container_ids:
+                    cont_ship_ids = container_ship_ids.filtered(lambda c: c.name.id == ctn)
+                    if cont_ship_ids:
+                        net_qty = sum(cont_ship_ids.mapped("packing_weight"))
+                        gross_qty = sum(cont_ship_ids.mapped("gross_weight"))
+                        qty = sum(cont_ship_ids.mapped("shipment_qty"))
+                        packing_id = self.env['erky.packing'].create({'export_form_id': self.id,
+                                                                      'internal_contract_id': self.contract_id.id,
+                                                                      'purchase_contract_id': self.purchase_contract_id.id,
+                                                                      'container_id': ctn,
+                                                                      'net_qty': net_qty,
+                                                                      'gross_qty': gross_qty,
+                                                                      'qty': qty})
+
+
 
     @api.multi
     def action_add_shipment(self):
@@ -494,7 +517,7 @@ class ErkyRequests(models.Model):
             template_body = self.env['ir.values'].get_default('erky.template.settings',
                                                                             'pledge_request_temp_en')
         if template_body:
-            template_body = self.get_render_template_content(self, template_body)
+            template_body = self.get_render_template_content(self.internal_contract_id, template_body)
         self.request_body = template_body
 
     @api.multi
@@ -505,8 +528,20 @@ class ErkyRequests(models.Model):
     @api.multi
     def get_render_template_content(self, obj, content):
         self.ensure_one()
+        print "opject====================", obj
         if obj:
             body_msg = self.env["mail.template"].with_context(
                 lang=self.env.user.partner_id.lang).sudo().render_template(
-                str(content), 'erky.request', [obj.id])
+                str(content), 'erky.contract', [obj.id])
             return body_msg[obj.id]
+
+class ErkyPacking(models.Model):
+    _name = "erky.packing"
+
+    export_form_id = fields.Many2one("erky.export.form")
+    internal_contract_id = fields.Many2one("erky.contract", "M.C Contract", required=1, readonly=1)
+    purchase_contract_id = fields.Many2one("erky.purchase.contract", "Purchase Contract", required=1, readonly=1)
+    container_id = fields.Many2one("erky.container", required=1)
+    net_qty = fields.Float("Net Qty")
+    gross_qty = fields.Float("Gross Qty")
+    qty = fields.Float("Qty")

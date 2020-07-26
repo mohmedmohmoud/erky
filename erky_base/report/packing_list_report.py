@@ -31,24 +31,24 @@ class PackingListReport(models.AbstractModel):
         return self.env['report'].render('erky_base.report_packing_list_erky', docargs)
 
     def _get_report_data(self, record):
-        total_container = len(record.container_shipment_ids)
+        total_container = len(record.packing_ids)
         total_container_words_no = """(""" + str(number_to_words(total_container).upper()) + """ ONLY)"""
-        total_bags = sum(record.container_shipment_ids.mapped('shipment_qty'))
+        total_bags = sum(record.packing_ids.mapped('qty'))
         total_bags_words = """(""" + str(number_to_words(total_bags).upper()) + """ ONLY)"""
-        gross_weight = sum(record.container_shipment_ids.mapped('gross_weight'))
+        gross_weight = sum(record.packing_ids.mapped('gross_qty'))
         gross_weight_words = """(""" + str(number_to_words(gross_weight).upper()) + """ ONLY)"""
-        net_weight = sum(record.container_shipment_ids.mapped('packing_weight'))
+        net_weight = sum(record.packing_ids.mapped('net_qty'))
         net_weight_words = """(""" + str(number_to_words(net_weight).upper()) + """ ONLY)"""
 
         print "tatal container", total_container_words_no
         report_data = {'current_date': fields.date.today(),
-                       'invoice_no': record.voucher_no,
-                       'bl_no': "",
+                       'invoice_no': record.invoice_id.number,
+                       'bl_no': record.bl_no,
                        'contract_no': record.contract_id.name,
                        'importer_id': record.contract_id.importer_id,
                        'item_no': record.contract_id.product_id.default_code,
                        'desc': record.contract_id.product_id.name,
-                       'containers': record.container_shipment_ids,
+                       'containers': record.packing_ids,
                        'total_words_container': total_container_words_no,
                        'total_container': total_container,
                        'total_bags': total_bags,

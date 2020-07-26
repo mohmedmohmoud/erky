@@ -48,24 +48,25 @@
                         </tr>
                         <t t-set="is_item_no" t-value="False"/>
                         <t t-set="is_desc" t-value="False"/>
+                        <t t-set="spn" t-value="len(docs['containers'])"/>
                         <tr t-foreach="docs['containers']" t-as="c">
-                            <td t-if="not is_item_no" rowspan="5" style="vertical-align: middle;text-align:center">
+                            <td t-if="not is_item_no" t-att-rowspan="spn" style="vertical-align: middle;text-align:center">
                                 <t t-if="not is_item_no">
                                     <t t-esc="docs['item_no']"/>
                                     <t t-set="is_item_no" t-value="True"/>
                                 </t>
                             </td>
-                            <td t-if="not is_desc" rowspan="5" style="vertical-align: middle;text-align:center">
+                            <td t-if="not is_desc" t-att-rowspan="spn" style="vertical-align: middle;text-align:center">
                                 <t t-if="not is_desc">
                                     <t t-esc="docs['desc']"/>
                                     <t t-set="is_desc" t-value="True"/>
                                 </t>
                             </td>
-                            <td><t t-esc="c.name.name"/></td>
+                            <td><t t-esc="c.container_id.name"/></td>
                             <td>1</td>
-                            <td><t t-esc="c.packing_weight"/></td>
-                            <td><t t-esc="c.gross_weight"/></td>
-                            <td><t t-esc="c.shipment_qty"/></td>
+                            <td><t t-esc="c.net_qty"/></td>
+                            <td><t t-esc="c.gross_qty"/></td>
+                            <td><t t-esc="c.qty"/></td>
                         </tr>
                         <tr>
                             <td colspan="2"><strong>TOTAL CONTAINER</strong></td>

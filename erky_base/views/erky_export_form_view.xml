@@ -65,18 +65,18 @@
                                 <field name="purchase_contract_id" invisible="1"/>
                                 <field name="contract_no"/>
                                 <field name="form_no" attrs="{'invisible': [('state', '!=', 'bank')],
-                                                              'required': [('state', '=', 'bank')]}"/>
+                                                              'required': [('state', '=', 'bank')], 'readonly': [('state', '!=', 'bank')]}"/>
                                 <field name="exporter_id" readonly="1"/>
                                 <field name="importer_id" readonly="1"/>
                                 <field name="mc_attachment_id" attrs="{'invisible': [('state', 'in', ['draft'])],'readonly': [('state', '!=', 'mc')]}"/>
                             </group>
                             <group>
-                                <field name="bank_id" attrs="{'readonly': [('state', '!=', 'bank')]}"/>
-                                <field name="bank_branch_id" domain="[('bank_id', '=', bank_id)]" attrs="{'readonly': [('state', '!=', 'bank')]}"/>
+                                <field name="bank_id" attrs="{'readonly': [('state', 'not in', ['mc','bank'])]}"/>
+                                <field name="bank_branch_id" domain="[('bank_id', '=', bank_id)]" attrs="{'readonly': [('state', 'not in', ['mc','bank'])]}"/>
                                 <field name="issue_date" attrs="{'invisible': [('state', 'in', ['draft'])],
-                                                                 'required': [('state', '=', 'mc')], 'readonly': [('state', '!=', 'bank')]}"/>
+                                                                 'required': [('state', '=', 'mc')], 'readonly': [('state', 'not in', ['mc','bank'])]}"/>
                                 <field name="expire_date" attrs="{'invisible': [('state', 'in', ['draft']),],
-                                                                  'required': [('state', '=', 'mc')], 'readonly': [('state', '!=', 'bank')]}"/>
+                                                                  'required': [('state', '=', 'mc')], 'readonly': [('state', 'not in', ['mc','bank'])]}"/>
                                 <field name="bank_attachment_id" attrs="{'invisible': [('state', 'in', ['draft','mc'])], 'readonly': [('state', '!=', 'bank')]}"/>
                             </group>
                         </group>
@@ -153,7 +153,7 @@
                                 </field>
                             </page>
                             <!--======================= Bill Of Lading ====================-->
-                            <page string="Bill Of Lading">
+                            <page string="Bill Of Lading" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins','shipment'])]}">
                                 <group>
                                     <group>
                                         <field name="bl_no" attrs="{'required': [('state', '=', 'bl')],
@@ -165,6 +165,16 @@
                                         'readonly': [('state', '!=', 'bl')]}"/>
                                     </group>
                                 </group>
+                            </page>
+                            <page string="Packing" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins','shipment','bl','invoice'])]}">
+                                <field name="packing_ids">
+                                    <tree>
+                                        <field name="container_id" readonly="1"/>
+                                        <field name="qty" readonly="1"/>
+                                        <field name="net_qty" readonly="1"/>
+                                        <field name="gross_qty" readonly="1"/>
+                                    </tree>
+                                </field>
                             </page>
                             <!--=======================Vehicle Shipment====================-->
                             <page string="Vehicle Shipment" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins'])]}">
