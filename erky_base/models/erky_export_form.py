@@ -139,7 +139,7 @@ class ExportForm(models.Model):
     def action_bl(self):
         for rec in self:
             rec.state = "bl"
-    
+
     @api.multi
     def action_create_invoice(self):
         pass
