@@ -21,18 +21,6 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <!--<button name="action_submit" string="Submit" type="object" class="oe_highlight" states="draft"/>-->
-                        <!--<button name="action_ssmo_confirm" string="Confirm" type="object" class="oe_highlight"-->
-                                <!--states="ssmo"/>-->
-                        <!--<button name="action_shipment" string="Apply Shipment" type="object" class="oe_highlight"-->
-                                <!--states="shipment"/>-->
-                        <!--<button name="action_cancel" string="Cancel" type="object" class="oe_highlight"-->
-                                <!--states="ssmo,shipment"/>-->
-                        <!--<button name="%(action_erky_create_new_shipment)d"-->
-                                <!--context="{'default_product_uom_id': product_uom_id, 'default_export_form_id': id, 'default_package_uom_id': package_uom_id}"-->
-                                <!--string="Create New Shipment" type="action" states="draft" class="oe_highlight"/>-->
-                        <!--<button name="%(erky_template_report_wiz_action)d" string="Print Report"-->
-                                <!--context="{'default_export_form_id': id}" type="action" class="oe_highlight"/>-->
                         <button name="action_submit_trade_ministry" class="oe_highlight" type="object" string="Submit To MC" states="draft"/>
                         <button name="action_create_request" class="oe_highlight" type="object" string="Create Request" states="draft"/>
                         <button name="action_to_bank" class="oe_highlight" type="object" string="To Bank" states="mc"/>
@@ -42,6 +30,8 @@
                         <button name="action_add_shipment" class="oe_highlight" type="object" string="Add Shipment" states="shipment"/>
                         <button name="action_bl" class="oe_highlight" type="object" string="BL" states="shipment"/>
                         <button name="action_create_invoice" class="oe_highlight" type="object" string="Create Invoice" states="bl"/>
+                        <button name="action_packing_list" class="oe_highlight" type="object" string="Packing List" states="bl"/>
+                        <button name="action_done" class="oe_highlight" type="object" string="Done" states="packing"/>
                         <button name="action_cancel" type="object" string="Cancel" states="mc,bank,ssmo,shipment_ins,shipment"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,mc,bank,ssmo,done" nolabel="1"
                                readonly="1"/>
@@ -53,6 +43,11 @@
                                 <field name="shipment_count" invisible="0"/>
                             </button>
                             <button name="action_open_requests" string="Request" type="object"
+                                    icon="fa-file-text-o"
+                                    class="oe_stat_button"
+                             >
+                            </button>
+                            <button name="action_open_invoice_form" string="Invoice" type="object"
                                     icon="fa-file-text-o"
                                     class="oe_stat_button"
                              >

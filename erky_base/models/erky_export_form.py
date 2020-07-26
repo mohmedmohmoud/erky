@@ -74,6 +74,7 @@ class ExportForm(models.Model):
     cost_ids = fields.One2many("export.form.cost", "export_form_id")
     # =================Bills================
     bill_ids = fields.One2many("account.invoice", "export_form_id")
+    invoice_id = fields.Many2one("account.invoice")
     # =================Expense================
     hr_expense_ids = fields.One2many("hr.expense", "export_form_id")
     # =================Picking================
@@ -142,7 +143,36 @@ class ExportForm(models.Model):
     
     @api.multi
     def action_create_invoice(self):
-        pass
+        ctx = self.env.context.copy()
+        product = self.product_id.with_context(force_company=self.env.user.company_id.id)
+        account = product.property_account_income_id or product.categ_id.property_account_income_categ_id
+        if not account:
+            raise ValidationError(
+                _('Please define income account for this product: "%s" (id:%d) - or for its category: "%s".') %
+                (self.product_id.name, self.product_id.id, self.product_id.categ_id.name))
+        ctx.update({'default_internal_contract_id': self.contract_id.id,
+                    'default_purchase_contract_id': self.purchase_contract_id.id,
+                    'default_export_form_id': self.id,
+                    'default_partner_id': self.shipment_partner_id.id,
+                    'default_type': 'out_invoice',
+                    'default_journal_type': 'sale',
+                    'default_invoice_line_ids': [(0, 0, {'product_id': self.product_id.id,
+                                                         'quantity': self.qty,
+                                                         'price_unit': self.contract_id.purchase_contract_id.unit_price,
+                                                         'name': self.product_id.name,
+                                                         'account_id': account.id
+                                                        })]
+                    })
+        return {
+            'name': "Invoice",
+            'res_model': 'account.invoice',
+            'type': 'ir.actions.act_window',
+            'context': ctx,
+            'view_mode': 'form',
+            'view_type': 'form',
+            'view_id': self.env.ref("account.invoice_form").id,
+            'target': 'current'
+        }
 
     @api.multi
     def action_invoice(self):
@@ -153,6 +183,11 @@ class ExportForm(models.Model):
     def action_packing_list(self):
         for rec in self:
             rec.state = 'packing'
+
+    @api.multi
+    def action_done(self):
+        for rec in self:
+            rec.state = "done"
 
     @api.multi
     def action_add_shipment(self):
@@ -201,6 +236,15 @@ class ExportForm(models.Model):
         #                      'default_product_id': self.product_id.id,
         #                      'default_product_uom': self.product_uom_id.id}
         return action
+
+
+    def action_open_invoice_form(self):
+        res = self.env['ir.actions.act_window'].for_xml_id('account', 'action_invoice_tree1')
+        view = self.env.ref('account.invoice_form', False)
+        res['views'] = [(view and view.id or False, 'form')]
+        res['domain'] = [('id', '=', self.invoice_id.id)]
+        res['res_id'] = self.invoice_id.id or False
+        return res
 
     # @api.onchange('vehicle_shipment_ids')
     # def check_packing_shipment_type(self):
