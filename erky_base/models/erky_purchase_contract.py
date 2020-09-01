@@ -47,16 +47,18 @@ class ErkyContract(models.Model):
         'product.uom', 'Product Unit of Measure', related='product_id.uom_id',
         readonly=True, required=True)
     qty = fields.Integer("Qty", default=1)
+    allowed_percentage = fields.Char(default="(10% plus minus allowed)")
     unit_price = fields.Float("Unit Price", required=1)
-    unit_price_in_importer_curr = fields.Float("Unit Price In Importer Curr",
-                                               compute="_compute_unit_price_in_target_curr")
+    # unit_price_in_importer_curr = fields.Float("Unit Price In Importer Curr",
+    #                                            compute="_compute_unit_price_in_target_curr")
     currency_id = fields.Many2one("res.currency", string="Currency", default=_get_default_currency_id, required=1)
-    importer_currency_id = fields.Many2one("res.currency", string="Importer Currency", required=1)
+    # importer_currency_id = fields.Many2one("res.currency", string="Importer Currency", required=1)
     total_amount = fields.Float("Total Amount", compute="_compute_amount_total")
     total_amount_in_importer_curr = fields.Float("Total Amount In Importer Currency", compute="_compute_amount_total")
-    importer_port_id = fields.Many2one("erky.port", "Discharge Port", required=1)
+    importer_port_id = fields.Many2one("erky.port", "Discharge Port", required=1, default=lambda self: self.env['erky.port'].search([('default_importer_port', '=', True)], limit=1))
     shipment_method = fields.Selection([('partial', "Parial"), ('all', "All")], string="Shipment Method", default="partial")
-    payment_method = fields.Selection([('d_a', "D/A")], string="Payment Method", dafault='d_a')
+    payment_method = fields.Selection([('deferred_payment', "D/A"), ('cd', 'C&D'), ('advance_payment', "Advance Payment"), ('cd_advance', "C&D & Advance")], string="Payment Method", dafault='deferred_payment')
+    advance_percentage = fields.Float(string="Advance Percentage")
     payment_account_id = fields.Many2one("erky.payment.account", string="Account Name", required=1)
     account_no = fields.Char(related="payment_account_id.account_no", store=True, readonly=1, string="Account No")
     partner_id = fields.Many2one(related="payment_account_id.partner_id", store=True, readonly=1, string="Company Name")
@@ -72,17 +74,26 @@ class ErkyContract(models.Model):
     account_currency_id = fields.Many2one(related="payment_account_id.currency_id", store=True, readonly=1, string="Currency")
     required_document_ids = fields.Many2many("erky.required.document")
     product_specification_ids = fields.One2many("contract.product.specification", "contract_id")
-    payment_condition = fields.Text("Payment Condition")
-    shipment_condition = fields.Text("Shipment Condition")
-    packing_condition = fields.Text("Packing Condition")
+    payment_condition = fields.Text("Payment Condition", default="USD (price * qty * ___% = ___) In Advance Payment __% Cash Against Copy of  Shipment Documents.")
+    shipment_condition = fields.Text("Shipment Condition", default="One Month After Receiving Advance Payment.")
+    packing_condition = fields.Text("Packing Condition", default="New pp bags of ___kgs each leaded in ___container.")
     state = fields.Selection(STATUS, default="draft", readonly=True)
     internal_contract_id = fields.Many2one("erky.contract")
+
+    _sql_constraints = [
+        ('contract_no_uniq', 'unique(contract_no)', 'The contract no must be unique !'),
+    ]
 
     @api.model
     def create(self, vals):
         if vals.get('name', _('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('erky.contract') or _('New')
         return super(ErkyContract, self).create(vals)
+
+    @api.onchange('product_id')
+    def get_default_product_price(self):
+        for rec in self:
+            rec.unit_price = rec.product_id.lst_price
 
     @api.constrains('qty', 'unit_price')
     def check_qty_and_price(self):
@@ -92,23 +103,23 @@ class ErkyContract(models.Model):
             if rec.qty <= 0:
                 return ValidationError("Qty must be greater than zero")
 
-    @api.depends('qty', 'unit_price', 'currency_id', 'importer_currency_id')
+    @api.depends('qty', 'unit_price', 'currency_id')
     def _compute_amount_total(self):
         ctx = dict(self._context or {})
         for rec in self:
             rec.total_amount = rec.qty * rec.unit_price
-            if rec.currency_id.id != rec.importer_currency_id.id:
-                ctx = ctx.copy()
-                rec.total_amount_in_importer_curr = rec.currency_id.with_context(ctx).compute(rec.total_amount, rec.importer_currency_id)
+            # if rec.currency_id.id != rec.importer_currency_id.id:
+            #     ctx = ctx.copy()
+            #     rec.total_amount_in_importer_curr = rec.currency_id.with_context(ctx).compute(rec.total_amount, rec.importer_currency_id)
 
 
-    @api.depends("importer_currency_id")
-    def _compute_unit_price_in_target_curr(self):
-        ctx = dict(self._context or {})
-        for rec in self:
-            if rec.currency_id.id != rec.importer_currency_id.id:
-                ctx = ctx.copy()
-                rec.unit_price_in_importer_curr = rec.currency_id.with_context(ctx).compute(rec.unit_price, rec.importer_currency_id)
+    # @api.depends("importer_currency_id")
+    # def _compute_unit_price_in_target_curr(self):
+    #     ctx = dict(self._context or {})
+    #     for rec in self:
+    #         if rec.currency_id.id != rec.importer_currency_id.id:
+    #             ctx = ctx.copy()
+    #             rec.unit_price_in_importer_curr = rec.currency_id.with_context(ctx).compute(rec.unit_price, rec.importer_currency_id)
 
     @api.multi
     def action_create_mc_contract(self):
@@ -119,6 +130,7 @@ class ErkyContract(models.Model):
                     'default_exporter_id': self.exporter_id.id,
                     'default_product_id': self.product_id.id,
                     'default_qty': self.qty,
+                    'default_payment_method': self.payment_method,
                     'default_importer_port_id': self.importer_port_id.id})
         return {
                'res_model': 'erky.contract',

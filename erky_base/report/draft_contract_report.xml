@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="paperformat_euro_lowmargin_contract_erky" model="report.paperformat">
+            <field name="name">European A4 low margin</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">42</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">80</field>
+        </record>
         <report
                 id="action_report_draft_erky_contract"
                 string="Draft Contract"
                 model="erky.contract"
                 name="erky_base.report_draft_erky_contract"
-                file="mrp_repair.report_draft_erky_contract"
-                report_type="qweb-html"
+                file="erky_base.report_draft_erky_contract"
+                report_type="qweb-pdf"
+                paperformat="paperformat_euro_lowmargin_contract_erky"
         />
 
         <template id="report_draft_erky_contract">
@@ -23,39 +39,42 @@
                             <h2>
                                 <center>عقد صادر</center>
                             </h2>
-                            <table class="table mb64" style="padding:10px">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <table style="padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 16px;">
                                 <tr>
-                                    <td>Date:</td>
+                                    <th>Date:</th>
                                     <td>
                                         <t t-esc="o.date"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Contract No:</td>
+                                    <th>Contract No:</th>
                                     <td>
                                         <t t-esc="o.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Export Name:</td>
+                                    <th>Export Name:</th>
                                     <td>
                                         <t t-esc="o.exporter_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Tax ID:</td>
+                                    <th>Tax ID:</th>
                                     <td>
                                         <t t-esc="o.tax_id"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Import Name:</td>
+                                    <th>Import Name:</th>
                                     <td>
                                         <t t-esc="o.importer_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Import Address:</td>
+                                    <th>Import Address:</th>
                                     <td><t t-esc="o.importer_country_id.name"/>,<t t-esc="o.importer_state_id.name"/>,
                                         <t t-esc="o.importer_city"/>
                                         <t t-esc="o.importer_street"/>,
@@ -63,64 +82,64 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Product Name:</td>
+                                    <th>Product Name:</th>
                                     <td>
                                         <t t-esc="o.product_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Source:</td>
+                                    <th>Source:</th>
                                     <td>
                                         <t t-esc="res_company.country_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Qty:</td>
+                                    <th>Qty:</th>
                                     <td>
                                         <t t-esc="o.qty"/>
                                         <t t-esc="o.product_uom_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Price:</td>
+                                    <th>Price:</th>
                                     <td>
-                                        <t t-esc="o.unit_price"/>
-                                        <t t-esc="res_company.currency_id.symbol"/>
+                                        <t t-esc="o.unit_price" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+<!--                                        <t t-esc="res_company.currency_id.symbol"/>-->
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Total Amount:</td>
+                                    <th>Total Amount:</th>
                                     <td>
-                                        <t t-esc="o.total_amount"/>
-                                        <t t-esc="res_company.currency_id.symbol"/>
+                                        <t t-esc="o.total_amount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+<!--                                        <t t-esc="res_company.currency_id.symbol"/>-->
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Source Port:</td>
+                                    <th>Source Port:</th>
                                     <td>
                                         <t t-esc="o.exporter_port_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Destination Port:</td>
+                                    <th>Destination Port:</th>
                                     <td>
                                         <t t-esc="o.importer_port_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Shipment Method:</td>
+                                    <th>Shipment Method:</th>
                                     <td>
-                                        <t t-esc="o.shipment_method"/>
+                                        <t t-esc="dict(o._fields['shipment_method'].selection).get(o.shipment_method)"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Payment Method:</td>
+                                    <th>Payment Method:</th>
                                     <td>
-                                        <t t-esc="o.payment_method"/>
+                                        <t t-esc="dict(o._fields['payment_method'].selection).get(o.payment_method)"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Bank:</td>
+                                    <th>Bank:</th>
                                     <td>
                                         <t t-esc="o.bank_id.name"/>
                                         -

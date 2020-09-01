@@ -24,7 +24,7 @@
           <header>
             <button name="action_create_mc_contract" string="Create M.C Contract" class="oe_highlight" type="object" states="draft"/>
             <button name="action_cancel" string="Cancel" type="object" states="draft"/>
-            <field name="state" widget="statusbar" statusbar_visible="draft,internal_contract,shipment_inst,invoice,packing_list,done"/>
+            <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
           </header>
           <sheet>
             <div class="oe_button_box" name="button_box">
@@ -48,7 +48,8 @@
                 <div name="erky_contract_qty_div" class="o_row">
                   <field name="qty"/>
                   <field name="product_uom_id" options="{'no_create': True, 'no_open': True}"/>
-                  <span style="color:brown">(10% plus minus allowed)</span>
+                  <field name="allowed_percentage" style="color:brown" nolabel="1"></field>
+                  <field name="allowed_percentage" style="color:brown" nolabel="1"></field>
                 </div>
               </group>
               <group>
@@ -69,20 +70,20 @@
             <group>
               <group>
                 <field name="currency_id" options="{'no_create': True, 'no_open': True}"/>
-                <field name="importer_currency_id" options="{'no_create': True, 'no_open': True}"/>
+<!--                <field name="importer_currency_id" options="{'no_create': True, 'no_open': True}"/>-->
               </group>
               <group>
                 <label for="unit_price"/>
                 <div class="o_row">
                   <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                  -->
-                  <field name="unit_price_in_importer_curr" widget="monetary" options="{'currency_field': 'importer_currency_id'}"/>
+<!--                  &ndash;&gt;-->
+<!--                  <field name="unit_price_in_importer_curr" widget="monetary" options="{'currency_field': 'importer_currency_id'}"/>-->
                 </div>
                 <label for="total_amount"/>
                 <div name="erky_contract_amount_div" class="o_row">
                     <field name="total_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                    -->
-                    <field name="total_amount_in_importer_curr" widget="monetary" options="{'currency_field': 'importer_currency_id'}"/>
+<!--                    &ndash;&gt;-->
+<!--                    <field name="total_amount_in_importer_curr" widget="monetary" options="{'currency_field': 'importer_currency_id'}"/>-->
                 </div>
               </group>
             </group>
@@ -92,6 +93,10 @@
               </group>
               <group>
                 <field name="payment_method"/>
+                <label for="advance_percentage" attrs="{'invisible': [('payment_method', 'in', ['deferred_payment','cd'])]}"/>
+                <div class="oe_row" attrs="{'invisible': [('payment_method', 'in', ['deferred_payment','cd'])]}">
+                  <span><field name="advance_percentage"/>%</span>
+                </div>
               </group>
             </group>
             <notebook>

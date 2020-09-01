@@ -28,6 +28,7 @@
         'data/sequence.xml',
         'views/ir_menus_view.xml',
         'wizard/generate_container_wiz_view.xml',
+        'wizard/generate_forms_wiz_view.xml',
         'wizard/template_report_wiz_view.xml',
         'views/res_company_view.xml',
         'views/product_product_view.xml',
@@ -41,12 +42,14 @@
         'views/config_templates_view.xml',
         'views/erky_product_uom_view.xml',
         'views/erky_payment_account_view.xml',
+        'report/shipment_report.xml',
         'report/erky_purchase_contract_report.xml',
         'report/draft_contract_report.xml',
         'report/erky_request_report.xml',
-        # 'report/template_report.xml',
+        'report/template_report.xml',
         'report/export_form_report.xml',
         'report/packing_list_report.xml',
+        # 'report/certificate_origin_report.xml',
     ],
 
 }

@@ -32,5 +32,31 @@
 
         <menuitem name="Required Documents" id="erky_base.menu_erky_required_document_config" parent="erky_base.menu_erky_setting" action="erky_required_document_action" sequence="2"/>
 
+        <!-- Erky Location -->
+        <record model="ir.actions.act_window" id="erky_base.erky_location_action">
+          <field name="name">Location Window</field>
+          <field name="res_model">erky.location</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Locations" id="erky_base.menu_erky_location_config" parent="erky_base.menu_erky_setting" action="erky_location_action" sequence="5"/>
+
+        <!-- Erky Freight Term -->
+        <record model="ir.actions.act_window" id="erky_base.erky_freight_term_action">
+          <field name="name">Freight Term Window</field>
+          <field name="res_model">erky.freight.term</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Freight Term" id="erky_base.menu_erky_freight_term_config" parent="erky_base.menu_erky_setting" action="erky_freight_term_action" sequence="6"/>
+
+        <record model="ir.actions.act_window" id="erky_base.erky_shipment_reconcile_action">
+          <field name="name">Shipment Reconcile Window</field>
+          <field name="res_model">erky.shipment.reconcile</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Shipment Reconcile" id="erky_base.menu_erky_shipment_reconcile_config" parent="erky_base.menu_erky_setting" action="erky_shipment_reconcile_action" sequence="10"/>
+
     </data>
 </odoo>

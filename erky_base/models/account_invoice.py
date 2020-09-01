@@ -11,5 +11,6 @@ class AccountInvoice(models.Model):
     @api.model
     def create(self, values):
         res = super(AccountInvoice, self).create(values)
-        res.export_form_id.invoice_id = res.id
+        if res.export_form_id:
+            res.export_form_id.invoice_id = res.id
         return res

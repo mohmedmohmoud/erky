@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="paperformat_euro_lowmargin_packing_erky" model="report.paperformat">
+        <record id="paperformat_euro_lowmargin_origin_erky" model="report.paperformat">
             <field name="name">European A4 low margin</field>
             <field name="default" eval="True"/>
             <field name="format">A4</field>
@@ -17,23 +17,23 @@
             <field name="dpi">80</field>
         </record>
         <report
-            id="action_report_packing_list_erky"
-            string="Packing List"
+            id="action_report_certificate_origin_list_erky"
+            string="Certificate Origin"
             model="erky.export.form"
-            name="erky_base.report_packing_list_erky"
-            file="mrp_repair.report_packing_list_erky"
+            name="erky_base.report_certificate_origin_list_temp_erky"
+            file="erky_base.report_certificate_origin_list_temp_erky"
             report_type="qweb-pdf"
             paperformat="paperformat_euro_lowmargin_packing_erky"
         />
 
-        <template id="report_packing_list_erky">
+        <template id="paperformat_euro_lowmargin_origin_erky">
             <t t-call="report.html_container">
 <!--            <t t-foreach="docs" t-as="o">-->
                 <t t-call="report.external_layout">
                 <div class="page" style="position:relative;">
-                    <h2><center><t t-esc="res_company.name"/></center></h2>
-                    <h2><center>Erky Integrated Solutions Co. Ltd.</center></h2>
-                    <h2><center>PACKING LIST</center></h2>
+<!--                    <h2><center><t t-esc="res_company.name"/></center></h2>-->
+                    <h2><center>Sudan Chamber of Commerce</center></h2>
+                    <h3><center>Certificate of Origin</center></h3>
 
                     <br/><br/><br/>
                     <br/><br/><br/>

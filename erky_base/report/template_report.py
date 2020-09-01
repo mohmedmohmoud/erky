@@ -13,11 +13,13 @@ class ReportErkyTemplate(models.AbstractModel):
         print "data =====================", data
         docargs = {}
         datas = data.get('form', False)
-        docs = datas[0].get('template_content')
+        temp = datas[0].get('template_content')
         if datas:
-
+            active_id = self._context.get('active_id')
+            print "acitve id ======================", active_id, docargs
             docargs['doc_ids'] = self.ids
-            docargs['doc_model'] = self.env['erky.contract']
+            docargs['doc_model'] = self.env['erky.export.form']
             docargs['data'] = data
-            docargs['docs'] = docs
+            docargs['temp'] = temp
+            docargs['docs'] = self.env['erky.export.form'].browse(active_id)
         return self.env['report'].render('erky_base.report_erky_template_report', docargs)

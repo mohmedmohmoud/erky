@@ -18,20 +18,21 @@
                             </h1>
                         </div>
                         <group>
-                            <field name="shipment_type"/>
+                            <field name="shipment_type" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <group>
                             <group>
-                                <field name="internal_contract_id"/>
+                                <field name="internal_contract_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="purchase_contract_id" invisible="1"/>
-                                <field name="export_form_id"/>
-                                <field name="agent_id" readonly="0"/>
+                                <field name="export_form_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="agent_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="shipment_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                             <group>
-                                <field name="driver_id" readonly="0"/>
-                                <field name="phone_no" readonly="0"/>
-                                <field name="back_plate_no"/>
-                                <field name="front_plate_no"/>
+                                <field name="driver_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="phone_no" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="back_plate_no" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="front_plate_no" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                         </group>
                         <group>
@@ -40,8 +41,8 @@
 
                                 <label for="package_qty"/>
                                 <div class="o_row">
-                                    <field name="package_qty" readonly="0"/>
-                                    <field name="package_uom_id" options="{'no_create': True, 'no_open': True}" readonly="0"/>
+                                    <field name="package_qty" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                    <field name="package_uom_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 </div>
                                 <label for="qty_as_product_unit"/>
                                 <div class="o_row">
@@ -61,43 +62,59 @@
                         </group>
                         <group>
                             <group>
-                                <field name="source_location"/>
+                                <field name="source_location" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                             <group>
-                                <field name="destination_location"/>
+                                <field name="destination_location" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                         </group>
                         <group>
                             <group>
-                                <field name="currency_id" invisible="0"/>
+                                <field name="currency_id" invisible="0" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                             <group>
-                                <field name="unit_cost" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                                <field name="unit_cost" widget='monetary' attrs="{'readonly': [('state', '!=', 'draft')]}" options="{'currency_field': 'currency_id'}"/>
                             </group>
 
+                        </group>
+                        <group string="Shipped">
+                            <group>
+                                <label for="base_shipped_weight"/>
+                                <div class="o_row">
+                                    <field name="base_shipped_weight"/>
+                                    <field name="base_shipped_uom_id" readonly="1"/>
+                                </div>
+                            </group>
+                            <group>
+                                <label for="origin_shipped_weight"/>
+                                <div class="o_row">
+                                    <field name="origin_shipped_weight" attrs="{'required': [('state', '=', 'draft')], 'readonly': [('state', '!=', 'draft')]}"/>
+                                    <field name="origin_shipped_uom_id" readonly="1"/>
+                                </div>
+                            </group>
                         </group>
                         <group string="Discharge" attrs="{'invisible': [('state', '=', 'draft')]}">
                             <group>
                                 <label for="discharged_packing_weight"/>
                                 <div class="o_row">
-                                    <field name="discharged_packing_weight" attrs="{'required': [('state', '=', 'discharge')]}"/>
-                                    <field name="discharged_packing_uom_id" attrs="{'required': [('state', '=', 'discharge')]}"/>
+                                    <field name="discharged_packing_weight" attrs="{'required': [('state', '=', 'discharge')], 'readonly': [('state', '!=', 'discharge')]}"/>
+                                    <field name="discharged_packing_uom_id" attrs="{'required': [('state', '=', 'discharge')], 'readonly': [('state', '!=', 'discharge')]}"/>
                                 </div>
                             </group>
                             <group>
                                 <label for="discharged_qty"/>
                                 <div class="o_row">
-                                    <field name="discharged_qty" attrs="{'required': [('state', '=', 'discharge')]}"/>
-                                    <field name="discharged_uom_id" attrs="{'required': [('state', '=', 'discharge')]}"/>
+                                    <field name="discharged_qty" attrs="{'required': [('state', '=', 'discharge')], 'readonly': [('state', '!=', 'discharge')]}"/>
+                                    <field name="discharged_uom_id" attrs="{'required': [('state', '=', 'discharge')], 'readonly': [('state', '!=', 'discharge')]}"/>
                                 </div>
                             </group>
                         </group>
                         <group>
-                            <field name="note"/>
+                            <field name="note" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <notebook>
                             <page string="Other Costs">
-                                <field name="shipment_cost_ids" context="{'default_internal_contract_id': internal_contract_id,
+                                <field name="shipment_cost_ids" attrs="{'readonly': [('state', '!=', 'draft')]}" context="{'default_internal_contract_id': internal_contract_id,
                                                                           'default_purchase_contract_id': purchase_contract_id,
                                                                           'default_export_form_id': export_form_id}">
                                     <tree editable="bottom">
@@ -123,6 +140,7 @@
                                     attrs="{'invisible': [('shipment_type', '!=', 'container_shipment'),('state', '!=', 'discharge')]}">
                                     <tree editable="bottom">
                                         <field name="internal_contract_id" invisible="1"/>
+                                        <field name="purchase_contract_id" invisible="1"/>
                                         <field name="export_form_id" invisible="1"/>
                                         <field name="vehicle_shipment_id" invisible="1"/>
                                         <field name="name"/>
@@ -160,7 +178,7 @@
         <record model="ir.actions.act_window" id="action_erky_vehicle_shipment">
             <field name="name">Vehicle Shipment</field>
             <field name="res_model">erky.vehicle.shipment</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,pivot</field>
             <field name="view_type">form</field>
         </record>
 

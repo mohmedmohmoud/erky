@@ -1,33 +1,72 @@
 <odoo>
-    <record id="wizard_erky_template_report_wiz_form" model="ir.ui.view">
-        <field name="name">erky.template.report.wiz.form</field>
-        <field name="model">erky.generate.container.wiz</field>
+
+     <record id="erky_container_request_tree" model="ir.ui.view">
+        <field name="name">erky.container.request.tree</field>
+        <field name="model">erky.container.request</field>
         <field name="arch" type="xml">
-            <form string="Generate Container:">
+            <tree>
+                <field name="partner_id"/>
+                <field name="qty"/>
+                <field name="price"/>
+                <field name="sug_qty_20f"/>
+                <field name="sug_qty_40f"/>
+            </tree>
+        </field>
+     </record>
+
+    <record id="erky_container_request_form" model="ir.ui.view">
+        <field name="name">erky.container.request.form</field>
+        <field name="model">erky.container.request</field>
+        <field name="arch" type="xml">
+            <form string="Request Container:">
                 <group>
-                    <field name="export_form_id" invisible="1"/>
+                    <group>
+                        <field name="export_form_id" invisible="1"/>
+                        <field name="partner_id" invisible="0" required="1"/>
+                        <field name="currency_id" invisible="1"/>
+                        <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    </group>
+                    <group>
+                        <field name="qty" required="1"/>
+                        <field name="note"/>
+                    </group>
                 </group>
+
                 <field name="container_lines_ids">
                     <tree editable="bottom">
-                        <field name="container_ref"/>
                         <field name="container_size"/>
+                        <field name="container_weight"/>
                     </tree>
                 </field>
-                <footer>
-                    <button string='Generate New Containers' name="generate_container" type="object" class="oe_highlight"/>
-                    or
-                    <button string="Cancel" class="oe_link" special="cancel"/>
-                </footer>
+                <center><separator string="Number Of Container Suggested By System"/></center>
+                <group class="oe_subtotal_footer oe_right" colspan="4" name="suggested_qty">
+                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                        <label for="sug_qty_20f" string="Container 20F Suggested Qty"/>
+                    </div>
+                    <field name="sug_qty_20f" nolabel="1" class="oe_subtotal_footer_separator"/>
+                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                        <label for="sug_qty_40f" string="Container 40F Suggested Qty"/>
+                    </div>
+                    <field name="sug_qty_40f" nolabel="1" class="oe_subtotal_footer_separator"/>
+                </group>
             </form>
         </field>
     </record>
 
-    <record id="generate_container_wizard_action" model="ir.actions.act_window">
-        <field name="name">Generate Container</field>
-        <field name="res_model">erky.generate.container.wiz</field>
+    <record id="request_container_action" model="ir.actions.act_window">
+        <field name="name">Request Container</field>
+        <field name="res_model">erky.container.request</field>
         <field name="view_type">form</field>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="wizard_erky_template_report_wiz_form"/>
+        <field name="view_id" ref="erky_container_request_form"/>
         <field name="target">new</field>
+    </record>
+
+    <record id="request_container_smart_action" model="ir.actions.act_window">
+        <field name="name">Request Container</field>
+        <field name="res_model">erky.container.request</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="erky_container_request_tree"/>
     </record>
 </odoo>

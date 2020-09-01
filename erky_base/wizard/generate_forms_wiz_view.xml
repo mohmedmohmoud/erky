@@ -1,0 +1,30 @@
+<odoo>
+    <record id="wizard_erky_generate_forms_wiz_form" model="ir.ui.view">
+        <field name="name">erky.generate.wiz.form</field>
+        <field name="model">erky.generate.form</field>
+        <field name="arch" type="xml">
+            <form string="Generate Container:">
+                <group>
+                    <field name="contract_id" invisible="0"/>
+                    <field name="number_of_forms" invisible="0"/>
+                    <field name="export_form_id" invisible="1"/>
+                </group>
+                <field name="export_form_ids"/>
+                <footer>
+                    <button string='Apply' name="generate_container" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="generate_forms_wizard_action" model="ir.actions.act_window">
+        <field name="name">Generate Forms</field>
+        <field name="res_model">erky.generate.form</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_erky_generate_forms_wiz_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

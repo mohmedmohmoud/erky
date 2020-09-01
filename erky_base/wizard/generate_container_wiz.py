@@ -1,35 +1,51 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+import math
 
-class GenerateContainer(models.TransientModel):
-    _name = "erky.generate.container.wiz"
+class RequestContainer(models.Model):
+    _name = "erky.container.request"
 
     export_form_id = fields.Many2one("erky.export.form", string="Export Form", required=1)
-    container_lines_ids = fields.One2many("erky.generate.container.line.wiz", "generate_container_id")
+    partner_id = fields.Many2one("res.partner", "Request Partner")
+    qty = fields.Integer("Qty")
+    price = fields.Float("Price")
+    currency_id = fields.Many2one("res.currency", "Currency", default=lambda self: self.env.user.company_id.currency_id, required=1)
+    note = fields.Text("Note")
+    sug_qty_20f = fields.Integer("20F", compute="_compute_suggested_qty")
+    sug_qty_40f = fields.Integer("40F", compute="_compute_suggested_qty")
+    container_lines_ids = fields.One2many("erky.container.request.line", "container_request_id")
 
-    @api.multi
-    def generate_container(self):
-        container_obj = self.env['erky.container']
-        for l in self.container_lines_ids:
-            vals = {
-                'name': l.container_ref,
-                'size': l.container_size,
-                'export_form_id': self.export_form_id.id,
-            }
-            container_obj.create(vals)
+    @api.model
+    def default_get(self, flds):
+        result = super(RequestContainer, self).default_get(flds)
+        export_form_id = self.env['erky.export.form'].browse(self._context.get('active_id'))
+        result['partner_id'] = export_form_id.shipment_partner_id.id
+        result['container_lines_ids'] = [(0, 0, {'container_size': '20_feet',
+                                                 'container_weight': '20'}),
+                                         (0, 0, {'container_size': '40_feet',
+                                                 'container_weight': '28'}),
+                                         ]
+        return result
 
-class GenerateLines(models.TransientModel):
+    @api.depends('qty', 'container_lines_ids')
+    def _compute_suggested_qty(self):
+        for rec in self:
+            f20_lines = rec.container_lines_ids.filtered(lambda cl: cl.container_size == '20_feet')
+            print "=============[---]============", f20_lines
+            f40_lines = rec.container_lines_ids.filtered(lambda cl: cl.container_size == '40_feet')
+            if f20_lines:
+                f20_weight = float(f20_lines[0].container_weight) or 1
+                rec.sug_qty_20f = math.ceil(float(rec.qty) / f20_weight)
+            if f40_lines:
+                f40_weight = float(f40_lines[0].container_weight) or 1
+                rec.sug_qty_40f = math.ceil(float(rec.qty) / f40_weight)
 
-    _name = "erky.generate.container.line.wiz"
 
-    generate_container_id = fields.Many2one("erky.generate.container.wiz")
-    container_ref = fields.Char("Container Ref", required=1)
+class RequestContainerLines(models.Model):
+    _name = "erky.container.request.line"
+
+    container_request_id = fields.Many2one("erky.container.request")
     container_size = fields.Selection([('20_feet', "20 Feet"), ('40_feet', "40 Feet")], string="Container Size", required=1)
+    container_weight = fields.Selection([('19', "19/Ton"), ('20', "20/Ton"), ('27', "27/Ton"), ('28', "28/Ton")], string="Container Weight", required=1)
 
-    # @api.constrains("container_ref")
-    # def check_container_ref(self):
-    #     if self.generate_container_id:
-    #         for line in self.generate_container_id.container_lines_ids:
-    #             if self.container_ref == line.container_ref:
-    #                 raise ValidationError("Container Ref Must Be Unique")

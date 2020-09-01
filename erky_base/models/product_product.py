@@ -4,11 +4,13 @@ class ProductTemplate(models.Model):
     _inherit = "product.product"
 
     hs_code = fields.Char("HS Code")
+    mc_unit_price = fields.Float("MC Price")
 
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     hs_code = fields.Char("HS Code")
+    mc_unit_price = fields.Float("MC Price")
     product_specification_ids = fields.One2many("product.template.specification", "product_template_id")
 
 
