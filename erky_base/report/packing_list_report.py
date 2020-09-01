@@ -5,7 +5,6 @@ import inflect
 def number_to_words(num):
     engine = inflect.engine()
     words_number = engine.number_to_words(num)
-    print "upper ",type(words_number), words_number.upper()
     return words_number
 
 from odoo import api, models, fields, _
@@ -24,7 +23,6 @@ class PackingListReport(models.AbstractModel):
         if not active_record:
             raise ValidationError("No active record.")
         docs = self._get_report_data(active_record)
-        print "docs ----------------", docs, docids
         docargs['doc_ids'] = docids
         docargs['doc_model'] = self.env['erky.export.form']
         docargs['docs'] = docs
@@ -40,7 +38,6 @@ class PackingListReport(models.AbstractModel):
         net_weight = sum(record.packing_ids.mapped('net_qty'))
         net_weight_words = """(""" + str(number_to_words(net_weight).upper()) + """ ONLY)"""
 
-        print "tatal container", total_container_words_no
         report_data = {'current_date': fields.date.today(),
                        'invoice_no': record.invoice_id.number,
                        'bl_no': record.bl_no,

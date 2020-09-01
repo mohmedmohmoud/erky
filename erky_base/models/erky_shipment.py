@@ -95,7 +95,6 @@ class Shipment(models.Model):
             export_form_id = res.export_form_id or False
             shipment_id = res
             qty = res.qty_as_product_unit
-            print '==33==', contract_id, export_form_id, shipment_id, qty
             if contract_id and export_form_id and shipment_id and qty:
                 self.env['erky.shipment.reconcile'].create({'contract_id': contract_id.id,
                                                             'form_export_id': export_form_id.id,

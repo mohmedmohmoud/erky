@@ -123,7 +123,6 @@ class ExportForm(models.Model):
 
     @api.multi
     def action_ssmo(self):
-        print "======================ff======================="
         for rec in self:
             self.check_bank_info()
             rec.state = "ssmo"
@@ -210,9 +209,7 @@ class ExportForm(models.Model):
             container_ship_ids = rec.container_shipment_ids.filtered(lambda c: c.name != False)
             if container_ship_ids:
                 container_ids = set(container_ship_ids.mapped("name"))
-                print "container =============", container_ids
                 for ctn in container_ids:
-                    print "ctm ============", ctn
                     cont_ship_ids = container_ship_ids.filtered(lambda c: c.name == ctn)
                     if cont_ship_ids:
                         net_qty = sum(cont_ship_ids.mapped("packing_weight"))
@@ -236,7 +233,6 @@ class ExportForm(models.Model):
         if self.product_uom_id and self.package_uom_id:
             default_shipment_qty = self.product_uom_id._compute_quantity(self.remain_qty, self.package_uom_id,
                                                                      rounding_method=rounding_method)
-            print "44444444444444444444", default_shipment_qty
         ctx.update({'default_internal_contract_id': self.contract_id.id,
                     'default_purchase_contract_id': self.purchase_contract_id.id,
                     'default_export_form_id': self.id,
@@ -283,11 +279,8 @@ class ExportForm(models.Model):
 
     @api.multi
     def action_open_container_request(self):
-        print "============================="
         container_req_ids = self.mapped('container_request_ids')
-        print "vvvvvvvvvvvvvvvvv", container_req_ids
         action = self.env.ref('erky_base.request_container_smart_action').read()[0]
-        print "acciont -------------------", container_req_ids, action
         action['domain'] = [('id', 'in', container_req_ids.ids)]
         return action
 
@@ -360,7 +353,6 @@ class ExportForm(models.Model):
         shipment_ids = self.vehicle_shipment_ids
         partner_ids = set(shipment_ids.mapped("agent_id"))
         account_id = self.product_id.product_tmpl_id.get_product_accounts()['expense']
-        print "account-id", account_id
         if shipment_ids and partner_ids:
 
             for partner in partner_ids:

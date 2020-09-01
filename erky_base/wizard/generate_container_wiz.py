@@ -32,7 +32,6 @@ class RequestContainer(models.Model):
     def _compute_suggested_qty(self):
         for rec in self:
             f20_lines = rec.container_lines_ids.filtered(lambda cl: cl.container_size == '20_feet')
-            print "=============[---]============", f20_lines
             f40_lines = rec.container_lines_ids.filtered(lambda cl: cl.container_size == '40_feet')
             if f20_lines:
                 f20_weight = float(f20_lines[0].container_weight) or 1

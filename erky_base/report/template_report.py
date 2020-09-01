@@ -10,13 +10,11 @@ class ReportErkyTemplate(models.AbstractModel):
 
     @api.model
     def render_html(self, docids, data=None):
-        print "data =====================", data
         docargs = {}
         datas = data.get('form', False)
         temp = datas[0].get('template_content')
         if datas:
             active_id = self._context.get('active_id')
-            print "acitve id ======================", active_id, docargs
             docargs['doc_ids'] = self.ids
             docargs['doc_model'] = self.env['erky.export.form']
             docargs['data'] = data

@@ -25,6 +25,5 @@ class GenerateForms(models.TransientModel):
                     # 'exporter_port_id': self.contract_id.exporter_port_id.id
                     }
             input_lines += input_lines.new(data)
-        print "self.contract -------------------", self.contract_id.purchase_contract_id
 
         self.export_form_ids = input_lines
