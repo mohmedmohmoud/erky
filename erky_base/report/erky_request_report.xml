@@ -10,8 +10,8 @@
         />
 
         <template id="report_erky_request">
-            <t t-call="report.html_container">
-                <t t-call="report.external_layout">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
                 <div class="page" style="position:relative;">
                     <t t-foreach="docs" t-as="o">
                         <p><t t-raw="o.request_body"/></p>

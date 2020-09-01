@@ -20,14 +20,14 @@ class ExportForm(models.Model):
     remain_qty = fields.Float("Remain Qty", compute="compute_form_qty")
     product_id = fields.Many2one(related="contract_id.product_id", store=True)
     product_uom_id = fields.Many2one(
-        'product.uom', 'Product Unit of Measure', related='product_id.uom_id',
+        'uom.uom', 'Product Unit of Measure', related='product_id.uom_id',
         readonly=True, store=True)
-    package_uom_id = fields.Many2one("product.uom", "Package UOM")
+    package_uom_id = fields.Many2one("uom.uom", "Package UOM")
     packing_weight_uom_id = fields.Many2one(related="package_uom_id.packing_uom_id", store=True, string="Packing Weight UOM")
     net_shipment_qty = fields.Float(string="Net Ship Qty", store=True, compute="_compute_all_form_qty")
     gross_shipment_qty = fields.Float(string="Gross Ship Qty", store=True, compute="_compute_all_form_qty")
     weight_in_package_uom = fields.Text(string="Weight Package UOM", compute="_compute_weight_in_package_uom")
-    bank_id = fields.Many2one(related="contract_id.bank_id", store=True, string="Bank", required=1)
+    bank_id = fields.Many2one(related="contract_id.bank_id", store=True, string="Bank", required=0)
     bank_branch_id = fields.Many2one(related="contract_id.bank_branch_id", store=True, string="Bank Branch")
     exporter_port_id = fields.Many2one(related="contract_id.exporter_port_id", store=True, string="Exporter Port")
     state = fields.Selection([('draft', "Draft"),
@@ -46,12 +46,12 @@ class ExportForm(models.Model):
     # ===================SSMO==================
     ssmo_reference = fields.Char(string="SSMO Reference", states={'ssmo': [('required', True)]})
     ssmo_massage_validation = fields.Char(string="Message Validity To Technical Reference")
-    ssmo_issue_date = fields.Date(string="SSMO Certificate Issue Date", default=datetime.today())
+    ssmo_issue_date = fields.Date(string="SSMO Certificate Issue Date", default=fields.Date.context_today)
     voucher_no = fields.Char(string="Voucher No", states={'ssmo': [('required', True)]})
-    voucher_date = fields.Date(string="Voucher Date", default=datetime.today(), states={'ssmo': [('required', True)]})
+    voucher_date = fields.Date(string="Voucher Date", default=fields.Date.context_today, states={'ssmo': [('required', True)]})
     ssmo_attachment_id = fields.Binary(string='SSMO attachment', attachment=True)
     # ==========Shipment Instruction===========
-    shipment_ins_date = fields.Date("Date", default=datetime.today())
+    shipment_ins_date = fields.Date("Date", default=fields.Date.context_today)
     shipment_partner_id = fields.Many2one("res.partner", "To")
     shipper_partner_id = fields.Many2one(related="contract_id.exporter_id", store=True, string="Shipper")
     consignee_partner_id = fields.Many2one(related="contract_id.importer_id", store=True, string="Consignee")

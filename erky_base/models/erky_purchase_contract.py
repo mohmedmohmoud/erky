@@ -32,7 +32,7 @@ class ErkyContract(models.Model):
 
     name = fields.Char(string="Sequence", default="New", readonly=1)
     contract_no = fields.Char(stirng="Contract No", required=1)
-    date = fields.Date("Date", default=datetime.today(), required=1)
+    date = fields.Date("Date", default=fields.Date.context_today, required=1)
     importer_id = fields.Many2one("res.partner", string="Importer Name", required=1, domain=[('is_importer', '=', True)])
     phone_no = fields.Char(related="importer_id.phone", store=True, string="Phone")
     exporter_id = fields.Many2one("res.partner", string="Exporter Name", required=1, domain=[('is_exporter', '=', True)], default=_get_default_export_partner)
@@ -44,7 +44,7 @@ class ErkyContract(models.Model):
     importer_country_id = fields.Many2one(related="importer_id.country_id", string='Country')
     product_id = fields.Many2one("product.product", "Product",  required=1, domain=[('type', '=', 'product')])
     product_uom_id = fields.Many2one(
-        'product.uom', 'Product Unit of Measure', related='product_id.uom_id',
+        'uom.uom', 'Product Unit of Measure', related='product_id.uom_id',
         readonly=True, required=True)
     qty = fields.Integer("Qty", default=1)
     allowed_percentage = fields.Char(default="(10% plus minus allowed)")

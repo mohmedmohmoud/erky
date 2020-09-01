@@ -8,7 +8,7 @@ class ErkyTemplateReportWiz(models.TransientModel):
     _name = "erky.template.report.wiz"
 
     export_form_id = fields.Many2one("erky.export.form", string="Export Form")
-    date = fields.Date(string="Date", default=datetime.today(), required=1)
+    date = fields.Date(string="Date", default=fields.Date.context_today, required=1)
     template_from = fields.Selection([('certificate_analysis', "Certificate Analysis"),
                                       ('commercial_invoice', "Commercial Invoice"),
                                       ('shipping_instruction', "Shipping Instruction"),

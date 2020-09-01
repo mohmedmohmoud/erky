@@ -33,7 +33,7 @@
                 <attribute name="t-att-class">'footer ' + lang_direction</attribute>
             </xpath>
         </template>
-        <template id="html_container" inherit_id="report.html_container">
+        <template id="html_container" inherit_id="web.html_container">
             
             <xpath expr="//t[@t-set='body_classname']" position="replace">
                 <t t-set="body_classname" t-value="'container '+lang_direction"/>

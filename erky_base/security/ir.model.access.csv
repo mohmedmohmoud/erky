@@ -1,0 +1,22 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+erky_purchase_contract_access_all,erky.purchase.contract access all,model_erky_purchase_contract,,1,1,1,1
+erky_contract_access_all,erky.contract access all,model_erky_contract,,1,1,1,1
+erky_port_access_all,erky.port access all,model_erky_port,,1,1,1,1
+erky_required_document_access_all,erky.required.document access all,model_erky_required_document,,1,1,1,1
+erky_payment_account_access_all,erky.payment.account access all,model_erky_payment_account,,1,1,1,1
+erky_contract_product_specification_access_all,erky.contract.product.specification access all,model_contract_product_specification,,1,1,1,1
+erky_product_template_specification_access_all,erky.product.template.specification access all,model_product_template_specification,,1,1,1,1
+erky_export_form_access_all,erky.export.form access all,model_erky_export_form,,1,1,1,1
+erky_res_bank_branch_access_all,erky.res.bank.branch access all,model_res_bank_branch,,1,1,1,1
+erky_freight_term_access_all,erky.freight.term access all,model_erky_freight_term,,1,1,1,1
+erky_vehicle_shipment_access_all,erky.vehicle.shipment access all,model_erky_vehicle_shipment,,1,1,1,1
+erky_container_request_access_all,erky.container.request access all,model_erky_container_request,,1,1,1,1
+erky_packing_access_all,erky.packing access all,model_erky_packing,,1,1,1,1
+erky_shipment_reconcile_access_all,erky.shipment.reconcile access all,model_erky_shipment_reconcile,,1,1,1,1
+erky_container_request_line_access_all,erky.container.request.line access all,model_erky_container_request_line,,1,1,1,1
+erky_container_request_access_all,erky.container.request access all,model_erky_container_request,,1,1,1,1
+erky_location_access_all,erky.location access all,model_erky_location,,1,1,1,1
+erky_export_form_cost_access_all,erky.export.form.cost access all,model_export_form_cost,,1,1,1,1
+erky_container_shipment_access_all,erky.container.shipment access all,model_erky_container_shipment,,1,1,1,1
+erky_shipment_cost_access_all,erky.shipment.cost access all,model_erky_shipment_cost,,1,1,1,1
+erky_container_access_all,erky.container access all,model_erky_container,,1,1,1,1

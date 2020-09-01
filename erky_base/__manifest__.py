@@ -24,7 +24,8 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/account_security.xml',
+        'security/ir.model.access.csv',
         'data/sequence.xml',
         'views/ir_menus_view.xml',
         'wizard/generate_container_wiz_view.xml',

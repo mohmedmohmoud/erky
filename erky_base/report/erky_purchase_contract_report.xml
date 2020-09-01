@@ -28,9 +28,9 @@
         />
 
         <template id="report_erky_purchase_contract">
-            <t t-call="report.html_container">
+            <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
-                    <t t-call="report.external_layout">
+                    <t t-call="web.external_layout">
                         <div class="page" style="position:relative;">
                             <h2><center>PURCHASING CONTRACT</center></h2>
                             <table style="border-collapse: separate;border-spacing: 0 20px !important;font-size: 16px;">
