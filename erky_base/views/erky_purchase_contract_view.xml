@@ -49,8 +49,8 @@
                   <field name="qty"/>
                   <field name="product_uom_id" options="{'no_create': True, 'no_open': True}"/>
                   <field name="allowed_percentage" style="color:brown" nolabel="1"></field>
-                  <field name="allowed_percentage" style="color:brown" nolabel="1"></field>
                 </div>
+                <field name="package_uom_id"/>
               </group>
               <group>
                 <field name="phone_no"/>
@@ -76,8 +76,13 @@
                 <label for="unit_price"/>
                 <div class="o_row">
                   <field name="unit_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+
 <!--                  &ndash;&gt;-->
 <!--                  <field name="unit_price_in_importer_curr" widget="monetary" options="{'currency_field': 'importer_currency_id'}"/>-->
+                </div>
+                <label for="payment_percentage"/>
+                <div class="o_row">
+                  <field name="payment_percentage"/> %
                 </div>
                 <label for="total_amount"/>
                 <div name="erky_contract_amount_div" class="o_row">

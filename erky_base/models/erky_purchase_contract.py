@@ -46,6 +46,8 @@ class ErkyContract(models.Model):
     product_uom_id = fields.Many2one(
         'uom.uom', 'Product Unit of Measure', related='product_id.uom_id',
         readonly=True, required=True)
+    package_uom_id = fields.Many2one(
+        'uom.uom', 'Package UOM', required=True)
     qty = fields.Integer("Qty", default=1)
     allowed_percentage = fields.Char(default="(10% plus minus allowed)")
     unit_price = fields.Float("Unit Price", required=1)
@@ -58,7 +60,8 @@ class ErkyContract(models.Model):
     importer_port_id = fields.Many2one("erky.port", "Discharge Port", required=1, default=lambda self: self.env['erky.port'].search([('default_importer_port', '=', True)], limit=1))
     shipment_method = fields.Selection([('partial', "Parial"), ('all', "All")], string="Shipment Method", default="partial")
     payment_method = fields.Selection([('deferred_payment', "D/A"), ('cd', 'C&D'), ('advance_payment', "Advance Payment"), ('cd_advance', "C&D & Advance")], string="Payment Method", dafault='deferred_payment')
-    advance_percentage = fields.Float(string="Advance Percentage")
+    advance_percentage = fields.Integer(string="Advance Percentage")
+    payment_percentage = fields.Integer(string="Payment Percentage", default=15)
     payment_account_id = fields.Many2one("erky.payment.account", string="Account Name", required=1)
     account_no = fields.Char(related="payment_account_id.account_no", store=True, readonly=1, string="Account No")
     partner_id = fields.Many2one(related="payment_account_id.partner_id", store=True, readonly=1, string="Company Name")
@@ -95,6 +98,11 @@ class ErkyContract(models.Model):
         for rec in self:
             rec.unit_price = rec.product_id.lst_price
 
+    @api.onchange("package_uom_id")
+    def get_package_condition(self):
+        for rec in self:
+            rec.packing_condition = "New pp " + (rec.package_uom_id.name or "____") + " of " + str((rec.package_uom_id.packing_weight) or "___") + (rec.package_uom_id.packing_uom_id.name or "___") + " each leaded in ___container."
+
     @api.constrains('qty', 'unit_price')
     def check_qty_and_price(self):
         for rec in self:
@@ -111,6 +119,12 @@ class ErkyContract(models.Model):
             # if rec.currency_id.id != rec.importer_currency_id.id:
             #     ctx = ctx.copy()
             #     rec.total_amount_in_importer_curr = rec.currency_id.with_context(ctx).compute(rec.total_amount, rec.importer_currency_id)
+
+    @api.onchange('qty', 'unit_price', 'payment_percentage', 'advance_percentage')
+    def _set_condition_data(self):
+        for rec in self:
+            total = rec.unit_price * rec.qty * (rec.payment_percentage/100)
+            self.payment_condition = rec.currency_id.name + " ( " + str(rec.unit_price) + " * " + str(rec.qty) + " * " + str(rec.payment_percentage) + "% = " + str(total) + " ) In Advance Payment " + str(rec.advance_percentage) + " % Cash Against Copy of  Shipment Documents."
 
 
     # @api.depends("importer_currency_id")

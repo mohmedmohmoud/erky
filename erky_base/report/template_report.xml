@@ -7,7 +7,7 @@
             <field name="page_height">0</field>
             <field name="page_width">0</field>
             <field name="orientation">Portrait</field>
-            <field name="margin_top">42</field>
+            <field name="margin_top">10</field>
             <field name="margin_bottom">5</field>
             <field name="margin_left">5</field>
             <field name="margin_right">5</field>
@@ -23,18 +23,21 @@
             name="erky_base.report_erky_template_report"
             file="mrp_repair.report_erky_template_report"
             report_type="qweb-pdf"
-            paperformat="paperformat_euro_lowmargin_temp_rep_erky"
         />
+
+        <record id="action_report_template_erky" model="ir.actions.report">
+            <field name="paperformat_id" ref="paperformat_euro_lowmargin_temp_rep_erky"/>
+        </record>
 
         <template id="report_erky_template_report">
            <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="o">
+<!--                <t t-foreach="docs" t-as="o">-->
                     <t t-call="web.external_layout">
                         <div class="page">
                             <div><t t-raw="temp"/></div>
                         </div>
                     </t>
-                </t>
+<!--                </t>-->
             </t>
         </template>
     </data>

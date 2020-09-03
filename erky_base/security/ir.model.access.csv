@@ -20,3 +20,4 @@ erky_export_form_cost_access_all,erky.export.form.cost access all,model_export_f
 erky_container_shipment_access_all,erky.container.shipment access all,model_erky_container_shipment,,1,1,1,1
 erky_shipment_cost_access_all,erky.shipment.cost access all,model_erky_shipment_cost,,1,1,1,1
 erky_container_access_all,erky.container access all,model_erky_container,,1,1,1,1
+erky_request_access_all,erky.request access all,model_erky_request,,1,1,1,1

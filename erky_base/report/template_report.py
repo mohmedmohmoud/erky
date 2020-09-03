@@ -9,15 +9,18 @@ class ReportErkyTemplate(models.AbstractModel):
     _name = 'report.erky_base.report_erky_template_report'
 
     @api.model
-    def render_html(self, docids, data=None):
+    def _get_report_values(self, docids, data=None):
+        print("---------------------", data)
         docargs = {}
         datas = data.get('form', False)
         temp = datas[0].get('template_content')
+        print("---------------------", temp)
+        erky_report = self.env['ir.actions.report']._get_report_from_name('erky_base.report_erky_template_report')
         if datas:
             active_id = self._context.get('active_id')
             docargs['doc_ids'] = self.ids
-            docargs['doc_model'] = self.env['erky.export.form']
+            docargs['doc_model'] = erky_report.model
             docargs['data'] = data
             docargs['temp'] = temp
             docargs['docs'] = self.env['erky.export.form'].browse(active_id)
-        return self.env['report'].render('erky_base.report_erky_template_report', docargs)
+        return docargs

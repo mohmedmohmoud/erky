@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <record id="paperformat_euro_lowmargin_shipment_method_erky" model="report.paperformat">
+            <field name="name">European A4 low margin</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">297</field>
+            <field name="page_width">210</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">23</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
         <report
                 id="action_report_shipment_erky"
                 string="Shipment Report"
@@ -8,6 +23,7 @@
                 name="erky_base.report_shipment_erky"
                 file="mrp_repair.report_shipment_erky"
                 report_type="qweb-pdf"
+                 paperformat="paperformat_euro_lowmargin_shipment_method_erky"
         />
 
         <template id="report_shipment_erky">
@@ -43,13 +59,13 @@
                                     <td><t t-esc="vs.qty_as_product_unit"/> </td>
                                     <td><t t-esc="vs.shipment_date"/> </td>
                                     <td><t t-esc="vs.phone_no"/> </td>
-                                    <td><t t-esc="vs.source_location"/> </td>
+                                    <td><t t-esc="vs.source_location.name"/> </td>
                                     <td><t t-esc="vs.product_id.name"/> </td>
                                     <td><t t-esc="vs.agent_id.name"/> </td>
                                     <td><t t-esc="vs.discharged_packing_weight"/> </td>
                                     <td><t t-esc="vs.discharged_qty"/> </td>
                                     <td><t t-foreach="vs.shipment_container_ids" t-as="c">
-                                    <t t-esc="c.name.name"/>
+                                    <t t-esc="c.name"/>
                                     </t></td>
                                     <td><t t-esc="vs.state"/> </td>
                                 </tr>

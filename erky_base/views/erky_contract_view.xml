@@ -125,6 +125,7 @@
                 <field name="export_form_ids">
                   <tree editable="bottom">
                     <field name="purchase_contract_id" invisible="1"/>
+                    <field name="package_uom_id" invisible="1"/>
                     <field name="bank_id" invisible="1"/>
                     <field name="exporter_id"/>
                     <field name="importer_id"/>

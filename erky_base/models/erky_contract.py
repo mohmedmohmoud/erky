@@ -81,10 +81,12 @@ class ErkyContract(models.Model):
             total_qty = sum(self.export_form_ids.mapped("qty")) or 0
             if total_qty + qty > self.qty:
                 qty = self.qty - total_qty
+            print("=======================,self.purchase_contract_id.package_uom_id.id", self.purchase_contract_id.package_uom_id.id)
             data = {'contract_id': self.id,
                     'purchase_contract_id': self.purchase_contract_id.id,
                     'product_id': self.product_id.id,
                     'product_uom_id': self.product_uom_id.id,
+                    'package_uom_id': self.purchase_contract_id.package_uom_id.id,
                     'bank_id': self.bank_id.id,
                     'bank_branch_id': self.bank_branch_id.id,
                     'exporter_id': self.importer_id.id,
@@ -221,16 +223,16 @@ class ErkyRequests(models.Model):
         user_lang = self.env.user.partner_id.lang
 
         if self.request_type == "from_request" and user_lang == "ar_SY":
-            template_body = self.env['ir.values'].get_default('erky.template.settings',
+            template_body = self.env['ir.default'].get('erky.template.settings',
                                                                             'form_request_temp_ar')
         if self.request_type == "from_request" and user_lang == "en_US":
-            template_body = self.env['ir.values'].get_default('erky.template.settings',
+            template_body = self.env['ir.default'].get('erky.template.settings',
                                                                             'form_request_temp_en')
         if self.request_type == "pledge_request" and user_lang == "ar_SY":
-            template_body = self.env['ir.values'].get_default('erky.template.settings',
+            template_body = self.env['ir.default'].get('erky.template.settings',
                                                                             'pledge_request_temp_ar')
         if self.request_type == "pledge_request" and user_lang == "en_US":
-            template_body = self.env['ir.values'].get_default('erky.template.settings',
+            template_body = self.env['ir.default'].get('erky.template.settings',
                                                                             'pledge_request_temp_en')
         if template_body:
             template_body = self.get_render_template_content(self.internal_contract_id, template_body)
@@ -246,7 +248,7 @@ class ErkyRequests(models.Model):
         self.ensure_one()
         if obj:
             body_msg = self.env["mail.template"].with_context(
-                lang=self.env.user.partner_id.lang).sudo().render_template(
+                lang=self.env.user.partner_id.lang).sudo()._render_template(
                 str(content), 'erky.contract', [obj.id])
             return body_msg[obj.id]
 

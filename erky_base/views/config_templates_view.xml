@@ -18,7 +18,7 @@
                         <field name="commercial_invoice_temp"/>
                         <field name="shipping_instruction_temp"/>
                         <field name="certificate_origin_temp"/>
-                        <field name="purchase_contract_temp"/>
+                        <field name="original_temp"/>
                     </group>
                 </form>
             </field>
