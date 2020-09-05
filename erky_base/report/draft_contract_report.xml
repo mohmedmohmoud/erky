@@ -30,116 +30,117 @@
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.external_layout">
-                        <div class="page" style="position:relative;">
+                        <div class="page" style="position:relative;" dir="rtl" lang="ar">
                             <h2>
                                 <center>
                                     <t t-esc="res_company.name"/>
                                 </center>
                             </h2>
-                            <h2>
-                                <center>عقد صادر</center>
-                            </h2>
+                            <h1>
+                                <center style="font-family: 'Scheherazade';">عقد صادر</center>
+                            </h1>
                             <br/>
                             <br/>
                             <br/>
-                            <table style="padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 16px;">
+                            <table style="padding:6px; border-collapse: separate;border-spacing: 0 2px !important;font-size: 24px;font-family: 'Scheherazade';">
                                 <tr>
-                                    <th>Date:</th>
+                                    <th style="float:right">التاريخ:</th>
                                     <td>
                                         <t t-esc="o.date"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Contract No:</th>
+                                    <th style="float:right">رقم العقد:</th>
                                     <td>
                                         <t t-esc="o.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Export Name:</th>
+                                    <th style="float:right">المصدر:</th>
                                     <td>
                                         <t t-esc="o.exporter_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Tax ID:</th>
+                                    <th style="float:right">الرقم الضريبي:</th>
                                     <td>
                                         <t t-esc="o.tax_id"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Import Name:</th>
+                                    <th style="float:right">المستورد:</th>
                                     <td>
                                         <t t-esc="o.importer_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Import Address:</th>
-                                    <td><t t-esc="o.importer_country_id.name"/>,<t t-esc="o.importer_state_id.name"/>,
-                                        <t t-esc="o.importer_city"/>
-                                        <t t-esc="o.importer_street"/>,
-                                        <t t-esc="o.importer_street2"/>
+                                    <th style="float:right">عنوان المستورد:</th>
+                                    <td><p><t t-esc="o.importer_country_id.name"/></p>
+<!--                                        <p><t t-esc="o.importer_state_id.name"/></p>-->
+<!--                                        <p><t t-esc="o.importer_city"/></p>-->
+<!--                                        <p><t t-esc="o.importer_street"/></p>-->
+<!--                                        <p><t t-esc="o.importer_street2"/></p>-->
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Product Name:</th>
+                                    <th style="float:right">الصنف :</th>
                                     <td>
                                         <t t-esc="o.product_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Source:</th>
+                                    <th style="float:right">المنشاء:</th>
                                     <td>
                                         <t t-esc="res_company.country_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Qty:</th>
+                                    <th style="float:right">الكمية:</th>
                                     <td>
                                         <t t-esc="o.qty"/>
                                         <t t-esc="o.product_uom_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Price:</th>
+                                    <th style="float:right">السعر:</th>
                                     <td>
                                         <t t-esc="o.unit_price" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
 <!--                                        <t t-esc="res_company.currency_id.symbol"/>-->
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Total Amount:</th>
+                                    <th style="float:right">الاجمالي:</th>
                                     <td>
                                         <t t-esc="o.total_amount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
 <!--                                        <t t-esc="res_company.currency_id.symbol"/>-->
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Source Port:</th>
+                                    <th style="float:right">ميناء الوصول:</th>
                                     <td>
                                         <t t-esc="o.exporter_port_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Destination Port:</th>
+                                    <th style="float:right">ميناء القيام:</th>
                                     <td>
                                         <t t-esc="o.importer_port_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Shipment Method:</th>
+                                    <th style="float:right">طريقة الشحن:</th>
                                     <td>
                                         <t t-esc="dict(o._fields['shipment_method'].selection).get(o.shipment_method)"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Payment Method:</th>
+                                    <th style="float:right">طريقة الدفع:</th>
                                     <td>
                                         <t t-esc="dict(o._fields['payment_method'].selection).get(o.payment_method)"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Bank:</th>
+                                    <th style="float:right">البنك:</th>
                                     <td>
                                         <t t-esc="o.bank_id.name"/>
                                         -
@@ -147,9 +148,9 @@
                                     </td>
                                 </tr>
                             </table>
-                            <div style="margin-top:200px">
-                                <div style="text-align:left">Export Signature: ..............................</div>
-                                <div style="text-align:right">Import Signature: ..............................</div>
+                            <div style="margin-top:150px">
+                                <p style="float:left; font-size: 24px;font-family: 'Scheherazade';">توقيع المصدر: ..............................</p>
+                                <p style="float:right; font-size: 24px;font-family: 'Scheherazade';">توفيع المستورد: ..............................</p>
                             </div>
                         </div>
                     </t>

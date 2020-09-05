@@ -58,8 +58,8 @@ class ExportForm(models.Model):
     discharge_port_id = fields.Many2one(related="contract_id.importer_port_id", store=True, string="Discharge Port")
     freight_term = fields.Many2one("erky.freight.term", string="Freight Term", default=lambda self: self.env['erky.freight.term'].search([], limit=1))
     notify = fields.Text("Notify", default="Same As Consignee")
-    f20_qty = fields.Float("Container 20F Qty", )
-    f40_qty = fields.Float("Container 40F Qty", )
+    f20_qty = fields.Integer("Container 20F Qty", )
+    f40_qty = fields.Integer("Container 40F Qty", )
     # =================Bill Of Lading================
     bl_no = fields.Char("Bill Of Lading No")
     bl_booking_no = fields.Char("Booking No")
@@ -159,6 +159,11 @@ class ExportForm(models.Model):
         ctx = self.env.context.copy()
         product = self.product_id.with_context(force_company=self.env.user.company_id.id)
         account = product.property_account_income_id or product.categ_id.property_account_income_categ_id
+        qty = sum(self.packing_ids.mapped("net_qty"))
+        rounding_method = self._context.get('rounding_method', 'UP')
+        if self.package_uom_id.packing_uom_id and self.product_uom_id:
+                qty = self.package_uom_id.packing_uom_id._compute_quantity(qty, self.product_uom_id,
+                                                               rounding_method=rounding_method)
         if not account:
             raise ValidationError(
                 _('Please define income account for this product: "%s" (id:%d) - or for its category: "%s".') %
@@ -170,7 +175,7 @@ class ExportForm(models.Model):
                     'default_type': 'out_invoice',
                     'default_journal_type': 'sale',
                     'default_invoice_line_ids': [(0, 0, {'product_id': self.product_id.id,
-                                                         'quantity': self.qty,
+                                                         'quantity': qty,
                                                          'price_unit': self.contract_id.purchase_contract_id.unit_price,
                                                          'name': self.product_id.name,
                                                          'account_id': account.id
@@ -369,10 +374,10 @@ class ExportForm(models.Model):
 
                 if lines:
                     vals = {'partner_id': partner.id,
-                            'date_invoice': datetime.now(),
+                            # 'date_invoice': datetime.now(),
                             'type': 'in_invoice',
                             'reference': self.name,
-                            'date_due': datetime.today(),
+                            # 'date_due': datetime.today(),
                             'invoice_line_ids': lines
                     }
                     bill_id = self.env['account.invoice'].create(vals)
