@@ -9,9 +9,9 @@
             <field name="page_width">0</field>
             <field name="orientation">Portrait</field>
             <field name="margin_top">42</field>
-            <field name="margin_bottom">5</field>
-            <field name="margin_left">5</field>
-            <field name="margin_right">5</field>
+            <field name="margin_bottom">16</field>
+            <field name="margin_left">16</field>
+            <field name="margin_right">16</field>
             <field name="header_line" eval="False"/>
             <field name="header_spacing">0</field>
             <field name="dpi">80</field>
@@ -23,7 +23,7 @@
                 model="erky.purchase.contract"
                 name="erky_base.report_erky_purchase_contract"
                 file="erky_base.report_erky_purchase_contract"
-                report_type="qweb-html"
+                report_type="qweb-pdf"
                 paperformat="paperformat_euro_lowmargin_erky"/>
         />
 
@@ -33,7 +33,7 @@
                     <t t-call="web.external_layout">
                         <div class="page" style="position:relative;">
                             <h2><center>PURCHASING CONTRACT</center></h2>
-                            <table style="border-collapse: separate;border-spacing: 0 20px !important;font-size: 16px;">
+                            <table style="border-collapse: separate;border-spacing: 0 20px !important;font-size: 17px;">
                                 <tr>
                                     <th>Contract No:</th>
                                     <td><t t-esc="o.contract_no"/></td>
@@ -136,6 +136,11 @@
                                     </td>
                                 </tr>
                             </table>
+
+                            <div style="margin-top:200px">
+                                <div style="text-align:left"><strong>The Seller (seal/sign)</strong></div>
+                                <div style="text-align:right"><strong>The Buyer (seal/sign)</strong></div>
+                            </div>
                         </div>
                     </t>
                 </t>

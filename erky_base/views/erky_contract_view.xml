@@ -21,6 +21,7 @@
       <field name="arch" type="xml">
         <form>
           <header>
+            <button name="%(erky_hr_expense_action)d" class="oe_highlight" context="{'default_contract_id': id}" type="action" string="Add Fees"/>
             <button name="action_submit_trade_ministry" class="oe_highlight" type="object" string="Submit To MC" states="draft"/>
             <button name="action_create_request" class="oe_highlight" type="object" string="Create Request" states="draft"/>
             <button name="action_to_bank" class="oe_highlight" type="object" string="To Bank" states="mc"/>
@@ -47,10 +48,14 @@
                       class="oe_stat_button"
               >
               </button>
-              <button name="action_add_fees" string="Add Fees" type="object"
-                      icon="fa-file-text-o"
-                      class="oe_stat_button"
-              />
+              <button name="action_open_expenses" string="Expenses" type="object"
+                                    icon="fa-file-text-o"
+                                    class="oe_stat_button"
+                             />
+<!--              <button name="action_add_fees" string="Add Fees" type="object"-->
+<!--                      icon="fa-file-text-o"-->
+<!--                      class="oe_stat_button"-->
+<!--              />-->
             </div>
             <div class="oe_title">
               <label for="name" class="oe_edit_only"/>

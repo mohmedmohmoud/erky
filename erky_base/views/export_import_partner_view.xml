@@ -5,6 +5,9 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form" />
         <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="name_arabic" placeholder="Arabic Name:"/>
+            </field>
             <field name="user_id" position="before">
                 <field name="is_exporter"/>
                 <field name="is_importer"/>

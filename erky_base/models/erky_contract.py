@@ -62,6 +62,7 @@ class ErkyContract(models.Model):
     mc_no = fields.Char(string="MC Contract No")
     erky_request_ids = fields.One2many("erky.request", "internal_contract_id")
     number_of_forms = fields.Integer("Number of forms", default=1)
+    hr_expense_ids = fields.One2many("hr.expense", "contract_id")
 
     @api.model
     def create(self, vals):
@@ -126,6 +127,13 @@ class ErkyContract(models.Model):
             'view_id': self.env.ref("erky_base.erky_request_form_view").id,
             'target': 'current'
         }
+
+    @api.multi
+    def action_open_expenses(self):
+        expense_ids = self.mapped('hr_expense_ids')
+        action = self.env.ref('hr_expense.hr_expense_actions_my_unsubmitted').read()[0]
+        action['domain'] = [('id', 'in', expense_ids.ids)]
+        return action
 
     @api.multi
     def action_open_requests(self):

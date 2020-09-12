@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale', 'hr_expense', 'stock'],
+    'depends': ['base', 'sale', 'hr_expense', 'stock', 'web'],
 
     # always loaded
     'data': [
@@ -33,6 +33,7 @@
         'wizard/template_report_wiz_view.xml',
         'views/res_company_view.xml',
         'views/product_product_view.xml',
+        'views/hr_export_form.xml',
         'views/export_import_partner_view.xml',
         'views/res_bank_view.xml',
         'views/erky_base_view.xml',
@@ -43,6 +44,7 @@
         'views/config_templates_view.xml',
         'views/erky_product_uom_view.xml',
         'views/erky_payment_account_view.xml',
+        'views/shipment.xml',
         'report/shipment_report.xml',
         'report/erky_purchase_contract_report.xml',
         'report/draft_contract_report.xml',
@@ -51,6 +53,10 @@
         'report/export_form_report.xml',
         'report/packing_list_report.xml',
         # 'report/certificate_origin_report.xml',
+    ],
+
+    'qweb': [
+            "static/src/xml/reconcile_shipment.xml",
     ],
 
 }

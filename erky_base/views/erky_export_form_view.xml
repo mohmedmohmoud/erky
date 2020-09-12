@@ -22,6 +22,7 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
+                        <button name="%(erky_hr_expense_action)d" class="oe_highlight" context="{'default_export_form_id': id}" type="action" string="Add Fees"/>
                         <button name="action_ssmo" class="oe_highlight" type="object" string="SSMO" states="draft"/>
                         <button name="action_shipment_ins" class="oe_highlight" type="object" string="Submit To Shipment Ins" states="ssmo"/>
                         <button name="action_shipment" class="oe_highlight" type="object" string="Submit To Shipment" states="shipment_ins"/>
@@ -124,6 +125,13 @@
                                         <field name="voucher_date" attrs="{'readonly': [('state', '!=', 'ssmo')]}"/>
                                         <field name="ssmo_attachment_id" attrs="{'readonly': [('state', '!=', 'ssmo')]}"/>
                                     </group>
+                                </group>
+
+                                <group class="oe_subtotal_footer oe_right">
+                                    <field name="outstanding_shipment_widget" colspan="2" nolabel="1" widget="shipment" attrs="{'invisible': [('state', 'not in', 'shipment')]}"/>
+                                </group>
+                                <group class="oe_right">
+                                    <field name="shipment_widget" colspan="4" nolabel="1" widget="shipment" attrs="{'invisible': [('state', 'not in', 'shipment')]}"/>
                                 </group>
                             </page>
                             <!--=======================Container Shipment====================-->

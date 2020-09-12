@@ -6,3 +6,5 @@ class ResPartner(models.Model):
 
     is_importer = fields.Boolean()
     is_exporter = fields.Boolean()
+
+    name_arabic = fields.Char("Name Arabic")

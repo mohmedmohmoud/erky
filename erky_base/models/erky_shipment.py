@@ -50,6 +50,7 @@ class Shipment(models.Model):
     state = fields.Selection([('draft', "Waiting Shipment"), ('discharge', "Waiting Discharge"), ('done', "Done"), ('canceled', "Canceled")], default='draft')
     in_container_qty = fields.Integer("In Container Qty", compute="_compute_container_qty")
     shipment_container_ids = fields.One2many("erky.container.shipment", "vehicle_shipment_id")
+    is_full_reconciled = fields.Boolean("Fully Reconciled")
 
     @api.depends("package_qty", "discharged_packing_weight", "origin_shipped_weight")
     def _compute_product_qty(self):
@@ -69,6 +70,11 @@ class Shipment(models.Model):
                 rec.base_shipped_weight = rec.origin_shipped_uom_id._compute_quantity(rec.origin_shipped_weight,
                                                                                      rec.base_shipped_uom_id,
                                                                                      rounding_method=rounding_method)
+
+    def get_shipment_reconciled_qty(self):
+        reconciled_qty = sum(self.env['erky.shipment.reconcile'].search([('contract_id', '=', self.internal_contract_id.id),
+                                                                         ('shipment_id', '=', self.id)]).mapped("qty"))
+        return reconciled_qty
 
 
     @api.depends("unit_cost", "qty", "shipment_cost_ids")
@@ -93,13 +99,20 @@ class Shipment(models.Model):
         if res:
             contract_id = res.internal_contract_id or False
             export_form_id = res.export_form_id or False
-            shipment_id = res
-            qty = res.qty_as_product_unit
-            if contract_id and export_form_id and shipment_id and qty:
-                self.env['erky.shipment.reconcile'].create({'contract_id': contract_id.id,
-                                                            'form_export_id': export_form_id.id,
-                                                            'shipment_id': shipment_id.id,
-                                                            'qty': qty})
+            if export_form_id:
+                qty = res.qty_as_product_unit
+                form_reconciled_qty = export_form_id.get_form_reconciled_qty()
+                form_remain_qty = export_form_id.qty - form_reconciled_qty
+                if res.qty_as_product_unit > form_remain_qty:
+                    qty = form_remain_qty
+                else:
+                    res.is_full_reconciled = True
+
+                if contract_id and export_form_id and res and qty > 0:
+                    self.env['erky.shipment.reconcile'].create({'contract_id': contract_id.id,
+                                                                'form_export_id': export_form_id.id,
+                                                                'shipment_id': res.id,
+                                                                'qty': qty})
 
     @api.multi
     def action_submit(self):

@@ -1,5 +1,5 @@
-from datetime import datetime
 import inflect
+import json
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
@@ -81,6 +81,81 @@ class ExportForm(models.Model):
     packing_ids = fields.One2many("erky.packing", "export_form_id")
     # =================Container Request================
     container_request_ids = fields.One2many("erky.container.request", "export_form_id")
+    # ================= Reconcile ===============
+    outstanding_shipment_widget = fields.Text(compute='_get_outstanding_shipment_info_JSON')
+    shipment_widget = fields.Text(compute='_get_shipment_info_JSON')
+    fully_reconciled = fields.Boolean()
+
+    @api.one
+    def _get_outstanding_shipment_info_JSON(self):
+        self.outstanding_shipment_widget = json.dumps(False)
+        if self.state == 'shipment' and not self.fully_reconciled:
+            domain = [('internal_contract_id', '=', self.contract_id.id), ('is_full_reconciled', '=', False)]
+            shipment_ids = self.env['erky.vehicle.shipment'].search(domain)
+            info = {}
+            if shipment_ids and not self.fully_reconciled and self.shipped_qty != self.qty:
+                info.update({'title': 'Outstanding Shipment', 'content': [], 'outstanding': True, 'export_form_id': self.id})
+                for sh in shipment_ids:
+                    qty = sum(self.env['erky.shipment.reconcile'].search([('contract_id', '=', sh.internal_contract_id.id),
+                                                                          ('shipment_id', '=', sh.id)
+                                                                         ]).mapped("qty"))
+
+                    qty = sh.qty_as_product_unit - qty
+                    info['content'].append({
+                        'id': sh.id,
+                        'shipment_ref': sh.name,
+                        'qty': qty,
+                        'product_uom': sh.product_uom_id.name,
+                        'package_qty': sh.package_qty,
+                        'package_uom': sh.package_uom_id.name,
+                        'weight_qty': sh.packing_weight,
+                        'packing_uom': sh.packing_weight_uom_id.name
+                    })
+
+                self.outstanding_shipment_widget = json.dumps(info)
+
+    def _get_shipment_info_JSON(self):
+        self.shipment_widget = json.dumps(False)
+
+        info = {'title': _('Less Shipment'), 'outstanding': False, 'content': self._get_shipment_vals()}
+        self.shipment_widget = json.dumps(info)
+
+    def _get_shipment_vals(self):
+        lines = []
+        reconciled_lines_ids = self.env['erky.shipment.reconcile'].search([('contract_id', '=', self.contract_id.id),
+                                                    ('export_form_id', '=', self.id)])
+        for l in reconciled_lines_ids:
+            lines.append({'qty': l.qty,
+                          'ref': l.shipment_id.name,
+                          'uom': l.shipment_id.product_uom_id.name})
+        return lines
+
+
+
+    def get_form_reconciled_qty(self):
+        reconciled_qty = sum(self.env['erky.shipment.reconcile'].search([('contract_id', '=', self.contract_id.id),
+                                                                         ('export_form_id', '=', self.id)]).mapped("qty"))
+        return reconciled_qty
+
+    def assign_outstanding(self, shipment_id, qty):
+        if qty > 0:
+            remain_qty = self.qty - self.get_form_reconciled_qty()
+            if qty > remain_qty:
+                qty = remain_qty
+            reconcile_obj = self.env['erky.shipment.reconcile']
+            shipment_id = self.env['erky.vehicle.shipment'].browse(shipment_id)
+            reconcile_obj.create({'shipment_id': shipment_id.id,
+                                  'contract_id': shipment_id.internal_contract_id.id,
+                                  'export_form_id': self.id,
+                                  'qty': qty})
+
+            shipment_reconciled_qty = shipment_id.get_shipment_reconciled_qty()
+            if shipment_reconciled_qty >= shipment_id.qty_as_product_unit:
+                shipment_id.is_full_reconciled = True
+
+            form_reconciled_qty = self.get_form_reconciled_qty()
+            if form_reconciled_qty >= self.qty:
+                self.fully_reconciled = True
 
     def number_to_words(self, num):
         engine = inflect.engine()
@@ -98,8 +173,8 @@ class ExportForm(models.Model):
     def compute_form_qty(self):
         for rec in self:
             reconciled_shipment_ids = self.env['erky.shipment.reconcile'].search([('contract_id', '=', rec.contract_id.id),
-                                                                                  ('shipment_id', 'in', rec.vehicle_shipment_ids.ids),
                                                                                   ('export_form_id', '=', rec.id)])
+
             if reconciled_shipment_ids:
                 shipped_qty = sum(reconciled_shipment_ids.mapped('qty'))
                 rec.shipped_qty = shipped_qty
