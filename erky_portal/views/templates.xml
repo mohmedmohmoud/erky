@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+        <record id="customer_declaration_menu" model="website.menu">
+            <field name="name">Customer Declaration</field>
+            <field name="url">/customer/declaration</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence">1</field>
+        </record>
+
+        <template id="customer_declaration_template" name="Customer Declaration">
+            <t t-call="website.layout">
+                <div id="wrap">
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>
