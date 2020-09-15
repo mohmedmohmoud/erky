@@ -1,0 +1,18 @@
+<odoo>
+  <data>
+      <record id="inherit_export_form_view" model="ir.ui.view">
+        <field name="name">inherit.export.form.view</field>
+        <field name="model">erky.export.form</field>
+        <field name="inherit_id" ref="erky_base.erky_export_form_view"/>
+        <field name="arch" type="xml">
+          <notebook position="inside">
+            <page string="Customer Declaration">
+              <group>
+                <field name="declarant_id"/>
+              </group>
+            </page>
+          </notebook>
+        </field>
+      </record>
+  </data>
+</odoo>

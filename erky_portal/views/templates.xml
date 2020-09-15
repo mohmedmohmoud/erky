@@ -9,7 +9,17 @@
 
         <template id="customer_declaration_template" name="Customer Declaration">
             <t t-call="website.layout">
-                <div id="wrap">
+                <div class="container mt32">
+                    <div class="row">
+                        <div class="form-group col-lg-6" >
+                            <label for="name">Form No:</label>
+                            <input type="text" class="form-control" name="form_no" id="form_no" t-att-value="form_no" readonly="1"/>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="name_en">Form Qty:</label>
+                            <input type="text" class="form-control" name="form_qty" id="form_qty" t-att-value="form_qty" readonly="1"/>
+                        </div>
+                    </div>
                 </div>
             </t>
         </template>
