@@ -15,7 +15,7 @@ class PackingListReport(models.AbstractModel):
     _name = 'report.erky_base.report_packing_list_erky'
 
     @api.model
-    def render_html(self, docids, data=None):
+    def _get_report_values(self, docids, data=None):
         docargs = {}
         if len(docids) > 1:
             raise ValidationError("There is no multi selection.")
@@ -26,7 +26,7 @@ class PackingListReport(models.AbstractModel):
         docargs['doc_ids'] = docids
         docargs['doc_model'] = self.env['erky.export.form']
         docargs['docs'] = docs
-        return self.env['report'].render('erky_base.report_packing_list_erky', docargs)
+        return docargs
 
     def _get_report_data(self, record):
         total_container = len(record.packing_ids)
