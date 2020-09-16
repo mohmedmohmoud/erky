@@ -1,0 +1,28 @@
+<odoo>
+    <record id="wizard_erky_renew_form_wiz_form" model="ir.ui.view">
+        <field name="name">erky.renew.form.wiz.form</field>
+        <field name="model">erky.form.renew.wiz</field>
+        <field name="arch" type="xml">
+            <form string="Renew Form:">
+                <group>
+                    <field name="export_form_id" invisible="1"/>
+                    <field name="new_date"/>
+                </group>
+                <footer>
+                    <button string='Apply' name="apply_date_change" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="form_renew_wizard_action" model="ir.actions.act_window">
+        <field name="name">Renew Form</field>
+        <field name="res_model">erky.form.renew.wiz</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_erky_renew_form_wiz_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -19,9 +19,74 @@
                             <label for="name_en">Form Qty:</label>
                             <input type="text" class="form-control" name="form_qty" id="form_qty" t-att-value="form_qty" readonly="1"/>
                         </div>
+                        <div class="form-group col-lg-12">
+                            <label for="name_en">Shipment:</label>
+                            <table class="table 32">
+                                <tr>
+                                    <th>Ref</th>
+                                    <th>Driver Name</th>
+                                    <th>Driver Phone</th>
+                                    <th>Front Plate No</th>
+                                    <th>Back Plate No</th>
+                                    <th>Qty</th>
+                                    <th>Shipped Qty</th>
+                                    <th>State</th>
+                                    <th>#</th>
+                                </tr>
+                                <tr t-foreach="shipment_ids" t-as="sh">
+                                    <input type="hidden" class="form-control" id="ship_id" t-att-value="sh.id" required="1"/>
+                                    <td><t t-esc="sh.name"/></td>
+                                    <td><t t-esc="sh.driver_id.name"/></td>
+                                    <td><t t-esc="sh.phone_no"/></td>
+                                    <td><t t-esc="sh.front_plate_no"/></td>
+                                    <td><t t-esc="sh.back_plate_no"/></td>
+                                    <td><t t-esc="sh.qty_as_product_unit"/>/<t t-esc="sh.product_uom_id.name"/></td>
+                                    <td><t t-esc="sh.base_shipped_weight"/>/<t t-esc="sh.base_shipped_uom_id.name"/></td>
+                                    <td><t t-esc="sh.state"/></td>
+                                    <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">Receive</button></td>
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Receive Shipments:</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true"/>
+                                                    </button>
+                                                </div>
+<!--                                                <div class="modal-body">-->
+<!--                                                    <div class="form-group">-->
+<!--                                                        <label for="sh_id" class="col-form-label">ID:</label>-->
+<!--                                                        <input type="text" class="form-control" id="sh_id" t-att-value="sh.id" required="1"/>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label for="Received Qty" class="col-form-label">Received Qty/Kgs:</label>
+                                                        <input type="text" class="form-control" id="received_qty" required="1"/>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" id="close_model" data-dismiss="modal">Close</button>
+                                                    <button type="button" id="receive_shipment_btn" t-att-value="sh.id" class="btn btn-primary">Apply</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tr>
+                            </table>
+
+
+                        </div>
                     </div>
                 </div>
             </t>
+        </template>
+
+        <template id="erky_shipment_portal_assets" name="Erky Shipment Portal Frontend" inherit_id="website.assets_frontend">
+            <xpath expr="." position="inside">
+<!--                <link rel="stylesheet" href="/ust_online_registration/static/src/css/email_confirmation.css"/>-->
+                <script type="text/javascript" src="/erky_portal/static/src/js/shipment.js"></script>
+            </xpath>
         </template>
     </data>
 </odoo>

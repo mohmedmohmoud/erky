@@ -31,6 +31,7 @@
         'wizard/generate_container_wiz_view.xml',
         'wizard/generate_forms_wiz_view.xml',
         'wizard/template_report_wiz_view.xml',
+        'wizard/renew_form_wiz.xml',
         'views/res_company_view.xml',
         'views/product_product_view.xml',
         'views/hr_export_form.xml',

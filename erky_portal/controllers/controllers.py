@@ -14,5 +14,6 @@ class CustomerDeclaration(http.Controller):
         if export_form_id:
             vals.update({'form_no': export_form_id.form_no,
                          'form_qty': str(export_form_id.qty) + "/" + export_form_id.product_uom_id.name,
-                         'qty_uom': export_form_id.product_uom_id.name})
+                         'qty_uom': export_form_id.product_uom_id.name,
+                         'shipment_ids': export_form_id.vehicle_shipment_ids})
         return request.render('erky_portal.customer_declaration_template', vals)
