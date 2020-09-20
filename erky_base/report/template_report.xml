@@ -23,6 +23,7 @@
             name="erky_base.report_erky_template_report"
             file="mrp_repair.report_erky_template_report"
             report_type="qweb-pdf"
+            menu="False"
         />
 
         <record id="action_report_template_erky" model="ir.actions.report">
@@ -31,13 +32,11 @@
 
         <template id="report_erky_template_report">
            <t t-call="web.html_container">
-<!--                <t t-foreach="docs" t-as="o">-->
                     <t t-call="web.external_layout">
                         <div class="page">
                             <div><t t-raw="temp"/></div>
                         </div>
                     </t>
-<!--                </t>-->
             </t>
         </template>
     </data>

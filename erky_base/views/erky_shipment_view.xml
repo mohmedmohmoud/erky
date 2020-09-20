@@ -137,7 +137,7 @@
                             <page string="Containers">
                                 <field name="shipment_container_ids" context="{'default_internal_contract_id': internal_contract_id,
                                     'default_export_form_id': export_form_id, 'default_shipment_uom_id': package_uom_id}"
-                                    attrs="{'invisible': [('shipment_type', '!=', 'container_shipment'),('state', '!=', 'discharge')]}">
+                                    attrs="{'invisible': [('shipment_type', '!=', 'container_shipment'),('state', 'not in', ['discharge', 'done'])]}">
                                     <tree editable="bottom">
                                         <field name="internal_contract_id" invisible="1"/>
                                         <field name="purchase_contract_id" invisible="1"/>

@@ -21,3 +21,5 @@ erky_container_shipment_access_all,erky.container.shipment access all,model_erky
 erky_shipment_cost_access_all,erky.shipment.cost access all,model_erky_shipment_cost,,1,1,1,1
 erky_container_access_all,erky.container access all,model_erky_container,,1,1,1,1
 erky_request_access_all,erky.request access all,model_erky_request,,1,1,1,1
+erky_dynamic_template_all,erky.dynamic.template access all,model_erky_dynamic_template,,1,1,1,1
+erky_dynamic_template_line_all,erky.dynamic.template.line access all,model_erky_dynamic_template_line,,1,1,1,1

@@ -8,6 +8,7 @@
                 name="erky_base.report_erky_export_form"
                 file="mrp_repair.report_erky_export_form"
                 report_type="qweb-pdf"
+                menu="False"
         />
 
         <template id="report_erky_export_form">
