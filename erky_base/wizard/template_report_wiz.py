@@ -13,8 +13,8 @@ class ErkyTemplateReportWiz(models.TransientModel):
     template_from = fields.Selection([('certificate_analysis', "Certificate Analysis"),
                                       ('commercial_invoice', "Commercial Invoice"),
                                       ('shipping_instruction', "Shipping Instruction"),
-                                      # ('certificate_origin', "Certificate Origin"),
-                                      # ('original', "Original"),
+                                      ('certificate_origin', "Certificate Origin"),
+                                      ('original', "Original"),
                                       ], string="Export Form", required=0)
     template_content = fields.Html(string="Preview")
     dynamic_rep_id = fields.Many2one("erky.dynamic.template")
@@ -28,10 +28,10 @@ class ErkyTemplateReportWiz(models.TransientModel):
             select_report_template_body = self.env['ir.default'].get('erky.template.settings', 'commercial_invoice_temp')
         if self.template_from == "shipping_instruction":
             select_report_template_body = self.env['ir.default'].get('erky.template.settings', 'shipping_instruction_temp')
-        # if self.template_from == "certificate_origin":
-        #     select_report_template_body = self.env['ir.default'].get('erky.template.settings', 'certificate_origin_temp')
-        # if self.template_from == "original":
-        #     select_report_template_body = self.env['ir.default'].get('erky.template.settings', 'original_temp')
+        if self.template_from == "certificate_origin":
+            select_report_template_body = self.env['ir.default'].get('erky.template.settings', 'certificate_origin_temp')
+        if self.template_from == "original":
+            select_report_template_body = self.env['ir.default'].get('erky.template.settings', 'original_temp')
 
         if select_report_template_body:
             obj_record = self.export_form_id
