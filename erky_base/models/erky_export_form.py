@@ -22,6 +22,8 @@ class ExportForm(models.Model):
     product_uom_id = fields.Many2one(
         'uom.uom', 'Product Unit of Measure', related='product_id.uom_id',
         readonly=True, store=True)
+    unit_contract_price = fields.Float(related="purchase_contract_id.unit_price", string="Contract Price", store=True)
+    contract_currency_id = fields.Many2one(related="purchase_contract_id.currency_id", string="Contract Currency")
     package_uom_id = fields.Many2one("uom.uom", "Package UOM")
     packing_weight_uom_id = fields.Many2one(related="package_uom_id.packing_uom_id", store=True, string="Packing Weight UOM")
     net_shipment_qty = fields.Float(string="Net Ship Qty", store=True, compute="_compute_all_form_qty")
