@@ -128,8 +128,8 @@
                                 </tr>
                             </table>
                             <div class="clearfix" style="margin-top:200px;font-size: 1.2em;font-family: 'Times New Roman';">
-                                <div class="float-left" style="text-align:left"><span><strong>EXPORTER SIGNATURE: ..............................</strong></span></div>
-                                <div class="float-right" style="text-align:right"><span><strong>IMPORTER SIGNATURE: ..............................</strong></span></div>
+                                <div class="float-left" style="text-align:left"><span><strong>EXPORTER SIGNATURE</strong></span></div>
+                                <div class="float-right" style="text-align:right"><span><strong>IMPORTER SIGNATURE</strong></span></div>
                             </div>
                         </div>
                     </t>
