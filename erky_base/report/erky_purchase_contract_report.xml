@@ -32,22 +32,18 @@
                 <t t-foreach="docs" t-as="o">
                     <t t-call="web.external_layout">
                         <div class="page" style="position:relative;">
-                            <h2><center>PURCHASING CONTRACT</center></h2>
-                            <table style="border-collapse: separate;border-spacing: 0 20px !important;font-size: 17px;">
+                            <p><center style="font-size:1.4em;font-family:'Times New Roman';font-style:bold;text-decoration: underline;"><strong>PURCHASING CONTRACT</strong></center></p>
+                            <div class="clearfix" style="font-size: 1.2em;font-family: 'Times New Roman';font-style:bold;margin-top:50px;">
+                                <div class="float-left" style="text-align:left"><span>NO:  <t t-esc="o.contract_no"/></span></div>
+                                <div class="float-right" style="text-align:right"><span>DATE: <t t-esc="o.date"/></span></div>
+                            </div>
+                            <table style="border-collapse: separate;border-spacing: 0 20px !important;font-size: 1.2em;font-family:'Times New Roman';">
                                 <tr>
-                                    <th>Contract No:</th>
-                                    <td><t t-esc="o.contract_no"/></td>
-                                </tr>
-                                <tr>
-                                    <th>Contract Date:</th>
-                                    <td><t t-esc="o.date"/></td>
-                                </tr>
-                                <tr>
-                                    <th>Seller:</th>
+                                    <td style="width:30%;">SELLER:</td>
                                     <td><t t-esc="o.exporter_id.name"/></td>
                                 </tr>
                                 <tr>
-                                    <th>Address:</th>
+                                    <td>ADDRESS:</td>
                                     <td><t t-esc="o.exporter_id.street"/>,
                                         <t t-esc="o.exporter_id.street2"/>,
                                         <t t-esc="o.exporter_id.city"/>,
@@ -55,11 +51,11 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Buyer:</th>
+                                    <td>BUYER:</td>
                                     <td><t t-esc="o.importer_id.name"/></td>
                                 </tr>
                                 <tr>
-                                    <th>Address:</th>
+                                    <td>ADDRESS:</td>
                                     <td><t t-esc="o.importer_id.street"/>,
                                         <t t-esc="o.importer_id.street2"/>,
                                         <t t-esc="o.importer_id.city"/>,
@@ -67,19 +63,19 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Phone:</th>
+                                    <td>PHONE:</td>
                                     <td><t t-esc="o.phone_no"/></td>
                                 </tr>
                                 <tr>
-                                    <th colspan="2">The undersigned seller and buyer have confirm this contract in accordance with the terms and conditions
-                                    stipulated below</th>
+                                    <td colspan="2">The undersigned seller and buyer have confirm this contract in accordance with the terms and conditions
+                                    stipulated below</td>
                                 </tr>
                                 <tr>
-                                    <th>Commodity:</th>
+                                    <td>NAME OF COMMODITY:</td>
                                     <td><t t-esc="o.product_id.name"/></td>
                                 </tr>
                                 <tr>
-                                    <th>Specification:</th>
+                                    <td>SPECIFICATIONS:</td>
                                     <td>
                                         <t t-foreach="o.product_specification_ids" t-as="sp">
                                             <p><t t-esc="sp.name.name"/>: <t t-esc="sp.value"/> </p>
@@ -87,11 +83,11 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Quantity:</th>
-                                    <td><t t-esc="o.qty"/>/<t t-esc="o.product_uom_id.name"/> (10% plus minus allowed.) </td>
+                                    <td>QUANTITY:</td>
+                                    <td><t t-esc="o.qty"/>/<t t-esc="o.product_uom_id.name"/><t t-esc="o.allowed_percentage"/></td>
                                 </tr>
                                 <tr>
-                                    <th>Price Per Ton:</th>
+                                    <td>UNIT PRICE:</td>
                                     <td>
                                         <t t-esc="o.unit_price"/>/<t t-esc="o.currency_id.symbol"/>
 <!--                                        &#45;&#45;-->
@@ -99,11 +95,11 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Payment:</th>
+                                    <td>PAYMENT:</td>
                                     <td><t t-esc="o.payment_condition"/></td>
                                 </tr>
                                 <tr>
-                                    <th>Account:</th>
+                                    <td>ACCOUNT:</td>
                                     <td>
                                         <p>Account Name :<t t-esc="o.payment_account_id.name"/></p>
                                         <p>Account No   :<t t-esc="o.account_no"/></p>
@@ -114,20 +110,21 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Shipment:</th>
+                                    <td>SHIPMENT:</td>
                                     <td><t t-esc="o.shipment_condition"/> </td>
                                 </tr>
                                 <tr>
-                                    <th>Port of Discharge:</th>
+                                    <td>PORT OF DESTINATION:</td>
                                     <td><t t-esc="o.importer_port_id.name"/> </td>
                                 </tr>
                                 <tr>
-                                    <th>Packing:</th>
+                                    <td>PACKING:</td>
                                     <td><t t-esc="o.packing_condition"/> </td>
                                 </tr>
                                 <tr>
-                                    <th>Documents:</th>
+                                    <td>DOCUMENTS:</td>
                                     <td>
+                                        <br/>
                                         <ol>
                                             <t t-foreach="o.required_document_ids" t-as="dc">
                                                 <li><t t-esc="dc.name"/></li>
@@ -137,9 +134,9 @@
                                 </tr>
                             </table>
 
-                            <div style="margin-top:200px">
-                                <div style="text-align:left"><strong>The Seller (seal/sign)</strong></div>
-                                <div style="text-align:right"><strong>The Buyer (seal/sign)</strong></div>
+                            <div class="clearfix" style="margin-top:200px; font-size:1.2em;font-family:'Times New Roman;">
+                                <div class="float-left" style="text-align:left">THE SELLER (seal/sign)</div>
+                                <div class="float-right" style="text-align:right">THE BUYER (seal/sign)</div>
                             </div>
                         </div>
                     </t>

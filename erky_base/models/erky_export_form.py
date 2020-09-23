@@ -253,7 +253,7 @@ class ExportForm(models.Model):
                     'default_journal_type': 'sale',
                     'default_invoice_line_ids': [(0, 0, {'product_id': self.product_id.id,
                                                          'quantity': qty,
-                                                         'price_unit': self.contract_id.purchase_contract_id.unit_price,
+                                                         'price_unit': self.unit_contract_price,
                                                          'name': self.product_id.name,
                                                          'account_id': account.id
                                                         })]
