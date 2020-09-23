@@ -34,92 +34,92 @@
                             <div style="margin-top:70px;">
                                 <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">EXPORT CONTRACT</center></strong>
                             </div>
-                            <div class="clearfix" style="font-size: 1.2em;font-family: 'Times New Roman';font-style:bold;margin-top:50px;">
-                                <div class="float-left" style="text-align:left"><strong>NO:</strong> <t t-esc="o.name"/></div>
-                                <div class="float-right" style="text-align:right"><strong>DATE:</strong> <t t-esc="o.date"/></div>
+                            <div class="clearfix" style="font-size: 1.4em;font-family: 'Times New Roman';font-style:bold;margin-top:50px;">
+                                <div class="float-left" style="text-align:left"><strong>NO: <t t-esc="o.name"/></strong></div>
+                                <div class="float-right" style="text-align:right"><strong>DATE: <t t-esc="o.date"/></strong></div>
                             </div>
-                            <table style="padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.2em;font-family: 'Times New Roman';">
+                            <table style="padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.4em;font-family: 'Times New Roman';">
                                 <tr>
-                                    <td style="width:30%">EXPORTER:</td>
+                                    <th style="width:30%">EXPORTER:</th>
                                     <td>
                                         <t t-esc="o.exporter_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>TAX ID:</td>
+                                    <th>TAX ID:</th>
                                     <td>
                                         <t t-esc="o.tax_id"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>IMPORTER:</td>
+                                    <th>IMPORTER:</th>
                                     <td>
                                         <t t-esc="o.importer_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>IMPORTER ADDRESS:</td>
+                                    <th>IMPORTER ADDRESS:</th>
                                     <td><t t-esc="o.importer_country_id.name"/></td>
                                 </tr>
                                 <tr>
-                                    <td>PRODUCT NAME:</td>
+                                    <th>PRODUCT NAME:</th>
                                     <td>
                                         <t t-esc="o.product_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>ORIGIN:</td>
+                                    <th>ORIGIN:</th>
                                     <td>
                                         <t t-esc="o.exporter_id.country_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>QTY:</td>
+                                    <th>QTY:</th>
                                     <td>
                                         <t t-esc="o.qty"/>
                                         <t t-esc="o.product_uom_id.name"/><t t-esc="o.allowed_percentage"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>PRICE:</td>
+                                    <th>PRICE:</th>
                                     <td>
                                         <t t-esc="o.unit_price" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
 <!--                                        <t t-esc="res_company.currency_id.symbol"/>-->
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>TOTAL AMOUNT:</td>
+                                    <th>TOTAL AMOUNT:</th>
                                     <td>
                                         <t t-esc="o.total_amount" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                         <t t-esc="total_amount_txt"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>PORT OF LOADING:</td>
+                                    <th>PORT OF LOADING:</th>
                                     <td>
                                         <t t-esc="o.exporter_port_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>PORT OF DISCHARGE:</td>
+                                    <th>PORT OF DISCHARGE:</th>
                                     <td>
                                         <t t-esc="o.importer_port_id.name"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>SHIPMENT METHOD:</td>
+                                    <th>SHIPMENT METHOD:</th>
                                     <td>
                                         <t t-esc="dict(o._fields['shipment_method'].selection).get(o.shipment_method)"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>PAYMENT METHOD:</td>
+                                    <th>PAYMENT METHOD:</th>
                                     <td>
                                         <t t-esc="dict(o._fields['payment_method'].selection).get(o.payment_method)"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>BANK:</td>
+                                    <th>BANK:</th>
                                     <td>
                                         <t t-esc="o.bank_id.name"/>
                                         -
@@ -127,9 +127,9 @@
                                     </td>
                                 </tr>
                             </table>
-                            <div class="clearfix" style="margin-top:200px;font-size: 1.0em;font-family: 'Times New Roman';">
-                                <div class="float-left" style="text-align:left"><span>EXPORTER SIGNATURE: ..............................</span></div>
-                                <div class="float-right" style="text-align:right"><span>IMPORTER SIGNATURE: ..............................</span></div>
+                            <div class="clearfix" style="margin-top:200px;font-size: 1.2em;font-family: 'Times New Roman';">
+                                <div class="float-left" style="text-align:left"><span><strong>EXPORTER SIGNATURE: ..............................</strong></span></div>
+                                <div class="float-right" style="text-align:right"><span><strong>IMPORTER SIGNATURE: ..............................</strong></span></div>
                             </div>
                         </div>
                     </t>
