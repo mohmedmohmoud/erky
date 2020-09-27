@@ -1,0 +1,80 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="erky_base.erky_draft_bl_tree_view">
+      <field name="name">erky.draft.bl.tree.view</field>
+      <field name="model">erky.draft.bl</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="booking_no"/>
+          <field name="date"/>
+          <field name="product_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="erky_base.erky_draft_bl_form_view">
+      <field name="name">erky.draft.bl.form.view</field>
+      <field name="model">erky.draft.bl</field>
+      <field name="arch" type="xml">
+        <form>
+        <header>
+              <button name="action_create_invoice" class="oe_highlight" type="object" string="Create Invoice"/>
+          </header>
+          <sheet>
+              <div class="oe_button_box" name="button_box">
+              <button name="action_open_invoice_form" string="Invoice" type="object"
+                                    icon="fa-file-text-o"
+                                    class="oe_stat_button"
+                             >
+                            </button>
+              </div>
+            <group>
+              <h1><span style="border: 1px solid #7c7bad; padding:5px;color:#7c7bad;">DRAFT BL WINDOW</span></h1>
+            </group>
+            <div class="oe_title">
+              <label for="name" class="oe_edit_only"/>
+              <h1><field name="name"/></h1>
+            </div>
+            <group>
+                <group>
+                    <field name="package_uom_id" invisible="1"/>
+                    <field name="export_form_id"/>
+                    <field name="booking_no"/>
+                </group>
+                <group>
+                    <field name="date"/>
+                    <field name="product_id"/>
+                    <field name="package_uom_id" invisible="0"/>
+                    <label for="total_qty"/>
+                    <div class="o_row">
+                        <field name="total_qty"/>
+                        <field name="product_uom_id"/>
+                    </div>
+                </group>
+            </group>
+              <field name="bl_line_ids">
+                  <tree editable="bottom">
+                      <field name="container_ref"/>
+                      <field name="container_size"/>
+                      <field name="qty"/>
+                      <field name="net_qty"/>
+                      <field name="gross_qty"/>
+                  </tree>
+              </field>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="erky_base.erky_draft_bl_action">
+      <field name="name">Erky Draft BL window</field>
+      <field name="res_model">erky.draft.bl</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Draft BL" id="erky_base.menu_erky_draft_bl" parent="erky_base.menu_erky_contracts"
+              action="erky_base.erky_draft_bl_action" sequence="8"/>
+
+  </data>
+</odoo>

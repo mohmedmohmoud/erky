@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_euro_lowmargin_invoice_erky" model="report.paperformat">
+            <field name="name">European A4 low margin</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">42</field>
+            <field name="margin_bottom">16</field>
+            <field name="margin_left">16</field>
+            <field name="margin_right">16</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">80</field>
+        </record>
+        <report
+            id="action_report_invoice_erky"
+            string="Invoice"
+            model="erky.draft.bl"
+            name="erky_base.report_invoice_erky"
+            file="mrp_repair.report_invoice_erky"
+            report_type="qweb-pdf"
+            paperformat="paperformat_euro_lowmargin_packing_erky"
+        />
+
+        <template id="report_invoice_erky">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                <div class="page" style="position:relative;">
+                    <div style="margin-top:70px;">
+                        <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">COMMERCIAL INVOICE</center></strong>
+                    </div>
+                    <table class="table table-bordered mb64" style="margin-top:50px;padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.2em;font-family: 'Times New Roman';">
+                        <tr>
+                            <td colspan="3">
+                                <p><strong><t t-esc="docs['importer_id'].name"/></strong></p>
+                                <p><strong><t t-esc="docs['importer_id'].street"/>, <t t-esc="docs['importer_id'].street2"/></strong></p>
+                                <p><strong>City, <t t-esc="docs['importer_id'].city"/> - <t t-esc="docs['importer_id'].country_id.name"/></strong></p>
+                            </td>
+                            <td style="border-top: 2px solid white !important;width:5%"></td>
+                            <td colspan="2" style="width:40%">
+                                <p><strong>DATE: <t t-esc="docs['current_date']"/></strong> </p>
+                                <p><strong>INVOICE NO: <t t-esc="docs['invoice_no']"/></strong></p>
+                                <p><strong>B/L NO: <t t-esc="docs['bl_no']"/></strong></p>
+                                <p><strong>CONTRACT NO: <t t-esc="docs['contract_no']"/></strong></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>ITEM NO</th>
+                            <th>DESCRIPTION</th>
+                            <th>UNIT PRICE/$</th>
+                            <th>QUANTITY/TON</th>
+                            <th>TOTAL PRICE/$</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <t t-esc="docs['item_no']"/>
+                            </td>
+                            <td>
+                                <t t-esc="docs['desc']"/>
+                            </td>
+                            <td><t t-esc="docs['unit_price']"/></td>
+                            <td><t t-esc="docs['qty']"/></td>
+                            <td><t t-esc="docs['total_amount']"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5"/>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><strong>TOTAL PRICE/$</strong></td>
+                            <td colspan="2"><t t-esc="docs['total_amount']"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5"><strong>TOTAL AMOUNT IN DOLLARS <t t-esc="docs['total_amount_words']"/> </strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="5"><strong>
+                                Account name: <t t-esc="docs['account'].contract_id.purchase_contract_id.payment_account_id.name"/><br/>
+                                Account No: <t t-esc="docs['account'].contract_id.purchase_contract_id.account_no"/><br/>
+                                Company: <t t-esc="docs['account'].contract_id.purchase_contract_id.partner_id.name"/><br/>
+                                Bank Name: <t t-esc="docs['account'].contract_id.purchase_contract_id.account_bank_id.name"/><br/>
+                                IBAN: <t t-esc="docs['account'].contract_id.purchase_contract_id.iban"/><br/>
+                                Swift Code: <t t-esc="docs['account'].contract_id.purchase_contract_id.swift_code"/>
+                            </strong></td>
+                        </tr>
+                    </table>
+                </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

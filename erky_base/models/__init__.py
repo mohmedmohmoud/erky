@@ -16,3 +16,4 @@ from . import config_templates
 from . import erky_product_uom
 from . import erky_payment_account
 from . import dynamic_report_template
+from . import draft_bl

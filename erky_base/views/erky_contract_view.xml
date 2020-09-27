@@ -31,6 +31,9 @@
             <field name="state" widget="statusbar" statusbar_visible="draft,close"/>
           </header>
           <sheet>
+            <group>
+              <h1><span style="border: 1px solid #7c7bad; padding:5px;color:#7c7bad;">TRADE OF MINISTRY CONTRACT WINDOW</span></h1>
+            </group>
             <div class="oe_button_box" name="button_box">
               <button name="action_open_export_form" string="Export Form" type="object"
                       icon="fa-file-text-o"

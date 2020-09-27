@@ -10,6 +10,7 @@
                     <field name="internal_contract_id" invisible="1"/>
                     <field name="purchase_contract_id" invisible="1"/>
                     <field name="export_form_id" invisible="1"/>
+                    <field name="draft_bl_id" invisible="1"/>
                 </field>
             </field>
         </record>

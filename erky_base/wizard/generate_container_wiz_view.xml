@@ -5,11 +5,15 @@
         <field name="model">erky.container.request</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="is_active"/>
                 <field name="partner_id"/>
+                <field name="shipper_partner_id"/>
+                <field name="consignee_partner_id"/>
+                <field name="shipment_ins_date"/>
                 <field name="qty"/>
-                <field name="price"/>
-                <field name="sug_qty_20f"/>
-                <field name="sug_qty_40f"/>
+<!--                <field name="price"/>-->
+<!--                <field name="sug_qty_20f"/>-->
+<!--                <field name="sug_qty_40f"/>-->
             </tree>
         </field>
      </record>
@@ -20,14 +24,34 @@
         <field name="arch" type="xml">
             <form string="Request Container:">
                 <group>
+                    <h1><span style="border: 1px solid #7c7bad; padding:5px;color:#7c7bad;">SHIPPING INSTRUCTIONS WINDOW</span></h1>
+                </group>
+                <group>
+                    <field name="is_active"/>
+                </group>
+                <group>
                     <group>
                         <field name="export_form_id" invisible="1"/>
+                        <field name="contract_id" invisible="1"/>
                         <field name="partner_id" invisible="0" required="1"/>
+                        <field name="shipper_partner_id" invisible="0"/>
+                        <field name="discharge_port_id" invisible="0"/>
+                        <field name="notify" invisible="0"/>
+                        <field name="f20_qty" invisible="0"/>
+                        <field name="f40_qty" invisible="0"/>
+                        <field name="product_id" invisible="0"/>
                         <field name="currency_id" invisible="1"/>
                         <field name="price" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                     </group>
                     <group>
-                        <field name="qty" required="1"/>
+                        <field name="shipment_ins_date" required="1"/>
+                        <field name="consignee_partner_id" required="1"/>
+                        <label for="qty"/>
+                        <div class="o_row">
+                             <field name="qty" required="1"/>
+                             <field name="product_uom_id"/>
+                        </div>
+                        <field name="freight_term" required="1"/>
                         <field name="note"/>
                     </group>
                 </group>

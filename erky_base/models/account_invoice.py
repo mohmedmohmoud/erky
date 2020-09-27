@@ -6,6 +6,7 @@ class AccountInvoice(models.Model):
     export_form_id = fields.Many2one("erky.export.form", string="Export Form")
     internal_contract_id = fields.Many2one("erky.contract")
     purchase_contract_id = fields.Many2one("erky.purchase.contract")
+    draft_bl_id = fields.Many2one("erky.draft.bl")
 
 
     @api.model
@@ -13,4 +14,6 @@ class AccountInvoice(models.Model):
         res = super(AccountInvoice, self).create(values)
         if res.export_form_id:
             res.export_form_id.invoice_id = res.id
+        if res.draft_bl_id:
+            res.draft_bl_id.invoice_id = res.id
         return res

@@ -23,3 +23,5 @@ erky_container_access_all,erky.container access all,model_erky_container,,1,1,1,
 erky_request_access_all,erky.request access all,model_erky_request,,1,1,1,1
 erky_dynamic_template_all,erky.dynamic.template access all,model_erky_dynamic_template,,1,1,1,1
 erky_dynamic_template_line_all,erky.dynamic.template.line access all,model_erky_dynamic_template_line,,1,1,1,1
+erky_draft_bl_all,erky.draft.bl access all,model_erky_draft_bl,,1,1,1,1
+erky_draft_bl_line_all,erky.draft.bl.line access all,model_erky_bl_line,,1,1,1,1

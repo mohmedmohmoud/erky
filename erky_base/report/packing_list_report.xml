@@ -19,7 +19,7 @@
         <report
             id="action_report_packing_list_erky"
             string="Packing List"
-            model="erky.export.form"
+            model="erky.draft.bl"
             name="erky_base.report_packing_list_erky"
             file="mrp_repair.report_packing_list_erky"
             report_type="qweb-pdf"
@@ -31,14 +31,10 @@
 <!--            <t t-foreach="docs" t-as="o">-->
                 <t t-call="web.external_layout">
                 <div class="page" style="position:relative;">
-                    <h2><center><t t-esc="res_company.name"/></center></h2>
-                    <h2><center>Erky Integrated Solutions Co. Ltd.</center></h2>
-                    <h2><center>PACKING LIST</center></h2>
-
-                    <br/><br/><br/>
-                    <br/><br/><br/>
-
-                    <table class="table table-bordered mb64">
+                    <div style="margin-top:70px;">
+                        <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">PACKING LIST</center></strong>
+                    </div>
+                    <table class="table table-bordered mb64" style="margin-top:50px;padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.4em;font-family: 'Times New Roman';">
                         <tr>
                             <td colspan="4">
                                 <p><strong><t t-esc="docs['importer_id'].name"/></strong></p>
@@ -78,7 +74,7 @@
                                     <t t-set="is_desc" t-value="True"/>
                                 </t>
                             </td>
-                            <td><t t-esc="c.container_id"/></td>
+                            <td><t t-esc="c.container_ref"/></td>
                             <td>1</td>
                             <td><t t-esc="c.net_qty"/></td>
                             <td><t t-esc="c.gross_qty"/></td>

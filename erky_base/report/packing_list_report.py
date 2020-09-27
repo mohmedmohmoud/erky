@@ -19,33 +19,33 @@ class PackingListReport(models.AbstractModel):
         docargs = {}
         if len(docids) > 1:
             raise ValidationError("There is no multi selection.")
-        active_record = self.env['erky.export.form'].browse(docids)
+        active_record = self.env['erky.draft.bl'].browse(docids)
         if not active_record:
             raise ValidationError("No active record.")
         docs = self._get_report_data(active_record)
         docargs['doc_ids'] = docids
-        docargs['doc_model'] = self.env['erky.export.form']
+        docargs['doc_model'] = self.env['erky.draft.bl']
         docargs['docs'] = docs
         return docargs
 
     def _get_report_data(self, record):
-        total_container = len(record.packing_ids)
+        total_container = len(record.bl_line_ids)
         total_container_words_no = """(""" + str(number_to_words(total_container).upper()) + """ ONLY)"""
-        total_bags = sum(record.packing_ids.mapped('qty'))
+        total_bags = sum(record.bl_line_ids.mapped('qty'))
         total_bags_words = """(""" + str(number_to_words(total_bags).upper()) + """ ONLY)"""
-        gross_weight = sum(record.packing_ids.mapped('gross_qty'))
+        gross_weight = sum(record.bl_line_ids.mapped('gross_qty'))
         gross_weight_words = """(""" + str(number_to_words(gross_weight).upper()) + """ ONLY)"""
-        net_weight = sum(record.packing_ids.mapped('net_qty'))
+        net_weight = sum(record.bl_line_ids.mapped('net_qty'))
         net_weight_words = """(""" + str(number_to_words(net_weight).upper()) + """ ONLY)"""
 
         report_data = {'current_date': fields.date.today(),
                        'invoice_no': record.invoice_id.number,
-                       'bl_no': record.bl_no,
-                       'contract_no': record.contract_id.name,
-                       'importer_id': record.contract_id.importer_id,
-                       'item_no': record.contract_id.product_id.default_code,
-                       'desc': record.contract_id.product_id.name,
-                       'containers': record.packing_ids,
+                       'bl_no': record.name,
+                       'contract_no': record.export_form_id.contract_id.name,
+                       'importer_id': record.export_form_id.contract_id.importer_id,
+                       'item_no': record.export_form_id.contract_id.product_id.default_code,
+                       'desc': record.export_form_id.contract_id.product_id.name,
+                       'containers': record.bl_line_ids,
                        'total_words_container': total_container_words_no,
                        'total_container': total_container,
                        'total_bags': total_bags,

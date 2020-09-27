@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_euro_lowmargin_ship_inst_erky" model="report.paperformat">
+            <field name="name">European A4 low margin</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">42</field>
+            <field name="margin_bottom">16</field>
+            <field name="margin_left">16</field>
+            <field name="margin_right">16</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">80</field>
+        </record>
+        <report
+                id="action_report_erky_shipment_inst"
+                string="Print Shipment Instruction"
+                model="erky.container.request"
+                name="erky_base.report_erky_shipment_inst"
+                file="erky_base.report_erky_shipment_inst"
+                report_type="qweb-pdf"
+                paperformat="paperformat_euro_lowmargin_contract_erky"
+        />
+
+        <template id="report_erky_shipment_inst">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page" style="position:relative;">
+                            <div style="margin-top:70px;">
+                                <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">SHIPPING INSTRUCTIONS</center></strong>
+                            </div>
+                            <div class="clearfix" style="font-size: 1.4em;font-family: 'Times New Roman';font-style:bold;margin-top:50px;">
+                                <div class="float-left" style="text-align:left"><strong>TO: <t t-esc="o.partner_id.name"/></strong></div>
+                                <div class="float-right" style="text-align:right"><strong>DATE: <t t-esc="o.shipment_ins_date"/></strong></div>
+                            </div>
+                            <center>
+                            <table class="table table-bordered mb64" style="padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.4em;font-family: 'Times New Roman';">
+                                <tr>
+                                    <th style="width:40%;text-align:left">SHIPPER</th>
+                                    <td>
+                                        <t t-esc="o.shipper_partner_id.name"/><br/>
+                                        ADD: <t t-esc="o.shipper_partner_id.street"/>,<br/>
+                                        <t t-esc="o.shipper_partner_id.street2"/>,<br/>
+                                        <t t-esc=" o.shipper_partner_id.city"/> - <t t-esc="o.shipper_partner_id.country_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%;text-align:left">CONSIGNEE</th>
+                                    <td>
+                                        <t t-esc="o.consignee_partner_id.name"/><br/>
+                                        ADD: <t t-esc="o.consignee_partner_id.street"/>,<br/>
+                                        <t t-esc="o.consignee_partner_id.street2"/>,<br/>
+                                        <t t-esc=" o.consignee_partner_id.city"/> - <t t-esc="o.consignee_partner_id.country_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%;text-align:left">NOTIFY</th>
+                                    <td>
+                                        <t t-esc="o.notify"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%;text-align:left">PORT OF LOADING</th>
+                                    <td><t t-esc="o.contract_id.exporter_port_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%;text-align:left">PORT OF DISCHARGE</th>
+                                    <td>
+                                        <t t-esc="o.discharge_port_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%;text-align:left">FREIGHT TERM/LOCATION</th>
+                                    <td>
+                                        <t t-esc="o.freight_term.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%;text-align:left">DESCRIPTION OF GOODS</th>
+                                    <td>
+                                        <t t-esc="o.product_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%;text-align:left">NET AND GROSS WEIGHT</th>
+                                    <td>
+                                        <t t-esc="o.qty"/> <t t-esc="o.product_uom_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="width:30%;text-align:left">REMARKS</th>
+                                    <td>
+                                        <t t-if="o.f20_qty"> <t t-esc="o.f40_qty"/> Containers "20"</t>
+                                        <t t-if="o.f40_qty"><br/><t t-esc="o.f20_qty"/> Containers "40"</t>
+                                    </td>
+                                </tr>
+                            </table>
+                            </center>
+                            <div class="clearfix" style="margin-top:200px;font-size: 1.2em;font-family: 'Times New Roman';">
+                                <center><div><span><strong><t t-esc="o.shipper_partner_id.name"/><br/></strong></span></div></center>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

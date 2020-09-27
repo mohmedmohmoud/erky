@@ -27,6 +27,9 @@
             <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
           </header>
           <sheet>
+            <group>
+                <h1><span style="border: 1px solid #7c7bad; padding:5px;color:#7c7bad;">PURCHASE CONTRACT WINDOW</span></h1>
+            </group>
             <div class="oe_button_box" name="button_box">
               <field name="internal_contract_id" invisible="1"/>
                 <button name="action_internal_contract" string="M.C Contract" type="object"
