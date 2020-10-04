@@ -31,6 +31,7 @@ class ErkyContract(models.Model):
     importer_city = fields.Char(related="importer_id.city", store=True, string='City')
     importer_state_id = fields.Many2one(related="importer_id.state_id", store=True, string='State')
     importer_country_id = fields.Many2one(related="importer_id.country_id", store=True, string='Country')
+    commercial_register = fields.Char("The Commercial Register")
     product_id = fields.Many2one("product.product", "Product",  required=1, domain=[('type', '=', 'product')])
     product_uom_id = fields.Many2one(
         'uom.uom', 'Product Unit of Measure', related='product_id.uom_id',

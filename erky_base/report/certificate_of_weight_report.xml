@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_euro_lowmargin_certificate_weight_erky" model="report.paperformat">
+            <field name="name">European A4 low margin</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">42</field>
+            <field name="margin_bottom">16</field>
+            <field name="margin_left">12</field>
+            <field name="margin_right">12</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">80</field>
+        </record>
+        <report
+                id="action_report_certificate_weight_erky"
+                string="Certificate Weight"
+                model="erky.draft.bl"
+                name="erky_base.report_certificate_weight_erky"
+                file="erky_base.report_certificate_weight_erky"
+                report_type="qweb-pdf"
+                paperformat="paperformat_euro_lowmargin_certificate_weight_erky"
+        />
+
+        <template id="report_certificate_weight_erky">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page" style="position:relative;">
+                        <div style="margin-top:70px;">
+                            <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">CERTIFICATE OF WEIGHT</center></strong>
+                        </div>
+                        <div class="clearfix" style="font-size: 1.4em;font-family: 'Times New Roman';font-style:bold;margin-top:50px;">
+                            <div class="float-left" style="text-align:left"><strong>DATE: <t t-esc="docs.date"/></strong></div>
+                        </div>
+                        <ul style="font-size: 1.2em;font-family: 'Times New Roman';">
+                            <strong>
+                                <li style="text-decoration: underline;">DETAILS OF SHIPMENT:</li>
+                                    <ul>
+                                        <li>SHIPPER:<t t-esc="docs.export_form_id.shipper_partner_id.name"/></li>
+                                        <li>ADD:<t t-esc="docs.export_form_id.shipper_partner_id.street"/>,
+                                            <t t-esc="docs.export_form_id.shipper_partner_id.street2"/>,
+                                            <t t-esc="docs.export_form_id.shipper_partner_id.city"/> - <t t-esc="docs.export_form_id.shipper_partner_id.country_id.name"/>
+                                        </li>
+                                        <li>CONSIGNEE:<t t-esc="docs.export_form_id.consignee_partner_id.name"/></li>
+                                        <li>ADD:  <t t-esc="docs.export_form_id.consignee_partner_id.street"/>,
+                                            <t t-esc="docs.export_form_id.consignee_partner_id.street2"/>,
+                                            <t t-esc="docs.export_form_id.consignee_partner_id.city"/> - <t t-esc="docs.export_form_id.consignee_partner_id.country_id.name"/>
+                                        </li>
+                                        <li>VESSEL: <t t-esc="docs.vessel_name"/></li>
+                                        <li>PORT OF LOADING: <t t-esc="docs.export_form_id.contract_id.exporter_port_id.name"/></li>
+                                        <li>PORT OF DISCHARGE: <t t-esc="docs.export_form_id.discharge_port_id.name"/></li>
+                                        <li>COMMODITY: <t t-esc="docs.product_id.name"/></li>
+                                        <li>PACKING: IN NEW POLYPROPYLENE <t t-esc="docs.package_uom_id.name"/> OF <t t-esc="docs.package_uom_id.packing_weight"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/> EACH.</li>
+                                        <li>QUANTITY: <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/> = <t t-esc="docs.gross_qty"/> KGS GROSS</li>
+                                        <li>B/L NO: <t t-esc="docs.name"/>, DATE:<t t-esc="docs.date"/>, PORT-SUDAN.</li>
+                                    </ul>
+                                <br/>
+                                <li style="text-decoration: underline;">WEIGHT / QUANTITY:</li>
+                                    <ul style="text-decoration: none;">
+                                        <li><t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/>      = <t t-esc="docs.gross_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/> GROSS</li>
+                                        <li><t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/>      = <t t-esc="docs.net_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/> NET</li>
+                                    </ul>
+                                <br/>
+                                <li style="text-decoration: underline;">NO OF CONTAINERS:</li>
+                            </strong>
+                        </ul>
+                        <center>
+                            <table class="table" style="font-size: 1.2em;font-family: 'Times New Roman'; width:100%;line-height: 1.0;">
+                                <tr>
+                                    <th style="border:2px solid black;">S NO</th>
+                                    <th style="border:2px solid black;">CONTAINER NO</th>
+                                    <th style="border:2px solid black;">SEAL NO</th>
+                                    <th style="border:2px solid black;">GROSS WEIGHT</th>
+                                    <th style="border:2px solid black;">NET WEIGHT</th>
+                                    <th style="border:2px solid black;">BAGS</th>
+                                </tr>
+                                <t t-set="count" t-value="1"/>
+                                <tr t-foreach="docs.bl_line_ids" t-as="l">
+                                    <td style="border:2px solid black;text-align:center;"><t t-esc="count"/></td>
+                                    <td style="border:2px solid black;text-align:center;"><t t-esc="l.container_ref"/></td>
+                                    <td style="border:2px solid black;text-align:center;"><t t-esc="l.seal_no"/></td>
+                                    <td style="border:2px solid black;text-align:center;"><t t-esc="l.gross_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></td>
+                                    <td style="border:2px solid black;text-align:center;"><t t-esc="l.net_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></td>
+                                    <td style="border:2px solid black;text-align:center;"><t t-esc="l.qty"/></td>
+                                    <t t-set="count" t-value="count + 1"/>
+                                </tr>
+                                <tr>
+
+                                        <td style="border:2px solid black;text-align:center;"></td>
+                                        <td style="border:2px solid black;text-align:center;" colspan="2"><strong>TOTAL</strong></td>
+                                        <td style="border:2px solid black;text-align:center;">
+                                            <strong><t t-esc="docs.gross_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></strong>
+                                        </td>
+                                        <td style="border:2px solid black;text-align:center;">
+                                            <strong><t t-esc="docs.net_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></strong>
+                                        </td>
+                                        <td style="border:2px solid black;text-align:center;">
+                                            <strong><t t-esc="docs.pack_qty"/></strong>
+                                        </td>
+
+                                </tr>
+                            </table>
+                        </center>
+                        <center>
+                        <div class="clearfix" style="font-size: 1.2em;font-family: 'Times New Roman';font-style:bold;margin-top:70px; width:80%">
+                            <div class="float-left" style="text-align:left"><strong>SIGNATURE</strong></div>
+                            <div class="float-right" style="text-align:right"><strong>STAMP</strong></div>
+                        </div>
+                        </center>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

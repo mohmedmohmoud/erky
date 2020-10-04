@@ -7,6 +7,8 @@ from odoo.exceptions import ValidationError
 class ExportForm(models.Model):
     _name = "erky.export.form"
 
+    _rec_name = "form_no"
+
     name = fields.Char(string="Sequence", default="New", readonly=1)
     form_no = fields.Char("Form No")
     issue_date = fields.Date("Issue Date")
@@ -32,6 +34,7 @@ class ExportForm(models.Model):
     bank_id = fields.Many2one(related="contract_id.bank_id", store=True, string="Bank", required=0)
     bank_branch_id = fields.Many2one(related="contract_id.bank_branch_id", store=True, string="Bank Branch")
     exporter_port_id = fields.Many2one(related="contract_id.exporter_port_id", store=True, string="Exporter Port")
+    draft_bl_id = fields.Many2one('erky.draft.bl')
     state = fields.Selection([('draft', "Draft"),
                               ('ssmo', "SSMO"),
                               ('shipment_ins', "Shipment Instruction"),

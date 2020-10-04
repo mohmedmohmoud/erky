@@ -40,7 +40,7 @@
                             </div>
                             <table style="padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.4em;font-family: 'Times New Roman';">
                                 <tr>
-                                    <th style="width:30%">EXPORTER:</th>
+                                    <th style="width:40%">EXPORTER:</th>
                                     <td>
                                         <t t-esc="o.exporter_id.name"/>
                                     </td>
@@ -57,6 +57,12 @@
                                         <t t-esc="o.importer_id.name"/>
                                     </td>
                                 </tr>
+                                <t t-if="o.commercial_register">
+                                    <tr>
+                                    <th>COMMERCIAL REGISTER:</th>
+                                    <td><t t-esc="o.commercial_register"/></td>
+                                </tr>
+                                </t>
                                 <tr>
                                     <th>IMPORTER ADDRESS:</th>
                                     <td><t t-esc="o.importer_country_id.name"/></td>

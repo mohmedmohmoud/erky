@@ -22,6 +22,6 @@ class DraftContractReport(models.AbstractModel):
             docargs['data'] = data
             docargs['docs'] = self.env['erky.contract'].browse(docids)
             total = docargs['docs'].qty * docargs['docs'].unit_price
-            docargs['total_amount_txt'] = '(' + str(number_to_words(total)) + ')'
+            docargs['total_amount_txt'] = '(' + str(number_to_words(int(total))) + ')'
         print ("================================", docargs['docs'].name, docargs['docs'].unit_price, docargs['docs'], docargs['total_amount_txt'])
         return docargs

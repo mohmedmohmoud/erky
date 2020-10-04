@@ -34,15 +34,15 @@
                     <div style="margin-top:70px;">
                         <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">PACKING LIST</center></strong>
                     </div>
-                    <table class="table table-bordered mb64" style="margin-top:50px;padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.4em;font-family: 'Times New Roman';">
+                    <table class="table" style="margin-top:50px;padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.4em;font-family: 'Times New Roman';">
                         <tr>
-                            <td colspan="4">
+                            <td style="border: 2px solid black;" colspan="4">
                                 <p><strong><t t-esc="docs['importer_id'].name"/></strong></p>
                                 <p><strong><t t-esc="docs['importer_id'].street"/>, <t t-esc="docs['importer_id'].street2"/></strong></p>
                                 <p><strong>City, <t t-esc="docs['importer_id'].city"/> - <t t-esc="docs['importer_id'].country_id.name"/></strong></p>
                             </td>
-                            <td style="border-top: 2px solid white !important;"></td>
-                            <td colspan="2">
+                            <td style="border: 2px solid black;border-top: 2px solid white !important;"></td>
+                            <td style="border: 2px solid black;" colspan="2">
                                 <p><strong>DATE: <t t-esc="docs['current_date']"/></strong> </p>
                                 <p><strong>INVOICE NO: <t t-esc="docs['invoice_no']"/></strong></p>
                                 <p><strong>B/L NO: <t t-esc="docs['bl_no']"/></strong></p>
@@ -50,55 +50,55 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>ITEM NO</th>
-                            <th>DESCRIPTION</th>
-                            <th>CONTAINER NO</th>
-                            <th>CONT</th>
-                            <th>WEIGHT/(NET)</th>
-                            <th>WEIGHT/(GROSS)</th>
-                            <th>TOTAL/BAGS</th>
+                            <th style="border: 2px solid black;">ITEM NO</th>
+                            <th style="border: 2px solid black;">DESCRIPTION</th>
+                            <th style="border: 2px solid black;">CONTAINER NO</th>
+                            <th style="border: 2px solid black;">CONT</th>
+                            <th style="border: 2px solid black;">WEIGHT/(NET)</th>
+                            <th style="border: 2px solid black;">WEIGHT/(GROSS)</th>
+                            <th style="border: 2px solid black;">TOTAL/BAGS</th>
                         </tr>
                         <t t-set="is_item_no" t-value="False"/>
                         <t t-set="is_desc" t-value="False"/>
                         <t t-set="spn" t-value="len(docs['containers'])"/>
                         <tr t-foreach="docs['containers']" t-as="c">
-                            <td t-if="not is_item_no" t-att-rowspan="spn" style="vertical-align: middle;text-align:center">
+                            <td t-if="not is_item_no" t-att-rowspan="spn" style="vertical-align: middle;text-align:center;border: 2px solid black;">
                                 <t t-if="not is_item_no">
                                     <t t-esc="docs['item_no']"/>
                                     <t t-set="is_item_no" t-value="True"/>
                                 </t>
                             </td>
-                            <td t-if="not is_desc" t-att-rowspan="spn" style="vertical-align: middle;text-align:center">
+                            <td t-if="not is_desc" t-att-rowspan="spn" style="vertical-align: middle;text-align:center;border: 2px solid black;">
                                 <t t-if="not is_desc">
                                     <t t-esc="docs['desc']"/>
                                     <t t-set="is_desc" t-value="True"/>
                                 </t>
                             </td>
-                            <td><t t-esc="c.container_ref"/></td>
-                            <td>1</td>
-                            <td><t t-esc="c.net_qty"/></td>
-                            <td><t t-esc="c.gross_qty"/></td>
-                            <td><t t-esc="c.qty"/></td>
+                            <td style="border: 2px solid black;"><t t-esc="c.container_ref"/></td>
+                            <td style="border: 2px solid black;">1</td>
+                            <td style="border: 2px solid black;"><t t-esc="c.net_qty"/></td>
+                            <td style="border: 2px solid black;"><t t-esc="c.gross_qty"/></td>
+                            <td style="border: 2px solid black;"><t t-esc="c.qty"/></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><strong>TOTAL CONTAINER</strong></td>
-                            <td colspan="3"><t t-esc="docs['total_words_container']"/></td>
-                            <td colspan="2" style="text-align:center;"><t t-esc="docs['total_container']"/></td>
+                            <td style="border: 2px solid black;" colspan="2"><strong>TOTAL CONTAINER</strong></td>
+                            <td style="border: 2px solid black;" colspan="3"><t t-esc="docs['total_words_container']"/></td>
+                            <td colspan="2" style="text-align:center;border: 2px solid black;"><t t-esc="docs['total_container']"/></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><strong>TOTAL BAGS</strong></td>
-                            <td colspan="3"><t t-esc="docs['total_bags_words']"/> </td>
-                            <td colspan="2" style="text-align:center;"><t t-esc="docs['total_bags']"/> </td>
+                            <td style="border: 2px solid black;" colspan="2"><strong>TOTAL BAGS</strong></td>
+                            <td style="border: 2px solid black;" colspan="3"><t t-esc="docs['total_bags_words']"/> </td>
+                            <td colspan="2" style="text-align:center;border: 2px solid black;"><t t-esc="docs['total_bags']"/> </td>
                         </tr>
                         <tr>
-                            <td colspan="2"><strong>TOTAL WEIGHT/GROSS</strong></td>
-                            <td colspan="3"><t t-esc="docs['gross_weight_words']"/></td>
-                            <td colspan="2" style="text-align:center;"><t t-esc="docs['gross_weight']"/></td>
+                            <td style="border: 2px solid black;" colspan="2"><strong>TOTAL WEIGHT/GROSS</strong></td>
+                            <td style="border: 2px solid black;" colspan="3"><t t-esc="docs['gross_weight_words']"/></td>
+                            <td colspan="2" style="text-align:center;border: 2px solid black;"><t t-esc="docs['gross_weight']"/></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><strong>TOTAL WEIGHT/NET</strong></td>
-                            <td colspan="3"><t t-esc="docs['net_weight_words']"/></td>
-                            <td colspan="2" style="text-align:center;"><t t-esc="docs['net_weight']"/></td>
+                            <td style="border: 2px solid black;" colspan="2"><strong>TOTAL WEIGHT/NET</strong></td>
+                            <td style="border: 2px solid black;" colspan="3"><t t-esc="docs['net_weight_words']"/></td>
+                            <td colspan="2" style="text-align:center;border: 2px solid black;"><t t-esc="docs['net_weight']"/></td>
                         </tr>
                     </table>
                 </div>

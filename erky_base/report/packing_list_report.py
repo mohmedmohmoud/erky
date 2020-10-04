@@ -38,8 +38,8 @@ class PackingListReport(models.AbstractModel):
         net_weight = sum(record.bl_line_ids.mapped('net_qty'))
         net_weight_words = """(""" + str(number_to_words(net_weight).upper()) + """ ONLY)"""
 
-        report_data = {'current_date': fields.date.today(),
-                       'invoice_no': record.invoice_id.number,
+        report_data = {'current_date': record.date,
+                       'invoice_no': record.invoice_id.name,
                        'bl_no': record.name,
                        'contract_no': record.export_form_id.contract_id.name,
                        'importer_id': record.export_form_id.contract_id.importer_id,

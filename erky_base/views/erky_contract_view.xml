@@ -79,7 +79,7 @@
                   <field name="allowed_percentage" style="color:brown" nolabel="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                 </div>
                 <field name="unit_price" attrs="{'readonly': [('state', '!=', 'draft')]}" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                <field name="remaining_qty"/>
+<!--                <field name="remaining_qty"/>-->
               </group>
               <group>
                 <field name="tax_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
@@ -94,6 +94,7 @@
                     <field name="importer_country_id" placeholder="Country" class="o_address_country" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                   </div>
                 </div>
+                <field name="commercial_register"/>
               </group>
             </group>
             <group>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_euro_lowmargin_certificate_analysis_erky" model="report.paperformat">
+            <field name="name">European A4 low margin</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">42</field>
+            <field name="margin_bottom">16</field>
+            <field name="margin_left">12</field>
+            <field name="margin_right">12</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">80</field>
+        </record>
+        <report
+                id="action_report_certificate_analysis_erky"
+                string="Certificate Analysis"
+                model="erky.draft.bl"
+                name="erky_base.report_certificate_analysis_erky"
+                file="erky_base.report_certificate_analysis_erky"
+                report_type="qweb-pdf"
+                paperformat="paperformat_euro_lowmargin_certificate_analysis_erky"
+        />
+
+        <template id="report_certificate_analysis_erky">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page" style="position:relative;">
+                        <div style="margin-top:70px;">
+                            <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">CERTIFICATE OF ANALYSIS</center></strong>
+                        </div>
+                        <div class="clearfix" style="font-size: 1.4em;font-family: 'Times New Roman';font-style:bold;margin-top:50px;">
+                            <div class="float-left" style="text-align:left"><strong>BL NO: <t t-esc="docs.name"/></strong></div>
+                            <div class="float-right" style="text-align:right"><strong>DATE: <t t-esc="docs.date"/></strong></div>
+                        </div>
+                        <ul style="font-size: 1.2em;font-family: 'Times New Roman';">
+                            <strong>
+                                <li style="text-decoration: underline;">DETAILS OF SHIPMENT AS PER B/L:</li>
+                                    <ul>
+                                        <li>SHIPPER:<t t-esc="docs.export_form_id.shipper_partner_id.name"/></li>
+                                        <li>ADD:<t t-esc="docs.export_form_id.shipper_partner_id.street"/>,
+                                            <t t-esc="docs.export_form_id.shipper_partner_id.street2"/>,
+                                            <t t-esc="docs.export_form_id.shipper_partner_id.city"/> - <t t-esc="docs.export_form_id.shipper_partner_id.country_id.name"/>
+                                        </li>
+                                        <li>CONSIGNEE:<t t-esc="docs.export_form_id.consignee_partner_id.name"/></li>
+                                        <li>ADD:  <t t-esc="docs.export_form_id.consignee_partner_id.street"/>,
+                                            <t t-esc="docs.export_form_id.consignee_partner_id.street2"/>,
+                                            <t t-esc="docs.export_form_id.consignee_partner_id.city"/> - <t t-esc="docs.export_form_id.consignee_partner_id.country_id.name"/>
+                                        </li>
+                                        <li>PORT OF LOADING: <t t-esc="docs.export_form_id.contract_id.exporter_port_id.name"/></li>
+                                        <li>PORT OF DISCHARGE: <t t-esc="docs.export_form_id.discharge_port_id.name"/></li>
+                                        <li>COMMODITY: <t t-esc="docs.product_id.name"/></li>
+                                        <li>QUANTITY: <t t-esc="docs.net_qty"/> NET = <t t-esc="docs.gross_qty"/> GROSS</li>
+                                        <li>PACKING: <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/></li>
+                                        <li>B/L NO: <t t-esc="docs.name"/>, DATE:<t t-esc="docs.date"/>, PORT-SUDAN METHOD OF.</li>
+                                        <li>LOADING: STUFFED INTO <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/> [<t t-esc="len(docs.bl_line_ids)"/> CONTAINERS]</li>
+                                        <li>PRODUCT: <t t-esc="docs.product_id.name"/></li>
+                                    </ul>
+                                <li style="text-decoration: underline;">ANALYSIS RESULTS:</li>
+                            </strong>
+                        </ul>
+                        <center>
+                            <table class="table" style="font-size: 1.2em;font-family: 'Times New Roman'; width:40%">
+                                <tr>
+                                    <th style="border:2px solid black;">ANALYSIS</th>
+                                    <th style="border:2px solid black;">RESULT</th>
+                                </tr>
+                                <tr t-foreach="docs.analysis_result_ids" t-as="res">
+                                    <td style="border:2px solid black;text-align:center;"><t t-esc="res.name.name"/></td>
+                                    <td style="border:2px solid black;text-align:center;"><t t-esc="res.result"/></td>
+                                </tr>
+                            </table>
+                        </center>
+                        <center>
+                        <div class="clearfix" style="font-size: 1.2em;font-family: 'Times New Roman';font-style:bold;margin-top:70px; width:80%">
+                            <div class="float-left" style="text-align:left"><strong>SIGNATURE</strong></div>
+                            <div class="float-right" style="text-align:right"><strong>STAMP</strong></div>
+                        </div>
+                        </center>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -58,6 +58,8 @@
         'report/dynamic_report.xml',
         'report/shipment_inst_report.xml',
         'report/erky_invoice_report.xml',
+        'report/erky_certificate_analysis_report.xml',
+        'report/certificate_of_weight_report.xml',
         # 'report/certificate_origin_report.xml',
     ],
 

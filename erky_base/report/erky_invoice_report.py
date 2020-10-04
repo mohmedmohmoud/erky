@@ -31,7 +31,7 @@ class InvoiceReport(models.AbstractModel):
     def _get_report_data(self, record):
         total_amount_words = """(""" + str(number_to_words(record.invoice_id.amount_total).upper()) + """ ONLY)"""
         report_data = {'current_date': record.invoice_id.date_invoice,
-                       'invoice_no': record.invoice_id.number,
+                       'invoice_no': record.invoice_id.name,
                        'bl_no': record.name,
                        'contract_no': record.export_form_id.contract_id.name,
                        'importer_id': record.export_form_id.contract_id.importer_id,
@@ -41,6 +41,8 @@ class InvoiceReport(models.AbstractModel):
                        'qty': record.invoice_id.invoice_line_ids[0].quantity,
                        'total_amount': record.invoice_id.amount_total,
                        'total_amount_words': total_amount_words,
-                       'account': record.export_form_id}
+                       'account': record.export_form_id,
+                       'port': str(record.export_form_id.discharge_port_id.name).upper()}
+
 
         return report_data
