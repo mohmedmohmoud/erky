@@ -33,7 +33,7 @@ class InvoiceReport(models.AbstractModel):
         report_data = {'current_date': record.invoice_id.date_invoice,
                        'invoice_no': record.invoice_id.name,
                        'bl_no': record.name,
-                       'contract_no': record.export_form_id.purchase_contract_id.contact_no,
+                       'contract_no': record.export_form_id.purchase_contract_id.contract_no,
                        'importer_id': record.export_form_id.contract_id.importer_id,
                        'item_no': record.export_form_id.contract_id.product_id.default_code,
                        'desc': record.export_form_id.contract_id.product_id.name,
