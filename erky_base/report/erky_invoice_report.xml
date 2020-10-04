@@ -33,7 +33,7 @@
                         <div style="margin-top:70px;">
                             <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">COMMERCIAL INVOICE</center></strong>
                         </div>
-                        <table class="table" style="margin-top:50px;padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.2em;font-family: 'Times New Roman';">
+                        <table class="table" style="margin-top:50px;padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.0em;font-family: 'Times New Roman';">
                             <tr>
                                 <td style="border: 2px solid black;;width:40%" colspan="3">
                                     <p><strong><t t-esc="docs['importer_id'].name"/></strong></p>
