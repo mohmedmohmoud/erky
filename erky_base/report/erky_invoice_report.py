@@ -29,11 +29,11 @@ class InvoiceReport(models.AbstractModel):
         return docargs
 
     def _get_report_data(self, record):
-        total_amount_words = """(""" + str(number_to_words(record.invoice_id.amount_total).upper()) + """ ONLY)"""
+        total_amount_words = """(""" + str(number_to_words(int(record.invoice_id.amount_total)).upper()) + """ ONLY)"""
         report_data = {'current_date': record.invoice_id.date_invoice,
                        'invoice_no': record.invoice_id.name,
                        'bl_no': record.name,
-                       'contract_no': record.export_form_id.contract_id.name,
+                       'contract_no': record.export_form_id.purchase_contract_id.contact_no,
                        'importer_id': record.export_form_id.contract_id.importer_id,
                        'item_no': record.export_form_id.contract_id.product_id.default_code,
                        'desc': record.export_form_id.contract_id.product_id.name,

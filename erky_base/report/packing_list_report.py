@@ -32,16 +32,16 @@ class PackingListReport(models.AbstractModel):
         total_container = len(record.bl_line_ids)
         total_container_words_no = """(""" + str(number_to_words(total_container).upper()) + """ ONLY)"""
         total_bags = sum(record.bl_line_ids.mapped('qty'))
-        total_bags_words = """(""" + str(number_to_words(total_bags).upper()) + """ ONLY)"""
+        total_bags_words = """(""" + str(number_to_words(int(total_bags)).upper()) + """ ONLY)"""
         gross_weight = sum(record.bl_line_ids.mapped('gross_qty'))
-        gross_weight_words = """(""" + str(number_to_words(gross_weight).upper()) + """ ONLY)"""
+        gross_weight_words = """(""" + str(number_to_words(int(gross_weight)).upper()) + """ ONLY)"""
         net_weight = sum(record.bl_line_ids.mapped('net_qty'))
-        net_weight_words = """(""" + str(number_to_words(net_weight).upper()) + """ ONLY)"""
+        net_weight_words = """(""" + str(number_to_words(int(net_weight)).upper()) + """ ONLY)"""
 
         report_data = {'current_date': record.date,
                        'invoice_no': record.invoice_id.name,
                        'bl_no': record.name,
-                       'contract_no': record.export_form_id.contract_id.name,
+                       'contract_no': record.export_form_id.purchase_contract_id.contact_no,
                        'importer_id': record.export_form_id.contract_id.importer_id,
                        'item_no': record.export_form_id.contract_id.product_id.default_code,
                        'desc': record.export_form_id.contract_id.product_id.name,
