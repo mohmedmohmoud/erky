@@ -40,31 +40,31 @@
                         <ul style="font-size: 1.2em;font-family: 'Times New Roman';">
                             <strong>
                                 <li style="text-decoration: underline;">DETAILS OF SHIPMENT AS PER B/L:</li>
-                                    <ul>
-                                        <li>SHIPPER:<t t-esc="docs.export_form_id.shipper_partner_id.name"/></li>
-                                        <li>ADD:<t t-esc="docs.export_form_id.shipper_partner_id.street"/>,
+                                    <ul style="list-style: none;">
+                                        <li>- SHIPPER:<t t-esc="docs.export_form_id.shipper_partner_id.name"/></li>
+                                        <li>- ADD:<t t-esc="docs.export_form_id.shipper_partner_id.street"/>,
                                             <t t-esc="docs.export_form_id.shipper_partner_id.street2"/>,
                                             <t t-esc="docs.export_form_id.shipper_partner_id.city"/> - <t t-esc="docs.export_form_id.shipper_partner_id.country_id.name"/>
                                         </li>
-                                        <li>CONSIGNEE:<t t-esc="docs.export_form_id.consignee_partner_id.name"/></li>
-                                        <li>ADD:  <t t-esc="docs.export_form_id.consignee_partner_id.street"/>,
+                                        <li>- CONSIGNEE:<t t-esc="docs.export_form_id.consignee_partner_id.name"/></li>
+                                        <li>- ADD:  <t t-esc="docs.export_form_id.consignee_partner_id.street"/>,
                                             <t t-esc="docs.export_form_id.consignee_partner_id.street2"/>,
                                             <t t-esc="docs.export_form_id.consignee_partner_id.city"/> - <t t-esc="docs.export_form_id.consignee_partner_id.country_id.name"/>
                                         </li>
-                                        <li>PORT OF LOADING: <t t-esc="docs.export_form_id.contract_id.exporter_port_id.name"/></li>
-                                        <li>PORT OF DISCHARGE: <t t-esc="docs.export_form_id.discharge_port_id.name"/></li>
-                                        <li>COMMODITY: <t t-esc="docs.product_id.name"/></li>
-                                        <li>QUANTITY: <t t-esc="docs.net_qty"/> NET = <t t-esc="docs.gross_qty"/> GROSS</li>
-                                        <li>PACKING: <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/></li>
-                                        <li>B/L NO: <t t-esc="docs.name"/>, DATE:<t t-esc="docs.date"/>, PORT-SUDAN METHOD OF.</li>
-                                        <li>LOADING: STUFFED INTO <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/> [<t t-esc="len(docs.bl_line_ids)"/> CONTAINERS]</li>
-                                        <li>PRODUCT: <t t-esc="docs.product_id.name"/></li>
+                                        <li>- PORT OF LOADING: <t t-esc="docs.export_form_id.contract_id.exporter_port_id.name"/></li>
+                                        <li>- PORT OF DISCHARGE: <t t-esc="docs.export_form_id.discharge_port_id.name"/></li>
+                                        <li>- COMMODITY: <t t-esc="docs.product_id.name"/></li>
+                                        <li>- QUANTITY: <t t-esc="docs.net_qty"/> NET = <t t-esc="docs.gross_qty"/> GROSS</li>
+                                        <li>- PACKING: <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/></li>
+                                        <li>- B/L NO: <t t-esc="docs.name"/>, DATE:<t t-esc="docs.date"/>, PORT-SUDAN METHOD OF.</li>
+                                        <li>- LOADING: STUFFED INTO <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/> [<t t-esc="len(docs.bl_line_ids)"/> CONTAINERS]</li>
+                                        <li>- PRODUCT: <t t-esc="docs.product_id.name"/></li>
                                     </ul>
                                 <li style="text-decoration: underline;">ANALYSIS RESULTS:</li>
                             </strong>
                         </ul>
                         <center>
-                            <table class="table" style="font-size: 1.2em;font-family: 'Times New Roman'; width:40%">
+                            <table class="table" style="font-size: 1.2em;font-family: 'Times New Roman'; width:50%;line-height: 1.0;">
                                 <tr>
                                     <th style="border:2px solid black;">ANALYSIS</th>
                                     <th style="border:2px solid black;">RESULT</th>

@@ -33,7 +33,7 @@
                         <div style="margin-top:70px;">
                             <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">COMMERCIAL INVOICE</center></strong>
                         </div>
-                        <table class="table" style="margin-top:50px;border-collapse: collapse;padding:5px;font-size: 0.9em;font-family: 'Times New Roman';">
+                        <table class="table" style="margin-top:50px;border-collapse: collapse;padding:5px;font-size: 1.0em;font-family: 'Times New Roman';">
                             <tr>
                                 <td style="border: 2px solid black;;width:40%" colspan="3">
                                     <p><strong><t t-esc="docs['importer_id'].name"/></strong></p>
@@ -42,18 +42,18 @@
                                 </td>
                                 <td style="border: 2px solid black;border-top: 2px solid white !important;width:5%"></td>
                                 <td colspan="2" style="border: 2px solid black;">
-                                    <p><strong>DATE: <t t-esc="docs['current_date']"/></strong> </p>
-                                    <p><strong>INVOICE NO: <t t-esc="docs['invoice_no']"/></strong></p>
-                                    <p><strong>B/L NO: <t t-esc="docs['bl_no']"/></strong></p>
-                                    <p><strong>CONTRACT NO: <t t-esc="docs['contract_no']"/></strong></p>
+                                    <p><strong>DATE:</strong> <t t-esc="docs['current_date']"/> </p>
+                                    <p><strong>INVOICE NO:</strong> <t t-esc="docs['invoice_no']"/></p>
+                                    <p><strong>B/L NO:</strong> <t t-esc="docs['bl_no']"/></p>
+                                    <p><strong>CONTRACT NO:</strong> <t t-esc="docs['contract_no']"/></p>
                                 </td>
                             </tr>
                             <tr>
                                 <th style="border: 2px solid black;">ITEM NO</th>
                                 <th style="border: 2px solid black;">DESCRIPTION</th>
-                                <th style="border: 2px solid black;">UNIT <t t-esc="docs['port']"/> PRICE/$</th>
+                                <th style="border: 2px solid black;">UNIT <t t-esc="docs['port']"/> PRICE/<t t-esc="docs['currency'].symbol"/> </th>
                                 <th style="border: 2px solid black;">QUANTITY/TON</th>
-                                <th style="border: 2px solid black;">TOTAL <t t-esc="docs['port']"/> PRICE/$</th>
+                                <th style="border: 2px solid black;">TOTAL <t t-esc="docs['port']"/> PRICE/<t t-esc="docs['currency'].symbol"/></th>
                             </tr>
                             <tr>
                                 <th style="border: 2px solid black;text-align:center">
@@ -62,46 +62,46 @@
                                 <th style="border: 2px solid black;text-align:center">
                                     <t t-esc="docs['desc']"/>
                                 </th>
-                                <th style="border: 2px solid black;text-align:center"><t t-esc="docs['unit_price']"/></th>
-                                <th style="border: 2px solid black;text-align:center"><t t-esc="docs['qty']"/></th>
-                                <th style="border: 2px solid black;text-align:center"><t t-esc="docs['total_amount']"/></th>
+                                <td style="border: 2px solid black;text-align:center"><t t-esc="docs['unit_price']"/></td>
+                                <td style="border: 2px solid black;text-align:center"><t t-esc="docs['qty']"/></td>
+                                <td style="border: 2px solid black;text-align:center"><t t-esc="docs['total_amount']"/></td>
                             </tr>
                             <tr>
                                 <th style="border: 2px solid black;" colspan="5"/>
                             </tr>
                             <tr>
-                                <td style="border: 2px solid black;text-align:center" colspan="3"><strong>TOTAL <t t-esc="docs['port']"/> PRICE/$</strong></td>
-                                <th style="border: 2px solid black;text-align:center" colspan="2"><t t-esc="docs['total_amount']"/></th>
+                                <th style="border: 2px solid black;text-align:center" colspan="3"><strong>TOTAL <t t-esc="docs['port']"/> PRICE/<t t-esc="docs['currency'].symbol"/></strong></th>
+                                <td style="border: 2px solid black;text-align:center" colspan="2"><t t-esc="docs['total_amount']"/></td>
                             </tr>
                             <tr>
-                                <td style="border: 2px solid black;text-align:center" colspan="5"><strong class="text-uppercase">TOTAL <t t-esc="docs['port']"/> AMOUNT IN DOLLARS <t t-esc="docs['total_amount_words']"/> </strong></td>
+                                <td style="border: 2px solid black;text-align:center" colspan="5"><strong class="text-uppercase">TOTAL <t t-esc="docs['port']"/> AMOUNT IN <t t-esc="docs['currency'].currency_unit_label"/> <t t-esc="docs['total_amount_words']"/> </strong></td>
                             </tr>
                             <tr>
                                 <td style="border: 2px solid black;border-collapse: collapse;margin:0px;padding:0px;" colspan="5">
-                                    <table class="table table-borderless" style="margin-left:20px;margin-top:20px;font-size: 1.0em;font-family: 'Times New Roman';line-height: normal;">
-                                            <tr style="margin:0;padding:0">
-                                                <th style="margin:0;padding:0"><strong>ACCOUNT NAME:</strong></th> <th style="margin:0;padding:0"><t t-esc="docs['account'].contract_id.purchase_contract_id.payment_account_id.name"/></th>
+                                    <table class="table table-borderless" style="margin-left:20px;margin-top:20px;font-size: 1.0em;font-family: 'Times New Roman';">
+                                            <tr style="margin:0;padding:5px; width:20%">
+                                                <th style="margin:0;padding:5px"><strong>ACCOUNT NAME:</strong></th> <td style="margin:0;padding:0"><t t-esc="docs['account'].contract_id.purchase_contract_id.payment_account_id.name"/></td>
                                             </tr>
                                             <tr style="margin:0;padding:0">
-                                                <td style="margin:0;padding:0"><strong>ACCOUNT NO:</strong></td> <th style="margin:0;padding:0"><t t-esc="docs['account'].contract_id.purchase_contract_id.account_no"/></th>
+                                                <td style="margin:0;padding:5px"><strong>ACCOUNT NO:</strong></td> <td style="margin:0;padding:0"><t t-esc="docs['account'].contract_id.purchase_contract_id.account_no"/></td>
                                             </tr>
-                                            <tr style="margin:0;padding:0">
-                                                <th style="margin:0;padding:0"><strong>COMPANY:</strong></th>
-                                                <th style="margin:0;padding:0">
+                                            <tr style="margin:0;padding:5px">
+                                                <th style="margin:0;padding:5px;"><strong>COMPANY:</strong></th>
+                                                <td style="margin:0;padding:5px;">
                                                     <t t-esc="docs['account'].contract_id.purchase_contract_id.partner_id.name"/>,
                                                     <t t-esc="docs['account'].contract_id.purchase_contract_id.partner_id.street"/><br/>
                                                     <t t-esc="docs['account'].contract_id.purchase_contract_id.partner_id.street2"/>,
                                                     <t t-esc="docs['account'].contract_id.purchase_contract_id.partner_id.city"/> - <t t-esc="docs['account'].contract_id.purchase_contract_id.partner_id.country_id.name"/>
-                                                </th>
+                                                </td>
                                             </tr>
-                                            <tr style="margin:0;padding:0">
-                                                <td style="margin:0;padding:0"><strong>BANK NAME:</strong></td> <th style="margin:0;padding:0"><t t-esc="docs['account'].contract_id.purchase_contract_id.account_bank_id.name"/></th>
+                                            <tr style="margin:0;padding:5px;">
+                                                <td style="margin:0;padding:5px;"><strong>BANK NAME:</strong></td> <td style="margin:0;padding:0"><t t-esc="docs['account'].contract_id.purchase_contract_id.account_bank_id.name"/></td>
                                             </tr>
-                                            <tr style="margin:0;padding:0">
-                                                <td style="margin:0;padding:0"><strong>IBAN:</strong></td> <th style="margin:0;padding:0"><t t-esc="docs['account'].contract_id.purchase_contract_id.iban"/></th>
+                                            <tr style="margin:0;padding:5px;">
+                                                <td style="margin:0;padding:5px;"><strong>IBAN:</strong></td> <td style="margin:0;padding:0"><t t-esc="docs['account'].contract_id.purchase_contract_id.iban"/></td>
                                             </tr>
-                                            <tr style="margin:0;padding:0">
-                                                <td style="margin:0;padding:0"><strong>SWIFT CODE:</strong></td> <th style="margin:0;padding:0"><t t-esc="docs['account'].contract_id.purchase_contract_id.swift_code"/></th>
+                                            <tr style="margin:0;padding:5px;">
+                                                <td style="margin:0;padding:5px;"><strong>SWIFT CODE:</strong></td> <td style="margin:0;padding:0"><t t-esc="docs['account'].contract_id.purchase_contract_id.swift_code"/></td>
                                             </tr>
                                     </table>
                                 </td>

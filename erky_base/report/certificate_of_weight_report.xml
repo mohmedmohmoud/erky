@@ -8,7 +8,7 @@
             <field name="page_height">0</field>
             <field name="page_width">0</field>
             <field name="orientation">Portrait</field>
-            <field name="margin_top">42</field>
+            <field name="margin_top">35</field>
             <field name="margin_bottom">16</field>
             <field name="margin_left">12</field>
             <field name="margin_right">12</field>
@@ -31,45 +31,45 @@
                 <t t-call="web.external_layout">
                     <div class="page" style="position:relative;">
                         <div style="margin-top:70px;">
-                            <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">CERTIFICATE OF WEIGHT</center></strong>
+                            <strong><center style="text-decoration: underline;font-size: 1.6em;font-family: 'Times New Roman';">CERTIFICATE OF WEIGHT</center></strong>
                         </div>
-                        <div class="clearfix" style="font-size: 1.4em;font-family: 'Times New Roman';font-style:bold;margin-top:50px;">
+                        <div class="clearfix" style="font-size: 1.2em;font-family: 'Times New Roman';font-style:bold;margin-top:0px;">
                             <div class="float-left" style="text-align:left"><strong>DATE: <t t-esc="docs.date"/></strong></div>
                         </div>
                         <ul style="font-size: 1.2em;font-family: 'Times New Roman';">
                             <strong>
                                 <li style="text-decoration: underline;">DETAILS OF SHIPMENT:</li>
-                                    <ul>
-                                        <li>SHIPPER:<t t-esc="docs.export_form_id.shipper_partner_id.name"/></li>
-                                        <li>ADD:<t t-esc="docs.export_form_id.shipper_partner_id.street"/>,
+                                    <ul style="list-style: none;">
+                                        <li>- SHIPPER:<t t-esc="docs.export_form_id.shipper_partner_id.name"/></li>
+                                        <li>- ADD:<t t-esc="docs.export_form_id.shipper_partner_id.street"/>,
                                             <t t-esc="docs.export_form_id.shipper_partner_id.street2"/>,
                                             <t t-esc="docs.export_form_id.shipper_partner_id.city"/> - <t t-esc="docs.export_form_id.shipper_partner_id.country_id.name"/>
                                         </li>
-                                        <li>CONSIGNEE:<t t-esc="docs.export_form_id.consignee_partner_id.name"/></li>
-                                        <li>ADD:  <t t-esc="docs.export_form_id.consignee_partner_id.street"/>,
+                                        <li>- CONSIGNEE:<t t-esc="docs.export_form_id.consignee_partner_id.name"/></li>
+                                        <li>- ADD:  <t t-esc="docs.export_form_id.consignee_partner_id.street"/>,
                                             <t t-esc="docs.export_form_id.consignee_partner_id.street2"/>,
                                             <t t-esc="docs.export_form_id.consignee_partner_id.city"/> - <t t-esc="docs.export_form_id.consignee_partner_id.country_id.name"/>
                                         </li>
-                                        <li>VESSEL: <t t-esc="docs.vessel_name"/></li>
-                                        <li>PORT OF LOADING: <t t-esc="docs.export_form_id.contract_id.exporter_port_id.name"/></li>
-                                        <li>PORT OF DISCHARGE: <t t-esc="docs.export_form_id.discharge_port_id.name"/></li>
-                                        <li>COMMODITY: <t t-esc="docs.product_id.name"/></li>
-                                        <li>PACKING: IN NEW POLYPROPYLENE <t t-esc="docs.package_uom_id.name"/> OF <t t-esc="docs.package_uom_id.packing_weight"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/> EACH.</li>
-                                        <li>QUANTITY: <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/> = <t t-esc="docs.gross_qty"/> KGS GROSS</li>
-                                        <li>B/L NO: <t t-esc="docs.name"/>, DATE:<t t-esc="docs.date"/>, PORT-SUDAN.</li>
+                                        <li>- VESSEL: <t t-esc="docs.vessel_name"/></li>
+                                        <li>- PORT OF LOADING: <t t-esc="docs.export_form_id.contract_id.exporter_port_id.name"/></li>
+                                        <li>- PORT OF DISCHARGE: <t t-esc="docs.export_form_id.discharge_port_id.name"/></li>
+                                        <li>- COMMODITY: <t t-esc="docs.product_id.name"/></li>
+                                        <li>- PACKING: IN NEW POLYPROPYLENE <t t-esc="docs.package_uom_id.name"/> OF <t t-esc="docs.package_uom_id.packing_weight"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/> EACH.</li>
+                                        <li>- QUANTITY: <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/> = <t t-esc="docs.gross_qty"/> KGS GROSS</li>
+                                        <li>- B/L NO: <t t-esc="docs.name"/>, DATE:<t t-esc="docs.date"/>, PORT-SUDAN.</li>
                                     </ul>
                                 <br/>
                                 <li style="text-decoration: underline;">WEIGHT / QUANTITY:</li>
-                                    <ul style="text-decoration: none;">
-                                        <li><t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/>      = <t t-esc="docs.gross_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/> GROSS</li>
-                                        <li><t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/>      = <t t-esc="docs.net_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/> NET</li>
+                                    <ul style="text-decoration: none;list-style: none;">
+                                        <li>- <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/>      = <t t-esc="docs.gross_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/> GROSS</li>
+                                        <li>- <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/>      = <t t-esc="docs.net_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/> NET</li>
                                     </ul>
                                 <br/>
                                 <li style="text-decoration: underline;">NO OF CONTAINERS:</li>
                             </strong>
                         </ul>
                         <center>
-                            <table class="table" style="font-size: 1.2em;font-family: 'Times New Roman'; width:100%;line-height: 1.0;">
+                            <table class="table" style="font-size: 1.0em;font-family: 'Times New Roman'; width:100%;line-height: 1.0;">
                                 <tr>
                                     <th style="border:2px solid black;">S NO</th>
                                     <th style="border:2px solid black;">CONTAINER NO</th>

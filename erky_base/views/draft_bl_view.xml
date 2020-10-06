@@ -68,6 +68,23 @@
                           </tree>
                       </field>
                   </page>
+                  <page string="Invoice">
+                      <group>
+                          <group>
+                              <field name="invoice_ref"/>
+                              <field name="invoice_partner_id"/>
+                              <field name="invoice_currency_id"/>
+                          </group>
+                          <group>
+                              <field name="invoice_date"/>
+                              <field name="invoice_unit_price"/>
+                              <field name="invoice_qty"/>
+                          </group>
+                      </group>
+                      <group>
+                          <field name="invoice_total_price" readonly="0"/>
+                      </group>
+                  </page>
                   <page string="Certificate Of Analysis">
                       <button name="get_analysis_lines" string="GET ANALYSIS LINES" class="oe_highlight" type="object"/>
                       <field name="analysis_result_ids">

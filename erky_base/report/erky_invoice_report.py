@@ -29,20 +29,20 @@ class InvoiceReport(models.AbstractModel):
         return docargs
 
     def _get_report_data(self, record):
-        total_amount_words = """(""" + str(number_to_words(int(record.invoice_id.amount_total)).upper()) + """ ONLY)"""
-        report_data = {'current_date': record.invoice_id.date_invoice,
-                       'invoice_no': record.invoice_id.name,
+        total_amount_words = """(""" + str(number_to_words(int(record.invoice_total_price)).upper()) + """ ONLY)"""
+        report_data = {'current_date': record.invoice_date,
+                       'invoice_no': record.invoice_ref,
                        'bl_no': record.name,
                        'contract_no': record.export_form_id.purchase_contract_id.contract_no,
-                       'importer_id': record.export_form_id.contract_id.importer_id,
+                       'importer_id': record.invoice_partner_id,
                        'item_no': record.export_form_id.contract_id.product_id.default_code,
                        'desc': record.export_form_id.contract_id.product_id.name,
-                       'unit_price': record.invoice_id.invoice_line_ids[0].price_unit,
-                       'qty': record.invoice_id.invoice_line_ids[0].quantity,
-                       'total_amount': record.invoice_id.amount_total,
+                       'unit_price': record.invoice_unit_price,
+                       'qty': record.invoice_qty,
+                       'total_amount': record.invoice_total_price,
                        'total_amount_words': total_amount_words,
                        'account': record.export_form_id,
+                       'currency': record.invoice_currency_id,
                        'port': str(record.export_form_id.discharge_port_id.name).upper()}
-
 
         return report_data

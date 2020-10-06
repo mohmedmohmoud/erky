@@ -21,6 +21,14 @@ class DraftBL(models.Model):
     departure_date = fields.Date("Departure Date")
     analysis_result_ids = fields.One2many("erky.analysis.result", "draft_bl_id")
 
+    invoice_ref = fields.Char("Invoice Ref")
+    invoice_date = fields.Date("Invoice Date")
+    invoice_partner_id = fields.Many2one("res.partner", "Customer")
+    invoice_qty = fields.Float("Invoice Qty")
+    invoice_unit_price = fields.Float("Invoice Unit Price")
+    invoice_total_price = fields.Float("Invoice Total Price")
+    invoice_currency_id = fields.Many2one("res.currency")
+
 
     @api.multi
     def action_open_invoice_form(self):
@@ -30,6 +38,24 @@ class DraftBL(models.Model):
         res['domain'] = [('id', '=', self.invoice_id.id)]
         res['res_id'] = self.invoice_id.id or False
         return res
+
+    @api.onchange('export_form_id', 'bl_line_ids')
+    def draft_invoice_data(self):
+        for rec in self:
+            export_form_id = self.export_form_id
+            if export_form_id:
+                if not self.invoice_ref:
+                    self.invoice_ref = str(export_form_id.purchase_contract_id.contract_no) + "-01"
+                if not self.invoice_date:
+                    self.invoice_date = self.departure_date
+                if not self.invoice_partner_id:
+                    self.invoice_partner_id = export_form_id.importer_id.id
+                if not self.invoice_unit_price:
+                    self.invoice_unit_price = export_form_id.unit_contract_price
+                if not self.invoice_currency_id:
+                    self.invoice_currency_id = export_form_id.contract_currency_id.id
+                self.invoice_qty = self.total_qty
+                self.invoice_total_price = self.invoice_qty * self.invoice_unit_price
 
     @api.multi
     def get_analysis_lines(self):
