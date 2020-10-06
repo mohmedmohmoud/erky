@@ -40,7 +40,7 @@
                                     <p><strong><t t-esc="docs['importer_id'].street"/>, <t t-esc="docs['importer_id'].street2"/></strong></p>
                                     <p><strong>City, <t t-esc="docs['importer_id'].city"/> - <t t-esc="docs['importer_id'].country_id.name"/></strong></p>
                                 </td>
-                                <td style="border: 2px solid black;border-top: 2px solid white !important;width:5%"></td>
+                                <td colspan="1" style="border: 2px solid black;border-top: 2px solid white;"></td>
                                 <td colspan="2" style="border: 2px solid black;">
                                     <p><strong>DATE:</strong> <t t-esc="docs['current_date']"/> </p>
                                     <p><strong>INVOICE NO:</strong> <t t-esc="docs['invoice_no']"/></p>
@@ -49,11 +49,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th style="border: 2px solid black;">ITEM NO</th>
-                                <th style="border: 2px solid black;">DESCRIPTION</th>
-                                <th style="border: 2px solid black;">UNIT <t t-esc="docs['port']"/> PRICE/<t t-esc="docs['currency'].symbol"/> </th>
-                                <th style="border: 2px solid black;">QUANTITY/TON</th>
-                                <th style="border: 2px solid black;">TOTAL <t t-esc="docs['port']"/> PRICE/<t t-esc="docs['currency'].symbol"/></th>
+                                <th style="border: 2px solid black;vertical-align: middle;text-align:center;">ITEM <br/> NO</th>
+                                <th style="border: 2px solid black;vertical-align: middle;text-align:center;">DESCRIPTION</th>
+                                <th style="border: 2px solid black;vertical-align: middle;text-align:center;">UNIT <t t-esc="docs['port']"/> PRICE/<t t-esc="docs['currency'].symbol"/> </th>
+                                <th style="border: 2px solid black;vertical-align: middle;text-align:center;">QUANTITY <br/> /TON</th>
+                                <th style="border: 2px solid black;vertical-align: middle;text-align:center;">TOTAL<t t-esc="docs['port']"/> PRICE/<t t-esc="docs['currency'].symbol"/></th>
                             </tr>
                             <tr>
                                 <th style="border: 2px solid black;text-align:center">

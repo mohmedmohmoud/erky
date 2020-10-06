@@ -66,12 +66,12 @@
                         <center>
                             <table class="table" style="font-size: 1.2em;font-family: 'Times New Roman'; width:50%;line-height: 1.0;">
                                 <tr>
-                                    <th style="border:2px solid black;">ANALYSIS</th>
-                                    <th style="border:2px solid black;">RESULT</th>
+                                    <th style="border:2px solid black;margin:0;padding:5px;">ANALYSIS</th>
+                                    <th style="border:2px solid black;margin:0;padding:5px;">RESULT</th>
                                 </tr>
                                 <tr t-foreach="docs.analysis_result_ids" t-as="res">
-                                    <td style="border:2px solid black;text-align:center;"><t t-esc="res.name.name"/></td>
-                                    <td style="border:2px solid black;text-align:center;"><t t-esc="res.result"/></td>
+                                    <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="res.name.name"/></td>
+                                    <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="res.result"/></td>
                                 </tr>
                             </table>
                         </center>

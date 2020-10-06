@@ -10,8 +10,8 @@
             <field name="orientation">Portrait</field>
             <field name="margin_top">42</field>
             <field name="margin_bottom">16</field>
-            <field name="margin_left">12</field>
-            <field name="margin_right">12</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
             <field name="header_line" eval="False"/>
             <field name="header_spacing">0</field>
             <field name="dpi">80</field>
@@ -34,7 +34,7 @@
                     <div style="margin-top:70px;">
                         <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">PACKING LIST</center></strong>
                     </div>
-                    <table class="table" style="margin-top:50px;padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.3em;font-family: 'Times New Roman';">
+                    <table class="table" style="margin-top:50px;padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.0em;font-family: 'Times New Roman';">
                         <tr>
                             <td style="border: 2px solid black;" colspan="4">
                                 <p><strong><t t-esc="docs['importer_id'].name"/></strong></p>
@@ -43,20 +43,20 @@
                             </td>
                             <td style="border: 2px solid black;border-top: 2px solid white !important;"></td>
                             <td style="border: 2px solid black;" colspan="2">
-                                <p><strong>DATE: <t t-esc="docs['current_date']"/></strong> </p>
-                                <p><strong>INVOICE NO: <t t-esc="docs['invoice_no']"/></strong></p>
-                                <p><strong>B/L NO: <t t-esc="docs['bl_no']"/></strong></p>
-                                <p><strong>CONTRACT NO: <t t-esc="docs['contract_no']"/></strong></p>
+                                <p><strong>DATE:</strong> <t t-esc="docs['current_date']"/> </p>
+                                <p><strong>INVOICE NO:</strong> <t t-esc="docs['invoice_no']"/></p>
+                                <p><strong>B/L NO:</strong> <t t-esc="docs['bl_no']"/></p>
+                                <p><strong>CONTRACT NO:</strong> <t t-esc="docs['contract_no']"/></p>
                             </td>
                         </tr>
                         <tr>
-                            <th style="border: 2px solid black;">ITEM NO</th>
-                            <th style="border: 2px solid black;">DESCRIPTION</th>
-                            <th style="border: 2px solid black;">CONTAINER NO</th>
-                            <th style="border: 2px solid black;">CONT</th>
-                            <th style="border: 2px solid black;">WEIGHT/(NET)</th>
-                            <th style="border: 2px solid black;">WEIGHT/(GROSS)</th>
-                            <th style="border: 2px solid black;">TOTAL/BAGS</th>
+                            <th style="border: 2px solid black;vertical-align: middle;text-align:center;">ITEM<br/> NO</th>
+                            <th style="border: 2px solid black;vertical-align: middle;text-align:center;">DESCRIPTION</th>
+                            <th style="border: 2px solid black;vertical-align: middle;text-align:center;">CONTAINER<br/> NO</th>
+                            <th style="border: 2px solid black;vertical-align: middle;text-align:center;">CONT</th>
+                            <th style="border: 2px solid black;vertical-align: middle;text-align:center;">WEIGHT<br/>/NET</th>
+                            <th style="border: 2px solid black;vertical-align: middle;text-align:center;">(WEIGHT)/(GROSS)</th>
+                            <th style="border: 2px solid black;vertical-align: middle;text-align:center;">(TOTAL)/(BAGS)</th>
                         </tr>
                         <t t-set="is_item_no" t-value="False"/>
                         <t t-set="is_desc" t-value="False"/>
@@ -74,11 +74,11 @@
                                     <t t-set="is_desc" t-value="True"/>
                                 </t>
                             </td>
-                            <td style="border: 2px solid black;"><t t-esc="c.container_ref"/></td>
-                            <td style="border: 2px solid black;">1</td>
-                            <td style="border: 2px solid black;"><t t-esc="c.net_qty"/></td>
-                            <td style="border: 2px solid black;"><t t-esc="c.gross_qty"/></td>
-                            <td style="border: 2px solid black;"><t t-esc="c.qty"/></td>
+                            <td style="border: 2px solid black;margin:0;padding:5px;vertical-align: middle;text-align:center;"><t t-esc="c.container_ref"/></td>
+                            <td style="border: 2px solid black;margin:0;padding:5px;vertical-align: middle;text-align:center;">1</td>
+                            <td style="border: 2px solid black;margin:0;padding:5px;vertical-align: middle;text-align:center;"><t t-esc="c.net_qty"/></td>
+                            <td style="border: 2px solid black;margin:0;padding:5px;vertical-align: middle;text-align:center;"><t t-esc="c.gross_qty"/></td>
+                            <td style="border: 2px solid black;margin:0;padding:5px;vertical-align: middle;text-align:center;"><t t-esc="c.qty"/></td>
                         </tr>
                         <tr>
                             <td style="border: 2px solid black;" colspan="2"><strong>TOTAL CONTAINER</strong></td>

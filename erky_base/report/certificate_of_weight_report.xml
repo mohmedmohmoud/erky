@@ -71,34 +71,34 @@
                         <center>
                             <table class="table" style="font-size: 1.0em;font-family: 'Times New Roman'; width:100%;line-height: 1.0;">
                                 <tr>
-                                    <th style="border:2px solid black;">S NO</th>
-                                    <th style="border:2px solid black;">CONTAINER NO</th>
-                                    <th style="border:2px solid black;">SEAL NO</th>
-                                    <th style="border:2px solid black;">GROSS WEIGHT</th>
-                                    <th style="border:2px solid black;">NET WEIGHT</th>
-                                    <th style="border:2px solid black;">BAGS</th>
+                                    <th style="border:2px solid black;margin:0;padding:5px;">S NO</th>
+                                    <th style="border:2px solid black;margin:0;padding:5px;">CONTAINER NO</th>
+                                    <th style="border:2px solid black;margin:0;padding:5px;">SEAL NO</th>
+                                    <th style="border:2px solid black;margin:0;padding:5px;">GROSS WEIGHT</th>
+                                    <th style="border:2px solid black;margin:0;padding:5px;">NET WEIGHT</th>
+                                    <th style="border:2px solid black;margin:0;padding:5px;">BAGS</th>
                                 </tr>
                                 <t t-set="count" t-value="1"/>
                                 <tr t-foreach="docs.bl_line_ids" t-as="l">
-                                    <td style="border:2px solid black;text-align:center;"><t t-esc="count"/></td>
-                                    <td style="border:2px solid black;text-align:center;"><t t-esc="l.container_ref"/></td>
-                                    <td style="border:2px solid black;text-align:center;"><t t-esc="l.seal_no"/></td>
-                                    <td style="border:2px solid black;text-align:center;"><t t-esc="l.gross_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></td>
-                                    <td style="border:2px solid black;text-align:center;"><t t-esc="l.net_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></td>
-                                    <td style="border:2px solid black;text-align:center;"><t t-esc="l.qty"/></td>
+                                    <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="count"/></td>
+                                    <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="l.container_ref"/></td>
+                                    <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="l.seal_no"/></td>
+                                    <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="l.gross_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></td>
+                                    <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="l.net_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></td>
+                                    <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="l.qty"/></td>
                                     <t t-set="count" t-value="count + 1"/>
                                 </tr>
                                 <tr>
 
-                                        <td style="border:2px solid black;text-align:center;"></td>
-                                        <td style="border:2px solid black;text-align:center;" colspan="2"><strong>TOTAL</strong></td>
-                                        <td style="border:2px solid black;text-align:center;">
+                                        <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"></td>
+                                        <td style="border:2px solid black;text-align:center;margin:0;padding:5px;" colspan="2"><strong>TOTAL</strong></td>
+                                        <td style="border:2px solid black;text-align:center;margin:0;padding:5px;">
                                             <strong><t t-esc="docs.gross_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></strong>
                                         </td>
-                                        <td style="border:2px solid black;text-align:center;">
+                                        <td style="border:2px solid black;text-align:center;margin:0;padding:5px;">
                                             <strong><t t-esc="docs.net_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></strong>
                                         </td>
-                                        <td style="border:2px solid black;text-align:center;">
+                                        <td style="border:2px solid black;text-align:center;margin:0;padding:5px;">
                                             <strong><t t-esc="docs.pack_qty"/></strong>
                                         </td>
 
