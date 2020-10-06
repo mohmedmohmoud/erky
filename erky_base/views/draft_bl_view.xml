@@ -20,6 +20,8 @@
         <form>
         <header>
               <button name="action_create_invoice" class="oe_highlight" type="object" string="Create Invoice"/>
+              <button name="%(erky_template_report_wiz_action)d" class="oe_highlight" type="action" context="{'default_export_form_id': export_form_id, 'default_draft_bl_id': id}" string="Reports"/>
+
           </header>
           <sheet>
               <div class="oe_button_box" name="button_box">

@@ -10,15 +10,15 @@
                         <button string="Cancel" type="object" name="cancel" class="oe_link" special="cancel"/>
                     </header>
                     <group string="Report Template" name="report_template">
-                        <field name="form_request_temp_ar"/>
-                        <field name="form_request_temp_en"/>
-                        <field name="pledge_request_temp_ar"/>
-                        <field name="pledge_request_temp_en"/>
-                        <field name="certificate_analysis_temp"/>
-                        <field name="commercial_invoice_temp"/>
-                        <field name="shipping_instruction_temp"/>
-                        <field name="certificate_origin_temp"/>
-                        <field name="original_temp"/>
+                        <field name="form_request_temp_ar" invisible="1"/>
+                        <field name="form_request_temp_en" invisible="1"/>
+                        <field name="pledge_request_temp_ar" invisible="1"/>
+                        <field name="pledge_request_temp_en" invisible="1"/>
+                        <field name="certificate_analysis_temp" invisible="1"/>
+                        <field name="commercial_invoice_temp" invisible="1" />
+                        <field name="shipping_instruction_temp" invisible="1"/>
+                        <field name="certificate_origin_temp" invisible="0"/>
+                        <field name="original_temp" invisible="0"/>
                     </group>
                 </form>
             </field>

@@ -17,6 +17,7 @@ class ErkyTemplateReportWiz(models.TransientModel):
                                       ('original', "Original"),
                                       ], string="Export Form", required=0)
     template_content = fields.Html(string="Preview")
+    default_draft_bl_id = fields.Many2one('erky.draft.bl')
     dynamic_rep_id = fields.Many2one("erky.dynamic.template")
 
     @api.onchange('template_from')
