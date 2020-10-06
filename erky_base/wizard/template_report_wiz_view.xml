@@ -8,7 +8,7 @@
                 <group>
                     <field name="report_type" widget="radio"/>
                     <field name="export_form_id" invisible="1"/>
-                    <field name="default_draft_bl_id" invisible="1"/>
+                    <field name="draft_bl_id" invisible="1"/>
                     <field name="template_from" attrs="{'invisible': [('report_type', '!=', 'default')], 'required': [('report_type', '=', 'default')]}"/>
                     <field name="template_content" attrs="{'invisible': [('report_type', '!=', 'default')]}"/>
                     <field name="dynamic_rep_id" attrs="{'invisible': [('report_type', '=', 'default')], 'required': [('report_type', '!=', 'default')]}"/>
