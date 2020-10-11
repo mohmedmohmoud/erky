@@ -1,12 +1,14 @@
 import inflect
 import json
+from datetime import datetime, timedelta
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 class ExportForm(models.Model):
     _name = "erky.export.form"
-
+    _inherit = ['portal.mixin', 'mail.thread', 'mail.activity.mixin']
+    _order = "id desc"
     _rec_name = "form_no"
 
     name = fields.Char(string="Sequence", default="New", readonly=1)
@@ -14,7 +16,7 @@ class ExportForm(models.Model):
     issue_date = fields.Date("Issue Date")
     expire_date = fields.Date("Expire Date")
     contract_id = fields.Many2one("erky.contract", string="Contract", required=1)
-    purchase_contract_id = fields.Many2one("erky.purchase.contract", required=1)
+    purchase_contract_id = fields.Many2one(related="contract_id.purchase_contract_id", required=0)
     exporter_id = fields.Many2one(related="contract_id.exporter_id", store=True, string="Exporter")
     importer_id = fields.Many2one(related="contract_id.importer_id", store=True, string="Importer")
     qty = fields.Integer("Qty", default=1)
@@ -90,6 +92,7 @@ class ExportForm(models.Model):
     outstanding_shipment_widget = fields.Text(compute='_get_outstanding_shipment_info_JSON')
     shipment_widget = fields.Text(compute='_get_shipment_info_JSON')
     fully_reconciled = fields.Boolean()
+    is_notify = fields.Boolean()
 
     @api.one
     def _get_outstanding_shipment_info_JSON(self):
@@ -210,11 +213,11 @@ class ExportForm(models.Model):
     def check_bank_info(self):
         for rec in self:
             if not rec.form_no:
-                raise ValidationError("Please Fill Form No Field.")
+                raise ValidationError("Please fill form no field.")
             if not rec.issue_date:
-                raise ValidationError("Please Fill Issue Date Field.")
+                raise ValidationError("Please fill issue date field.")
             if not rec.expire_date:
-                raise ValidationError("Please Fill Expire Date Field.")
+                raise ValidationError("Please fill expire date field.")
 
     @api.multi
     def action_shipment_ins(self):
@@ -231,7 +234,7 @@ class ExportForm(models.Model):
         for rec in self:
             self.create_vendor_bill()
             self.create_expenses()
-            self.create_packing()
+            # self.create_packing()
             rec.state = "bl"
 
     @api.multi
@@ -287,6 +290,24 @@ class ExportForm(models.Model):
         for rec in self:
             self.create_shipment_picking()
             rec.state = "done"
+
+    @api.model
+    def _cron_form_expire(self):
+        notify_before_days = self.env.user.company_id.days_notify_before
+        notify_user_ids = self.env.user.company_id.notify_user_ids
+        today = datetime.today()
+        print ("today =====================", today, notify_before_days)
+        notify_date = (today - timedelta(notify_before_days)).date()
+        form_ids = self.search([('state', 'not in', ['done', 'canceled']), ('is_notify', '=', False), ('expire_date', '=', notify_date)])
+        for frm in form_ids:
+            if frm.expire_date == notify_date:
+                self.env['erky.form.expire'].create({'export_form_id': frm.id,
+                                                     'expire_date': frm.expire_date,
+                                                     'notify_date': 'today'})
+                frm.is_notify = True
+                message_body = "EXPORT FORM [%s] IS EXPIRE ON [%s]." % (frm.name, frm.expire_date)
+                self.message_post(body=message_body, subtype='mt_comment', partner_ids=notify_user_ids.mapped('partner_id').ids)
+
 
     @api.multi
     def create_packing(self):

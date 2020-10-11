@@ -27,6 +27,7 @@
         'security/account_security.xml',
         'security/ir.model.access.csv',
         'data/sequence.xml',
+        'data/erky_cron.xml',
         'views/ir_menus_view.xml',
         'wizard/generate_container_wiz_view.xml',
         'wizard/generate_forms_wiz_view.xml',

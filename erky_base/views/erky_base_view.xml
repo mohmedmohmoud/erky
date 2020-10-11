@@ -59,5 +59,33 @@
 
         <menuitem name="Shipment Reconcile" id="erky_base.menu_erky_shipment_reconcile_config" parent="erky_base.menu_erky_setting" action="erky_shipment_reconcile_action" sequence="10"/>
 
+        <record id="view_form_expire_erky_form" model="ir.ui.view">
+            <field name="name">view.erky.form.expire.form</field>
+            <field name="model">erky.form.expire</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="export_form_id"/>
+                            </group>
+                            <group>
+                                <field name="expire_date"/>
+                                <field name="notify_date"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="erky_base.erky_form_expire_action">
+          <field name="name">Export Form Expire Window</field>
+          <field name="res_model">erky.form.expire</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Form Expire" id="erky_base.menu_erky_form_expire" parent="erky_base.menu_erky_exceptions" action="erky_form_expire_action" sequence="10"/>
+
     </data>
 </odoo>

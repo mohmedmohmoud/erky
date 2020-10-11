@@ -8,6 +8,7 @@ from odoo.exceptions import ValidationError
 
 class ErkyContract(models.Model):
     _name = 'erky.contract'
+    _order = "id desc, date desc"
 
     def _get_default_currency_id(self):
         return self.env.user.company_id.currency_id.id
@@ -15,23 +16,25 @@ class ErkyContract(models.Model):
     def _get_default_tax_id_number(self):
         return self.env.user.company_id.vat
 
+    def _get_default_registry_number(self):
+        return self.env.user.company_id.company_registry
+
     def _get_default_export_partner(self):
         return self.env.user.company_id.partner_id
 
-    name = fields.Char(string="Contract No", required=1, readonly=1)
-    purchase_contract_id = fields.Many2one("erky.purchase.contract", "Purchase Contract", readonly=1, required=1)
+    name = fields.Char(string="Contract No", required=0, readonly=1)
+    purchase_contract_id = fields.Many2one("erky.purchase.contract", "Purchase Contract", readonly=0, required=0)
     date = fields.Date("Date", default=fields.Date.context_today)
     tax_id = fields.Char(string="Tax ID", required=1, default=_get_default_tax_id_number)
-    exporter_id = fields.Many2one("res.partner", string="Exporter", required=1, domain=[('is_exporter', '=', True)])
-    importer_id = fields.Many2one("res.partner", string="Importer", required=1, domain=[('is_importer', '=', True)],
-                                  default=_get_default_export_partner)
+    exporter_id = fields.Many2one("res.partner", string="Exporter", required=1, domain=[('is_exporter', '=', True)], default=_get_default_export_partner)
+    importer_id = fields.Many2one("res.partner", string="Importer", required=1, domain=[('is_importer', '=', True)])
     importer_street = fields.Char(related="importer_id.street", store=True, string='Street')
     importer_street2 = fields.Char(related="importer_id.street2", store=True, string='Street2')
     importer_zip = fields.Char(related="importer_id.zip", store=True, string='Zip', change_default=True)
     importer_city = fields.Char(related="importer_id.city", store=True, string='City')
     importer_state_id = fields.Many2one(related="importer_id.state_id", store=True, string='State')
     importer_country_id = fields.Many2one(related="importer_id.country_id", store=True, string='Country')
-    commercial_register = fields.Char("The Commercial Register")
+    commercial_register = fields.Char("The Commercial Register", default=_get_default_registry_number)
     product_id = fields.Many2one("product.product", "Product",  required=1, domain=[('type', '=', 'product')])
     product_uom_id = fields.Many2one(
         'uom.uom', 'Product Unit of Measure', related='product_id.uom_id',
@@ -42,9 +45,9 @@ class ErkyContract(models.Model):
     unit_price = fields.Float("Unit Price", required=1)
     currency_id = fields.Many2one("res.currency", string="Currency", default=_get_default_currency_id, required=1)
     total_amount = fields.Float("Total Amount", compute="_compute_amount_total")
-    exporter_port_id = fields.Many2one("erky.port", "Exporter Port", required=1, default=lambda self: self.env['erky.port'].search([('default_exporter_port', '=', True)], limit=1))
+    exporter_port_id = fields.Many2one("erky.port", "Exporter Port", required=1)
     importer_port_id = fields.Many2one("erky.port", "Importer Port", required=1)
-    shipment_method = fields.Selection([('partial', "Parial"), ('all', "All")], string="Shipment Method", default="partial")
+    shipment_method = fields.Selection([('partial', "PARTIAL"), ('all', "ALL")], string="Shipment Method", default="partial")
     payment_method = fields.Selection([('deferred_payment', "D/A"), ('cd', 'C&D'), ('advance_payment', "Advance Payment"), ('cd_advance', "C&D & Advance")], string="Payment Method", dafault='deferred_payment')
     bank_id = fields.Many2one("res.bank", "Bank", required=1)
     bank_branch_id = fields.Many2one("res.bank.branch", "Bank Branch")
@@ -70,9 +73,16 @@ class ErkyContract(models.Model):
         if vals.get('name', _('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('erky.internal.contract') or _('New')
         res = super(ErkyContract, self).create(vals)
-        res.purchase_contract_id.state = "internal_contract"
-        res.purchase_contract_id.internal_contract_id = res.id
+        # res.purchase_contract_id.state = "internal_contract"
+        # res.purchase_contract_id.internal_contract_id = res.id
         return res
+
+    @api.onchange('exporter_id', 'importer_id')
+    def get_default_port(self):
+        if not self.exporter_port_id and self.exporter_id:
+            self.exporter_port_id = self.exporter_id.default_exporter_port_id.id
+        if not self.importer_port_id and self.importer_id:
+            self.importer_port_id = self.importer_id.default_importer_port_id.id
 
     @api.onchange('number_of_forms')
     def add_forms(self):
@@ -85,10 +95,8 @@ class ErkyContract(models.Model):
                 qty = self.qty - total_qty
             print("=======================,self.purchase_contract_id.package_uom_id.id", self.purchase_contract_id.package_uom_id.id)
             data = {'contract_id': self.id,
-                    'purchase_contract_id': self.purchase_contract_id.id,
                     'product_id': self.product_id.id,
                     'product_uom_id': self.product_uom_id.id,
-                    'package_uom_id': self.purchase_contract_id.package_uom_id.id,
                     'bank_id': self.bank_id.id,
                     'bank_branch_id': self.bank_branch_id.id,
                     'exporter_id': self.importer_id.id,
@@ -99,7 +107,6 @@ class ErkyContract(models.Model):
                     'qty': int(qty)
                     }
             input_lines += input_lines.new(data)
-
         self.export_form_ids = input_lines
 
     @api.constrains('export_form_ids')
@@ -110,7 +117,7 @@ class ErkyContract(models.Model):
         if pre_export_form_ids:
             export_form_qty = sum(pre_export_form_ids.mapped("qty"))
         if export_form_qty > contract_qty:
-            raise ValidationError(_("Total Export Form Qty Can't Be Greater Than Contact Qty"))
+            raise ValidationError(_("Total qty of export form can't be greater than contract qty."))
 
     @api.multi
     def action_create_request(self):

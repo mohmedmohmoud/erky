@@ -16,6 +16,10 @@
                             <h1>
                                 <field name="name"/>
                             </h1>
+                            <h1>
+                                <label for="agent_id"/><br/>
+                                <field name="agent_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </h1>
                         </div>
                         <group>
                             <field name="shipment_type" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
@@ -25,7 +29,6 @@
                                 <field name="internal_contract_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="purchase_contract_id" invisible="1"/>
                                 <field name="export_form_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="agent_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="shipment_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                             <group>
@@ -77,37 +80,25 @@
                             </group>
 
                         </group>
-                        <group string="Shipped">
-                            <group>
-                                <label for="base_shipped_weight"/>
-                                <div class="o_row">
-                                    <field name="base_shipped_weight"/>
-                                    <field name="base_shipped_uom_id" readonly="1"/>
-                                </div>
-                            </group>
-                            <group>
-                                <label for="origin_shipped_weight"/>
-                                <div class="o_row">
-                                    <field name="origin_shipped_weight" attrs="{'required': [('state', '=', 'draft')], 'readonly': [('state', '!=', 'draft')]}"/>
-                                    <field name="origin_shipped_uom_id" readonly="1"/>
-                                </div>
-                            </group>
+                        <group string="Vehicle Shipment">
+                            <label for="origin_shipped_weight"/>
+                            <div class="o_row">
+                                <field name="origin_shipped_weight" attrs="{'required': [('state', '=', 'draft')], 'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="origin_shipped_uom_id" readonly="1"/>
+                                --->
+                                <field name="base_shipped_weight"/>
+                                <field name="base_shipped_uom_id" readonly="1"/>
+                            </div>
                         </group>
-                        <group string="Discharge" attrs="{'invisible': [('state', '=', 'draft')]}">
-                            <group>
+                        <group string="Vehicle Discharge" attrs="{'invisible': [('state', '=', 'draft')]}">
                                 <label for="discharged_packing_weight"/>
                                 <div class="o_row">
                                     <field name="discharged_packing_weight" attrs="{'required': [('state', '=', 'discharge')], 'readonly': [('state', '!=', 'discharge')]}"/>
                                     <field name="discharged_packing_uom_id" attrs="{'required': [('state', '=', 'discharge')], 'readonly': [('state', '!=', 'discharge')]}"/>
-                                </div>
-                            </group>
-                            <group>
-                                <label for="discharged_qty"/>
-                                <div class="o_row">
+                                    --->
                                     <field name="discharged_qty" attrs="{'required': [('state', '=', 'discharge')], 'readonly': [('state', '!=', 'discharge')]}"/>
                                     <field name="discharged_uom_id" attrs="{'required': [('state', '=', 'discharge')], 'readonly': [('state', '!=', 'discharge')]}"/>
                                 </div>
-                            </group>
                         </group>
                         <group>
                             <field name="note" attrs="{'readonly': [('state', '!=', 'draft')]}"/>

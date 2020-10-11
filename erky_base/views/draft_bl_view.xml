@@ -23,6 +23,11 @@
               <button name="%(erky_template_report_wiz_action)d" class="oe_highlight" type="action" context="{'default_export_form_id': export_form_id, 'default_draft_bl_id': id}" string="Reports"/>
 
           </header>
+            <div style="margin-top:10px;">
+            <center>
+              <h1><span style="border: 1px solid #7c7bad; padding:5px;color:#7c7bad;">DRAFT BL WINDOW</span></h1>
+            </center>
+          </div>
           <sheet>
               <div class="oe_button_box" name="button_box">
               <button name="action_open_invoice_form" string="Invoice" type="object"
@@ -31,9 +36,6 @@
                              >
                             </button>
               </div>
-            <group>
-              <h1><span style="border: 1px solid #7c7bad; padding:5px;color:#7c7bad;">DRAFT BL WINDOW</span></h1>
-            </group>
             <div class="oe_title">
               <label for="name" class="oe_edit_only"/>
               <h1><field name="name"/></h1>
@@ -55,6 +57,7 @@
                         <field name="total_qty"/>
                         <field name="product_uom_id"/>
                     </div>
+                    <field name="bl_attachment"/>
                 </group>
             </group>
               <notebook>
@@ -95,6 +98,11 @@
                               <field name="result"/>
                           </tree>
                       </field>
+                  </page>
+                  <page string="Certificate Weight">
+                      <group>
+                          <field name="notify_partner_id"/>
+                      </group>
                   </page>
               </notebook>
 

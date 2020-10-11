@@ -39,7 +39,7 @@
                                 <div class="float-right" style="text-align:right"><strong>DATE: <t t-esc="o.shipment_ins_date"/></strong></div>
                             </div>
                             <center>
-                            <table class="table" style="padding:10px;border-spacing: 0 16px !important;font-size: 1.4em;font-family: 'Times New Roman';">
+                            <table class="table" style="padding:10px;border-spacing: 0 16px !important;font-size: 1.3em;font-family: 'Times New Roman';">
                                 <tr>
                                     <th style="width:40%;text-align:left;border:2px solid black;vertical-align: middle;">SHIPPER</th>
                                     <td style="border: 2px solid black;">
@@ -61,7 +61,15 @@
                                 <tr>
                                     <th style="width:30%;text-align:left;border: 2px solid black;vertical-align: middle;">NOTIFY</th>
                                     <td style="border: 2px solid black;">
-                                        <t t-esc="o.notify"/>
+                                        <t t-if="not o.notify">
+                                            SAME AS CONSIGNEE
+                                        </t>
+                                        <t t-else="">
+                                            <t t-esc="o.notify.name"/><br/>
+                                            ADD: <t t-esc="o.notify.street"/>,<br/>
+                                            <t t-esc="o.notify.street2"/>,<br/>
+                                            <t t-esc=" o.notify.city"/> - <t t-esc="o.notify.country_id.name"/>
+                                        </t>
                                     </td>
                                 </tr>
                                 <tr>
@@ -101,7 +109,7 @@
                                 </tr>
                             </table>
                             </center>
-                            <div class="clearfix" style="margin-top:200px;font-size: 1.2em;font-family: 'Times New Roman';">
+                            <div class="clearfix" style="margin-top:100px;font-size: 1.2em;font-family: 'Times New Roman';">
                                 <center><div><span><strong><t t-esc="o.shipper_partner_id.name"/><br/></strong></span></div></center>
                             </div>
                         </div>

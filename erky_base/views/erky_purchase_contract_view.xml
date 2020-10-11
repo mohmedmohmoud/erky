@@ -26,10 +26,12 @@
             <button name="action_cancel" string="Cancel" type="object" states="draft"/>
             <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
           </header>
+          <div style="margin-top:10px;">
+            <center>
+              <h1><span style="border: 1px solid #7c7bad; padding:5px;color:#7c7bad;">PURCHASE CONTRACT WINDOW</span></h1>
+            </center>
+          </div>
           <sheet>
-            <group>
-                <h1><span style="border: 1px solid #7c7bad; padding:5px;color:#7c7bad;">PURCHASE CONTRACT WINDOW</span></h1>
-            </group>
             <div class="oe_button_box" name="button_box">
               <field name="internal_contract_id" invisible="1"/>
                 <button name="action_internal_contract" string="M.C Contract" type="object"
@@ -167,7 +169,7 @@
     </record>
 
     <menuitem name="Purchase Contract" id="erky_base.menu_erky_purchase_contract" parent="erky_base.menu_erky_contracts"
-              action="erky_base.erky_purchase_contract_action" sequence="1"/>
+              action="erky_base.erky_purchase_contract_action" sequence="2"/>
 
   </data>
 </odoo>

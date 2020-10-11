@@ -5,17 +5,18 @@ import math
 
 class RequestContainer(models.Model):
     _name = "erky.container.request"
+    _rec_name = "partner_id"
 
     export_form_id = fields.Many2one("erky.export.form", string="Export Form", required=1)
     contract_id = fields.Many2one(related="export_form_id.contract_id", store=True)
     partner_id = fields.Many2one("res.partner", "To")
     shipment_ins_date = fields.Date("Date", default=fields.Date.context_today)
-    shipper_partner_id = fields.Many2one(related="contract_id.exporter_id", store=True, string="Shipper")
-    consignee_partner_id = fields.Many2one(related="contract_id.importer_id", store=True, string="Consignee")
-    discharge_port_id = fields.Many2one(related="contract_id.importer_port_id", store=True, string="Discharge Port")
+    shipper_partner_id = fields.Many2one("res.partner", string="Shipper")
+    consignee_partner_id = fields.Many2one("res.partner", string="Consignee")
+    discharge_port_id = fields.Many2one("erky.port", string="Discharge Port")
     freight_term = fields.Many2one("erky.freight.term", string="Freight Term",
                                    default=lambda self: self.env['erky.freight.term'].search([], limit=1))
-    notify = fields.Text("Notify", default="Same As Consignee")
+    notify = fields.Many2one("res.partner", "Notify")
     f20_qty = fields.Integer("Container 20F Qty", )
     f40_qty = fields.Integer("Container 40F Qty", )
     product_id = fields.Many2one("product.product", "Product")

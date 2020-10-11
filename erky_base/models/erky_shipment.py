@@ -11,24 +11,24 @@ class Shipment(models.Model):
                                      string="Shipment Type", required=1)
     export_form_id = fields.Many2one("erky.export.form", string="Export Form Ref", required=1)
     internal_contract_id = fields.Many2one(related="export_form_id.contract_id", string="Contract Ref", store=True, required=1)
-    purchase_contract_id = fields.Many2one(related="export_form_id.purchase_contract_id", string="Purchase Contract", store=True, required=1)
-    agent_id = fields.Many2one("res.partner", "Agent", required=1)
+    purchase_contract_id = fields.Many2one(related="export_form_id.purchase_contract_id", string="Purchase Contract", store=True, required=0)
+    agent_id = fields.Many2one("res.partner", "Agent", required=1, domain=[('is_agent', '=', True)])
     shipment_date = fields.Date("Shipment Date", default=fields.Date.context_today)
-    driver_id = fields.Many2one("res.partner", "Driver Name", required=1)
+    driver_id = fields.Many2one("res.partner", "Driver Name", required=1, domain=[('is_driver', '=', True)])
     phone_no = fields.Char(related="driver_id.phone", string="Driver Phone")
     product_id = fields.Many2one(related="internal_contract_id.product_id", store=True)
     product_uom_id = fields.Many2one("uom.uom", string="Product UOM", required=1)
     qty = fields.Float("Qty", compute="_compute_product_qty", store=True)
     package_uom_id = fields.Many2one("uom.uom", string="Package UOM", required=1)
     package_qty = fields.Float("Package Qty", required=1)
-    qty_as_product_unit = fields.Float("Qty/Product UOM", compute="_compute_product_qty", store=True)
+    qty_as_product_unit = fields.Float("Product Qty", compute="_compute_product_qty", store=True)
     unit_packing_weight = fields.Float(related="package_uom_id.packing_weight", string="Unit Packing Weight")
-    packing_weight = fields.Float("Net Weight", compute="_compute_shipment_qty", store=True)
-    gross_weight = fields.Float("Gross Weight", compute="_compute_shipment_qty", store=True)
-    discharged_qty = fields.Float("Discharged Qty", compute="_compute_product_qty", store=True)
-    discharged_packing_weight = fields.Float("Discharged U.P.W Qty")
-    base_shipped_weight = fields.Float("Base Shipped Weight", compute="_compute_product_qty", store=True)
-    origin_shipped_weight = fields.Float("Origin Shipped Weight")
+    packing_weight = fields.Float("Net Weight")
+    gross_weight = fields.Float("Gross Weight")
+    discharged_qty = fields.Float("Discharged Weight", compute="_compute_product_qty", store=True)
+    discharged_packing_weight = fields.Float("Discharged Weight")
+    base_shipped_weight = fields.Float("Shipped Weight", compute="_compute_product_qty", store=True)
+    origin_shipped_weight = fields.Float("Shipped Weight")
     origin_shipped_uom_id = fields.Many2one("uom.uom", readonly=1)
     base_shipped_uom_id = fields.Many2one("uom.uom", readonly=1)
     discharged_packing_uom_id = fields.Many2one("uom.uom", readonly=1)
@@ -52,6 +52,11 @@ class Shipment(models.Model):
     shipment_container_ids = fields.One2many("erky.container.shipment", "vehicle_shipment_id")
     is_full_reconciled = fields.Boolean("Fully Reconciled")
 
+    @api.onchange('driver_id')
+    def get_driver_agent(self):
+        for rec in self:
+            rec.agent_id = self.driver_id.agent_id.id
+
     @api.depends("package_qty", "discharged_packing_weight", "origin_shipped_weight")
     def _compute_product_qty(self):
         for rec in self:
@@ -60,7 +65,8 @@ class Shipment(models.Model):
                 rec.qty = rec.package_uom_id._compute_quantity(rec.package_qty, rec.product_uom_id,
                                                                      rounding_method=rounding_method)
             if rec.product_uom_id and rec.packing_weight_uom_id:
-                rec.qty_as_product_unit = rec.packing_weight_uom_id._compute_quantity(rec.packing_weight,
+                qty_as_product_unit = rec.package_qty * rec.unit_packing_weight
+                rec.qty_as_product_unit = rec.packing_weight_uom_id._compute_quantity(qty_as_product_unit,
                                                                    rec.product_uom_id,
                                                                      rounding_method=rounding_method)
             if rec.discharged_packing_uom_id and rec.discharged_uom_id:
@@ -214,7 +220,7 @@ class ShipmentCost(models.Model):
 
     shipment_id = fields.Many2one("erky.vehicle.shipment", required=1)
     internal_contract_id = fields.Many2one("erky.contract", required=1)
-    purchase_contract_id = fields.Many2one("erky.purchase.contract", required=1)
+    purchase_contract_id = fields.Many2one("erky.purchase.contract", required=0)
     export_form_id = fields.Many2one("erky.export.form", required=1)
     service_id = fields.Many2one("product.product", "Service", domain=[('type', '=', 'service')], required=1)
     amount = fields.Float("Amount")

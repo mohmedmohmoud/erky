@@ -5,10 +5,13 @@
             <field name="name">erky.export.form.tree.view</field>
             <field name="model">erky.export.form</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree decoration-danger="expire_date and (expire_date == current_date)">
                     <field name="contract_id"/>
                     <field name="exporter_id"/>
                     <field name="importer_id"/>
+                    <field name="form_no"/>
+                    <field name="issue_date"/>
+                    <field name="expire_date"/>
                     <field name="product_id"/>
                     <field name="bank_id"/>
                     <field name="state"/>
@@ -28,8 +31,8 @@
                         <button name="action_shipment" class="oe_highlight" type="object" string="Submit To Shipment" states="shipment_ins"/>
                         <button name="action_add_shipment" class="oe_highlight" type="object" string="Add Shipment" states="shipment"/>
                         <button name="action_bl" class="oe_highlight" type="object" string="BL" states="shipment"/>
-                        <button name="action_create_invoice" class="oe_highlight" type="object" string="Create Invoice" states="bl"/>
-                        <button name="action_packing_list" class="oe_highlight" type="object" string="Packing List" states="bl"/>
+<!--                        <button name="action_create_invoice" class="oe_highlight" type="object" string="Create Invoice" states="bl"/>-->
+<!--                        <button name="action_packing_list" class="oe_highlight" type="object" string="Packing List" states="bl"/>-->
                         <button name="action_done" class="oe_highlight" type="object" string="Done" states="packing"/>
                         <button name="%(erky_template_report_wiz_action)d" class="oe_highlight" type="action" context="{'default_export_form_id': id}" string="Reports"/>
                         <button name="%(form_renew_wizard_action)d" class="oe_highlight" type="action" context="{'default_export_form_id': id}" string="Renew"/>
@@ -37,20 +40,22 @@
                         <field name="state" widget="statusbar" statusbar_visible="draft,mc,bank,ssmo,done" nolabel="1"
                                readonly="1"/>
                     </header>
+                    <div style="margin-top:10px;">
+                        <center>
+                          <h1><span style="border: 1px solid #7c7bad; padding:5px;color:#7c7bad;">EXPORT FORM WINDOW</span></h1>
+                        </center>
+                      </div>
                     <sheet>
-                        <group>
-                            <h1><span style="border: 1px solid #7c7bad; padding:5px;color:#7c7bad;">EXPORT FORM WINDOW</span></h1>
-                        </group>
                         <div class="oe_button_box" name="button_box">
                             <button name="action_open_shipment_form" string="Shipments" type="object" icon="fa-truck"
                                     class="oe_stat_button">
                                 <field name="shipment_count" invisible="0"/>
                             </button>
-                            <button name="action_open_invoice_form" string="Invoice" type="object"
-                                    icon="fa-file-text-o"
-                                    class="oe_stat_button"
-                             >
-                            </button>
+<!--                            <button name="action_open_invoice_form" string="Invoice" type="object"-->
+<!--                                    icon="fa-file-text-o"-->
+<!--                                    class="oe_stat_button"-->
+<!--                             >-->
+<!--                            </button>-->
                             <button name="action_open_bills" string="Bills" type="object"
                                     icon="fa-file-text-o"
                                     class="oe_stat_button"
@@ -147,60 +152,61 @@
                             <page string="Shipment Instruction" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo'])]}">
                                 <group>
                                     <group>
-                                       <field name="shipment_partner_id" attrs="{'required': [('state', '=', 'shipment_ins')],
-                                        'readonly': [('state', '!=', 'shipment_ins')]}"/>
-                                        <field name="shipper_partner_id" attrs="{'required': [('state', '=', 'shipment_ins')],
-                                        'readonly': [('state', '!=', 'shipment_ins')]}"/>
-                                        <field name="discharge_port_id" attrs="{'readonly': [('state', '!=', 'shipment_ins')]}"/>
-                                        <field name="notify" attrs="{'readonly': [('state', '!=', 'shipment_ins')]}"/>
+                                       <field name="shipment_partner_id" invisible="1"/>
+                                        <field name="shipper_partner_id" invisible="1"/>
+                                        <field name="discharge_port_id" invisible="1"/>
+                                        <field name="notify" invisible="1"/>
                                     </group>
                                     <group>
-                                        <field name="shipment_ins_date" attrs="{'required': [('state', '=', 'shipment_ins')],
-                                        'readonly': [('state', '!=', 'shipment_ins')]}"/>
-                                        <field name="consignee_partner_id" attrs="{'required': [('state', '=', 'shipment_ins')],
-                                        'readonly': [('state', '!=', 'shipment_ins')]}"/>
-                                        <field name="freight_term" widget="selection" attrs="{'readonly': [('state', '!=', 'shipment_ins')]}"/>
-                                        <field name="f20_qty" attrs="{'readonly': [('state', '!=', 'shipment_ins')]}"/>
-                                        <field name="f40_qty" attrs="{'readonly': [('state', '!=', 'shipment_ins')]}"/>
+                                        <field name="shipment_ins_date" invisible="1"/>
+                                        <field name="consignee_partner_id" invisible="1"/>
+                                        <field name="freight_term" invisible="1"/>
+                                        <field name="f20_qty" invisible="1"/>
+                                        <field name="f40_qty" invisible="1"/>
                                     </group>
                                 </group>
-                                <p>
+
                                     <button name="%(request_container_action)d"
-                                            context="{'default_export_form_id': id, 'default_qty': qty, 'default_product_id': product_id, 'default_product_uom_id': product_uom_id}"
+                                            context="{'default_export_form_id': id, 'default_qty': qty,
+                                            'default_consignee_partner_id':consignee_partner_id,
+                                             'default_shipper_partner_id':shipper_partner_id,
+                                              'default_product_id': product_id,
+                                               'default_product_uom_id': product_uom_id,
+                                               'default_discharge_port_id': discharge_port_id}"
                                             string="Request Containers" type="action" class="oe_highlight"/>
-                                </p>
+
                                 <field name="container_request_ids" readonly="1"/>
                             </page>
                             <!--======================= Bill Of Lading ====================-->
-                            <page string="Bill Of Lading" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins','shipment'])]}">
-                                <group>
-                                    <group>
-                                        <field name="bl_no" attrs="{'required': [('state', '=', 'bl')],
-                                        'readonly': [('state', '!=', 'bl')]}"/>
-                                        <field name="bl_attachment"/>
-                                    </group>
-                                    <group>
-                                        <field name="bl_booking_no" attrs="{'required': [('state', '=', 'bl')],
-                                        'readonly': [('state', '!=', 'bl')]}"/>
-                                    </group>
-                                </group>
-                            </page>
-                            <page string="Packing" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins','shipment','bl','invoice'])]}">
-                                <field name="packing_ids">
-                                    <tree>
-                                        <field name="container_id" readonly="1"/>
-                                        <field name="qty" readonly="1"/>
-                                        <field name="net_qty" readonly="1"/>
-                                        <field name="gross_qty" readonly="1"/>
-                                    </tree>
-                                </field>
-                            </page>
+<!--                            <page string="Bill Of Lading" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins','shipment'])]}">-->
+<!--                                <group>-->
+<!--                                    <group>-->
+<!--                                        <field name="bl_no" attrs="{'required': [('state', '=', 'bl')],-->
+<!--                                        'readonly': [('state', '!=', 'bl')]}"/>-->
+<!--                                        <field name="bl_attachment"/>-->
+<!--                                    </group>-->
+<!--                                    <group>-->
+<!--                                        <field name="bl_booking_no" attrs="{'required': [('state', '=', 'bl')],-->
+<!--                                        'readonly': [('state', '!=', 'bl')]}"/>-->
+<!--                                    </group>-->
+<!--                                </group>-->
+<!--                            </page>-->
+<!--                            <page string="Packing" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins','shipment','bl','invoice'])]}">-->
+<!--                                <field name="packing_ids">-->
+<!--                                    <tree>-->
+<!--                                        <field name="container_id" readonly="1"/>-->
+<!--                                        <field name="qty" readonly="1"/>-->
+<!--                                        <field name="net_qty" readonly="1"/>-->
+<!--                                        <field name="gross_qty" readonly="1"/>-->
+<!--                                    </tree>-->
+<!--                                </field>-->
+<!--                            </page>-->
                             <!--=======================Picking====================-->
-                            <page string="Picking" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins','shipment','bl','invoice'])]}">
-                                <group>
-                                    <field name="picking_ids" nolabel="1"/>
-                                </group>
-                            </page>
+<!--                            <page string="Picking" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo','shipment_ins','shipment','bl','invoice'])]}">-->
+<!--                                <group>-->
+<!--                                    <field name="picking_ids" nolabel="1"/>-->
+<!--                                </group>-->
+<!--                            </page>-->
                         </notebook>
                     </sheet>
                 </form>

@@ -50,6 +50,13 @@
                                             <t t-esc="docs.export_form_id.consignee_partner_id.street2"/>,
                                             <t t-esc="docs.export_form_id.consignee_partner_id.city"/> - <t t-esc="docs.export_form_id.consignee_partner_id.country_id.name"/>
                                         </li>
+                                        <t t-if="docs.notify_partner_id.id">
+                                        <li>- NOTIFY PARTY:<t t-esc="docs.notify_partner_id.name"/></li>
+                                        <li>- ADD:  <t t-esc="docs.notify_partner_id.street"/>,
+                                            <t t-esc="docs.notify_partner_id.street2"/>,
+                                            <t t-esc="docs.notify_partner_id.city"/> - <t t-esc="docs.notify_partner_id.country_id.name"/>
+                                        </li>
+                                        </t>
                                         <li>- VESSEL: <t t-esc="docs.vessel_name"/></li>
                                         <li>- PORT OF LOADING: <t t-esc="docs.export_form_id.contract_id.exporter_port_id.name"/></li>
                                         <li>- PORT OF DISCHARGE: <t t-esc="docs.export_form_id.discharge_port_id.name"/></li>

@@ -12,6 +12,12 @@
                         <field name="location_dest_id"/>
                     </group>
                 </page>
+                <page string="Notify">
+                    <group>
+                        <field name="days_notify_before"/>
+                        <field name="notify_user_ids"/>
+                    </group>
+                </page>
             </notebook>
         </field>
     </record>

@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 
 class ErkyContract(models.Model):
     _name = 'erky.purchase.contract'
+    _order = "id desc, date desc"
 
     STATUS = [('draft', "Purchase Contract"),
               ('internal_contract', 'M.C Contract'),

@@ -21,3 +21,11 @@ class ErkyForms(models.Model):
     _name = "erky.required.document"
 
     name = fields.Char(string="Document Name", required=1)
+
+class NotifyFormExpire(models.Model):
+    _name = "erky.form.expire"
+    _rec_name = "export_form_id"
+
+    export_form_id = fields.Many2one("erky.export.form", "Export Form")
+    expire_date = fields.Date("Expire Date")
+    notify_date = fields.Date("Notify Date")

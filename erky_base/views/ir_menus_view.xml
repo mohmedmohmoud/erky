@@ -6,6 +6,7 @@
             <menuitem name="Contracts" id="erky_base.menu_erky_contracts" parent="erky_base.menu_erky_root" sequence="1"/>
             <menuitem name="Inventory" id="erky_base.menu_erky_inventory" parent="erky_base.menu_erky_root" sequence="2"/>
             <menuitem name="Partners" id="erky_base.menu_erky_partners" parent="erky_base.menu_erky_root" sequence="3"/>
-            <menuitem name="Setting" id="erky_base.menu_erky_setting" parent="erky_base.menu_erky_root" sequence="4"/>
+            <menuitem name="Exceptions" id="erky_base.menu_erky_exceptions" parent="erky_base.menu_erky_root" sequence="4"/>
+            <menuitem name="Setting" id="erky_base.menu_erky_setting" parent="erky_base.menu_erky_root" sequence="5"/>
     </data>
 </odoo>
