@@ -26,4 +26,3 @@ erky_dynamic_template_line_all,erky.dynamic.template.line access all,model_erky_
 erky_draft_bl_all,erky.draft.bl access all,model_erky_draft_bl,,1,1,1,1
 erky_draft_bl_line_all,erky.draft.bl.line access all,model_erky_bl_line,,1,1,1,1
 erky_analysis_result_all,erky.analysis.result access all,model_erky_analysis_result,,1,1,1,1
-erky_form_expire_all,erky.form.expire access all,model_erky_form_expire,,1,1,1,1
