@@ -21,6 +21,7 @@ class ErkyForms(models.Model):
     _name = "erky.required.document"
 
     name = fields.Char(string="Document Name", required=1)
+    document = fields.Binary()
 
 # class NotifyFormExpire(models.Model):
 #     _name = "erky.form.expire"
