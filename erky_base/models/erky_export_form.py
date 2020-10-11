@@ -299,14 +299,14 @@ class ExportForm(models.Model):
         print ("today =====================", today, notify_before_days)
         notify_date = (today - timedelta(notify_before_days)).date()
         form_ids = self.search([('state', 'not in', ['done', 'canceled']), ('is_notify', '=', False), ('expire_date', '=', notify_date)])
-        for frm in form_ids:
-            if frm.expire_date == notify_date:
-                self.env['erky.form.expire'].create({'export_form_id': frm.id,
-                                                     'expire_date': frm.expire_date,
-                                                     'notify_date': 'today'})
-                frm.is_notify = True
-                message_body = "EXPORT FORM [%s] IS EXPIRE ON [%s]." % (frm.name, frm.expire_date)
-                self.message_post(body=message_body, subtype='mt_comment', partner_ids=notify_user_ids.mapped('partner_id').ids)
+        # for frm in form_ids:
+        #     if frm.expire_date == notify_date:
+        #         self.env['erky.form.expire'].create({'export_form_id': frm.id,
+        #                                              'expire_date': frm.expire_date,
+        #                                              'notify_date': 'today'})
+        #         frm.is_notify = True
+        #         message_body = "EXPORT FORM [%s] IS EXPIRE ON [%s]." % (frm.name, frm.expire_date)
+        #         self.message_post(body=message_body, subtype='mt_comment', partner_ids=notify_user_ids.mapped('partner_id').ids)
 
 
     @api.multi
