@@ -27,17 +27,17 @@
         />
 
         <template id="report_certificate_analysis_erky">
-            <t t-call="web.html_container">
-                <t t-call="web.external_layout">
-                    <div class="page" style="position:relative;">
+           <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
                         <div style="margin-top:70px;">
-                            <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">CERTIFICATE OF ANALYSIS</center></strong>
+                            <strong><center style="text-decoration: underline;font-size: 1.4em;font-family: 'serif';">CERTIFICATE OF ANALYSIS</center></strong>
                         </div>
-                        <div class="clearfix" style="font-size: 1.4em;font-family: 'Times New Roman';font-style:bold;margin-top:50px;">
+                        <div class="clearfix" style="font-size: 0.9em;font-family: 'serif';font-style:bold;margin-top:50px;">
                             <div class="float-left" style="text-align:left"><strong>BL NO: <t t-esc="docs.name"/></strong></div>
                             <div class="float-right" style="text-align:right"><strong>DATE: <t t-esc="docs.date"/></strong></div>
                         </div>
-                        <ul style="font-size: 1.2em;font-family: 'Times New Roman';">
+                        <ul style="font-size: 0.9em;font-family: 'serif';">
                             <strong>
                                 <li style="text-decoration: underline;">DETAILS OF SHIPMENT AS PER B/L:</li>
                                     <ul style="list-style: none;">
@@ -64,7 +64,7 @@
                             </strong>
                         </ul>
                         <center>
-                            <table class="table" style="font-size: 1.2em;font-family: 'Times New Roman'; width:50%;line-height: 1.0;">
+                            <table class="table" style="font-size: 0.9em;font-family: 'serif'; width:50%;line-height: 1.0;">
                                 <tr>
                                     <th style="border:2px solid black;margin:0;padding:5px;">ANALYSIS</th>
                                     <th style="border:2px solid black;margin:0;padding:5px;">RESULT</th>
@@ -76,14 +76,13 @@
                             </table>
                         </center>
                         <center>
-                        <div class="clearfix" style="font-size: 1.2em;font-family: 'Times New Roman';font-style:bold;margin-top:70px; width:80%">
+                        <div class="clearfix" style="font-size: 0.9em;font-family: 'serif';font-style:bold;margin-top:70px; width:80%">
                             <div class="float-left" style="text-align:left"><strong>SIGNATURE</strong></div>
                             <div class="float-right" style="text-align:right"><strong>STAMP</strong></div>
                         </div>
                         </center>
                     </div>
                 </t>
-            </t>
         </template>
     </data>
 </odoo>

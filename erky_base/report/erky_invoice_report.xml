@@ -27,59 +27,59 @@
         />
 
         <template id="report_invoice_erky">
-            <t t-call="web.html_container">
-                <t t-call="web.external_layout">
-                    <div class="page" style="position:relative;">
+            <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
                         <div style="margin-top:70px;">
-                            <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">COMMERCIAL INVOICE</center></strong>
+                            <strong><center style="text-decoration: underline;font-size: 1.4em;font-family: 'serif';">COMMERCIAL INVOICE</center></strong>
                         </div>
-                        <table class="table" style="margin-top:50px;border-collapse: collapse;padding:5px;font-size: 1.0em;font-family: 'Times New Roman';">
-                            <tr>
-                                <td style="border: 2px solid black;;width:40%" colspan="3">
+                        <table class="table" style="margin-top:50px;font-size: 0.8em;font-family: 'serif';">
+                            <tr style="border: 2px solid black;">
+                                <td style="border: 2px solid black;" colspan="4">
                                     <p><strong><t t-esc="docs['importer_id'].name"/></strong></p>
                                     <p><strong><t t-esc="docs['importer_id'].street"/>, <t t-esc="docs['importer_id'].street2"/></strong></p>
                                     <p><strong>City, <t t-esc="docs['importer_id'].city"/> - <t t-esc="docs['importer_id'].country_id.name"/></strong></p>
                                 </td>
-                                <td colspan="1" style="border: 2px solid black;border-top: 2px solid white;"></td>
-                                <td colspan="2" style="border: 2px solid black;">
+                                <td style="border: 2px solid black;border-top: 2px solid white;"></td>
+                                <td colspan="3" style="border: 2px solid black;width:40%">
                                     <p><strong>DATE:</strong> <t t-esc="docs['current_date']"/> </p>
                                     <p><strong>INVOICE NO:</strong> <t t-esc="docs['invoice_no']"/></p>
                                     <p><strong>B/L NO:</strong> <t t-esc="docs['bl_no']"/></p>
                                     <p><strong>CONTRACT NO:</strong> <t t-esc="docs['contract_no']"/></p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr style="border: 2px solid black;">
                                 <th style="border: 2px solid black;vertical-align: middle;text-align:center;">ITEM <br/> NO</th>
                                 <th style="border: 2px solid black;vertical-align: middle;text-align:center;">DESCRIPTION</th>
-                                <th style="border: 2px solid black;vertical-align: middle;text-align:center;">UNIT <t t-esc="docs['port']"/> PRICE/<t t-esc="docs['currency'].symbol"/> </th>
-                                <th style="border: 2px solid black;vertical-align: middle;text-align:center;">QUANTITY <br/> /TON</th>
-                                <th style="border: 2px solid black;vertical-align: middle;text-align:center;">TOTAL<t t-esc="docs['port']"/> PRICE/<t t-esc="docs['currency'].symbol"/></th>
+                                <th colspan="2" style="border: 2px solid black;vertical-align: middle;text-align:center;">UNIT <t t-esc="docs['port']"/> PRICE/<t t-esc="docs['currency'].symbol"/> </th>
+                                <th style="border: 2px solid black;vertical-align: middle;text-align:center;">QUANTI<br/>TY/TON</th>
+                                <th colspan="2" style="border: 2px solid black;vertical-align: middle;text-align:center;">TOTAL<t t-esc="docs['port']"/> PRICE/<t t-esc="docs['currency'].symbol"/></th>
                             </tr>
-                            <tr>
+                            <tr style="border: 2px solid black;">
                                 <th style="border: 2px solid black;text-align:center">
                                     <t t-esc="docs['item_no']"/>
                                 </th>
                                 <th style="border: 2px solid black;text-align:center">
                                     <t t-esc="docs['desc']"/>
                                 </th>
-                                <td style="border: 2px solid black;text-align:center"><t t-esc="docs['unit_price']"/></td>
+                                <td  colspan="2" style="border: 2px solid black;text-align:center"><t t-esc="docs['unit_price']"/></td>
                                 <td style="border: 2px solid black;text-align:center"><t t-esc="docs['qty']"/></td>
-                                <td style="border: 2px solid black;text-align:center"><t t-esc="docs['total_amount']"/></td>
+                                <td colspan="2" style="border: 2px solid black;text-align:center"><t t-esc="docs['total_amount']"/></td>
+                            </tr>
+                            <tr style="border: 2px solid black;">
+                                <th style="border: 2px solid black;" colspan="7"/>
+                            </tr>
+                            <tr style="border: 2px solid black;">
+                                <th style="border: 2px solid black;text-align:center" colspan="4"><strong>TOTAL <t t-esc="docs['port']"/> PRICE/<t t-esc="docs['currency'].symbol"/></strong></th>
+                                <td style="border: 2px solid black;text-align:center" colspan="3"><t t-esc="docs['total_amount']"/></td>
+                            </tr>
+                            <tr style="border: 2px solid black;">
+                                <td style="border: 2px solid black;text-align:center" colspan="7"><strong class="text-uppercase">TOTAL <t t-esc="docs['port']"/> AMOUNT IN <t t-esc="docs['currency'].currency_unit_label"/> <t t-esc="docs['total_amount_words']"/> </strong></td>
                             </tr>
                             <tr>
-                                <th style="border: 2px solid black;" colspan="5"/>
-                            </tr>
-                            <tr>
-                                <th style="border: 2px solid black;text-align:center" colspan="3"><strong>TOTAL <t t-esc="docs['port']"/> PRICE/<t t-esc="docs['currency'].symbol"/></strong></th>
-                                <td style="border: 2px solid black;text-align:center" colspan="2"><t t-esc="docs['total_amount']"/></td>
-                            </tr>
-                            <tr>
-                                <td style="border: 2px solid black;text-align:center" colspan="5"><strong class="text-uppercase">TOTAL <t t-esc="docs['port']"/> AMOUNT IN <t t-esc="docs['currency'].currency_unit_label"/> <t t-esc="docs['total_amount_words']"/> </strong></td>
-                            </tr>
-                            <tr>
-                                <td style="border: 2px solid black;border-collapse: collapse;margin:0px;padding:0px;" colspan="5">
-                                    <table class="table table-borderless" style="margin-left:20px;margin-top:20px;font-size: 1.0em;font-family: 'Times New Roman';">
-                                            <tr style="margin:0;padding:5px; width:20%">
+                                <td style="border: 2px solid black;border-collapse: collapse;margin:0px;padding:0px;" colspan="7">
+                                    <table class="table table-borderless" style="margin-top:20px;" >
+                                            <tr style="margin-top:0px;padding:5px; width:20%">
                                                 <th style="margin:0;padding:5px"><strong>ACCOUNT NAME:</strong></th> <td style="margin:0;padding:0"><t t-esc="docs['account'].contract_id.purchase_contract_id.payment_account_id.name"/></td>
                                             </tr>
                                             <tr style="margin:0;padding:0">
@@ -109,7 +109,6 @@
                         </table>
                     </div>
                 </t>
-            </t>
         </template>
     </data>
 </odoo>

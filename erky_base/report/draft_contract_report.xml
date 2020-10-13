@@ -30,8 +30,7 @@
             <t t-call="web.basic_layout">
                 <t t-foreach="docs" t-as="o">
                     <div class="page">
-<!--                        <div class="oe_structure"/>-->
-<!--                        <div class="row">-->
+                        <div class="oe_structure"/>
                             <div>
                                 <strong><center style="text-decoration: underline;font-size: 1.4em;font-family: 'serif';">EXPORT CONTRACT</center></strong>
                             </div>

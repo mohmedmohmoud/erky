@@ -27,14 +27,13 @@
         />
 
         <template id="report_packing_list_erky">
-            <t t-call="web.html_container">
-<!--            <t t-foreach="docs" t-as="o">-->
-                <t t-call="web.external_layout">
-                <div class="page" style="position:relative;">
+             <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
                     <div style="margin-top:70px;">
-                        <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">PACKING LIST</center></strong>
+                        <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'serif';">PACKING LIST</center></strong>
                     </div>
-                    <table class="table" style="margin-top:50px;padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.0em;font-family: 'Times New Roman';">
+                    <table class="table" style="margin-top:50px;font-size: 1.0em;font-family: 'serif';">
                         <tr>
                             <td style="border: 2px solid black;" colspan="4">
                                 <p><strong><t t-esc="docs['importer_id'].name"/></strong></p>
@@ -81,29 +80,28 @@
                             <td style="border: 2px solid black;margin:0;padding:5px;vertical-align: middle;text-align:center;"><t t-esc="c.qty"/></td>
                         </tr>
                         <tr>
-                            <td style="border: 2px solid black;" colspan="2"><strong>TOTAL CONTAINER</strong></td>
-                            <td style="border: 2px solid black;" colspan="3"><t t-esc="docs['total_words_container']"/></td>
-                            <td colspan="2" style="text-align:center;border: 2px solid black;"><t t-esc="docs['total_container']"/></td>
+                            <td style="border: 2px solid black;vertical-align: middle;" colspan="2"><strong>TOTAL CONTAINER</strong></td>
+                            <td style="border: 2px solid black;vertical-align: middle;" colspan="3"><t t-esc="docs['total_words_container']"/></td>
+                            <td colspan="2" style="text-align:center;vertical-align: middle;border: 2px solid black;"><t t-esc="docs['total_container']"/></td>
                         </tr>
                         <tr>
-                            <td style="border: 2px solid black;" colspan="2"><strong>TOTAL BAGS</strong></td>
-                            <td style="border: 2px solid black;" colspan="3"><t t-esc="docs['total_bags_words']"/> </td>
-                            <td colspan="2" style="text-align:center;border: 2px solid black;"><t t-esc="docs['total_bags']"/> </td>
+                            <td style="border: 2px solid black;vertical-align: middle;" colspan="2"><strong>TOTAL BAGS</strong></td>
+                            <td style="border: 2px solid black;vertical-align: middle;" colspan="3"><t t-esc="docs['total_bags_words']"/> </td>
+                            <td colspan="2" style="text-align:center;vertical-align: middle;border: 2px solid black;"><t t-esc="docs['total_bags']"/> </td>
                         </tr>
                         <tr>
-                            <td style="border: 2px solid black;" colspan="2"><strong>TOTAL WEIGHT/GROSS</strong></td>
-                            <td style="border: 2px solid black;" colspan="3"><t t-esc="docs['gross_weight_words']"/></td>
-                            <td colspan="2" style="text-align:center;border: 2px solid black;"><t t-esc="docs['gross_weight']"/></td>
+                            <td style="border: 2px solid black;vertical-align: middle;" colspan="2"><strong>TOTAL WEIGHT/GROSS</strong></td>
+                            <td style="border: 2px solid black;vertical-align: middle;" colspan="3"><t t-esc="docs['gross_weight_words']"/></td>
+                            <td colspan="2" style="text-align:center;vertical-align: middle;border: 2px solid black;"><t t-esc="docs['gross_weight']"/></td>
                         </tr>
                         <tr>
-                            <td style="border: 2px solid black;" colspan="2"><strong>TOTAL WEIGHT/NET</strong></td>
-                            <td style="border: 2px solid black;" colspan="3"><t t-esc="docs['net_weight_words']"/></td>
-                            <td colspan="2" style="text-align:center;border: 2px solid black;"><t t-esc="docs['net_weight']"/></td>
+                            <td style="border: 2px solid black;vertical-align: middle;" colspan="2"><strong>TOTAL WEIGHT/NET</strong></td>
+                            <td style="border: 2px solid black;vertical-align: middle;" colspan="3"><t t-esc="docs['net_weight_words']"/></td>
+                            <td colspan="2" style="text-align:center;vertical-align: middle;border: 2px solid black;"><t t-esc="docs['net_weight']"/></td>
                         </tr>
                     </table>
                 </div>
                 </t>
-            </t>
         </template>
     </data>
 </odoo>

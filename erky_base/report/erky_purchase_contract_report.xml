@@ -28,117 +28,115 @@
         />
 
         <template id="report_erky_purchase_contract">
-            <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
                 <t t-foreach="docs" t-as="o">
-                    <t t-call="web.external_layout">
-                        <div class="page" style="position:relative;">
-                            <p><center style="font-size:1.4em;font-family:'Times New Roman';font-style:bold;text-decoration: underline;"><strong>PURCHASING CONTRACT</strong></center></p>
-                            <div class="clearfix" style="font-size: 1.2em;font-family: 'Times New Roman';font-style:bold;margin-top:50px;">
-                                <div class="float-left" style="text-align:left"><strong><span>NO:  <t t-esc="o.contract_no"/></span></strong></div>
-                                <div class="float-right" style="text-align:right"><strong><span>DATE: <t t-esc="o.date"/></span></strong></div>
-                            </div>
-                            <table style="border-collapse: separate;border-spacing: 0 20px !important;font-size: 1.2em;font-family:'Times New Roman';">
-                                <tr>
-                                    <th style="width:30%;">SELLER:</th>
-                                    <td><t t-esc="o.exporter_id.name"/></td>
-                                </tr>
-                                <tr>
-                                    <th>ADDRESS:</th>
-                                    <td><t t-esc="o.exporter_id.street"/>,
-                                        <t t-esc="o.exporter_id.street2"/>,
-                                        <t t-esc="o.exporter_id.city"/>,
-                                        <t t-esc="o.exporter_id.country_id.name"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>BUYER:</th>
-                                    <td><t t-esc="o.importer_id.name"/></td>
-                                </tr>
-                                <tr>
-                                    <th>ADDRESS:</th>
-                                    <td><t t-esc="o.importer_id.street"/>,
-                                        <t t-esc="o.importer_id.street2"/>,
-                                        <t t-esc="o.importer_id.city"/>,
-                                        <t t-esc="o.importer_id.country_id.name"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>PHONE:</th>
-                                    <td><t t-esc="o.phone_no"/></td>
-                                </tr>
-                                <tr>
-                                    <th colspan="2">The undersigned seller and buyer have confirm this contract in accordance with the terms and conditions
-                                    stipulated below</th>
-                                </tr>
-                                <tr>
-                                    <th>NAME OF COMMODITY:</th>
-                                    <td><t t-esc="o.product_id.name"/></td>
-                                </tr>
-                                <tr>
-                                    <th>SPECIFICATIONS:</th>
-                                    <td>
-                                        <t t-foreach="o.product_specification_ids" t-as="sp">
-                                            <p><t t-esc="sp.name.name"/>: <t t-esc="sp.value"/> </p>
-                                        </t>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>QUANTITY:</th>
-                                    <td><t t-esc="o.qty"/>/<t t-esc="o.product_uom_id.name"/><t t-esc="o.allowed_percentage"/></td>
-                                </tr>
-                                <tr>
-                                    <th>UNIT PRICE:</th>
-                                    <td>
-                                        <t t-esc="o.unit_price"/>/<t t-esc="o.currency_id.symbol"/>
-<!--                                        &#45;&#45;-->
-<!--                                        <t t-esc="o.unit_price_in_importer_curr"/>/<t t-esc="o.importer_currency_id.symbol"/>-->
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>PAYMENT:</th>
-                                    <td><t t-esc="o.payment_condition"/></td>
-                                </tr>
-                                <tr>
-                                    <th>ACCOUNT:</th>
-                                    <td>
-                                        <p>Account Name :<t t-esc="o.payment_account_id.name"/></p>
-                                        <p>Account No   :<t t-esc="o.account_no"/></p>
-                                        <p>Company Add  :<t t-esc="o.partner_id.street"/>, <t t-esc="o.partner_id.street2"/>, <t t-esc="o.partner_id.city"/>, <t t-esc="o.partner_id.country_id.name"/> </p>
-                                        <p>Bank Name    :<t t-esc="o.account_bank_id.name"/></p>
-                                        <p>Swift Code   :<t t-esc="o.swift_code"/></p>
-                                        <p>IBAN         :<t t-esc="o.iban"/></p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>SHIPMENT:</th>
-                                    <td><t t-esc="o.shipment_condition"/> </td>
-                                </tr>
-                                <tr>
-                                    <th>PORT OF DESTINATION:</th>
-                                    <td><t t-esc="o.importer_port_id.name"/> </td>
-                                </tr>
-                                <tr>
-                                    <th>PACKING:</th>
-                                    <th><t t-esc="o.packing_condition"/> </th>
-                                </tr>
-                                <tr>
-                                    <th>DOCUMENTS:</th>
-                                    <td>
-                                        <ol>
-                                            <t t-foreach="o.required_document_ids" t-as="dc">
-                                                <li><t t-esc="dc.name"/></li>
-                                            </t>
-                                        </ol>
-                                    </td>
-                                </tr>
-                            </table>
+                    <div class="page">
+                        <div class="oe_structure"/>
 
-                            <div class="clearfix" style="margin-top:200px; font-size:1.2em;font-family:'Times New Roman;">
-                                <div class="float-left" style="text-align:left"><strong>THE SELLER (seal/sign)</strong></div>
-                                <div class="float-right" style="text-align:right"><strong>THE BUYER (seal/sign)</strong></div>
-                            </div>
+                        <p><center style="font-size:1.4em;font-family:'serif';font-style:bold;text-decoration: underline;"><strong>PURCHASING CONTRACT</strong></center></p>
+                        <div class="clearfix" style="font-size: 1.2em;font-family: 'serif';font-style:bold;margin-top:50px;">
+                            <div class="float-left" style="text-align:left"><strong><span>NO:  <t t-esc="o.contract_no"/></span></strong></div>
+                            <div class="float-right" style="text-align:right"><strong><span>DATE: <t t-esc="o.date"/></span></strong></div>
                         </div>
-                    </t>
+                        <table style="border-collapse: separate;border-spacing: 0 10px !important;font-size: 1.0em;font-family:'serif';">
+                            <tr>
+                                <th style="width:35%;">SELLER:</th>
+                                <td><t t-esc="o.exporter_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <th>ADDRESS:</th>
+                                <td><t t-esc="o.exporter_id.street"/>,
+                                    <t t-esc="o.exporter_id.street2"/>,
+                                    <t t-esc="o.exporter_id.city"/>,
+                                    <t t-esc="o.exporter_id.country_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>BUYER:</th>
+                                <td><t t-esc="o.importer_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <th>ADDRESS:</th>
+                                <td><t t-esc="o.importer_id.street"/>,
+                                    <t t-esc="o.importer_id.street2"/>,
+                                    <t t-esc="o.importer_id.city"/>,
+                                    <t t-esc="o.importer_id.country_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>PHONE:</th>
+                                <td><t t-esc="o.phone_no"/></td>
+                            </tr>
+                            <tr>
+                                <th colspan="2">The undersigned seller and buyer have confirm this contract in accordance with the terms and conditions
+                                    stipulated below</th>
+                            </tr>
+                            <tr>
+                                <th>NAME OF COMMODITY:</th>
+                                <td><t t-esc="o.product_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <th>SPECIFICATIONS:</th>
+                                <td>
+                                    <t t-foreach="o.product_specification_ids" t-as="sp">
+                                        <p><t t-esc="sp.name.name"/>: <t t-esc="sp.value"/> </p>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>QUANTITY:</th>
+                                <td><t t-esc="o.qty"/>/<t t-esc="o.product_uom_id.name"/><t t-esc="o.allowed_percentage"/></td>
+                            </tr>
+                            <tr>
+                                <th>UNIT PRICE:</th>
+                                <td>
+                                    <t t-esc="o.unit_price"/>/<t t-esc="o.currency_id.symbol"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>PAYMENT:</th>
+                                <td><t t-esc="o.payment_condition"/></td>
+                            </tr>
+                            <tr>
+                                <th>ACCOUNT:</th>
+                                <td>
+                                    <p>Account Name :<t t-esc="o.payment_account_id.name"/></p>
+                                    <p>Account No   :<t t-esc="o.account_no"/></p>
+                                    <p>Company Add  :<t t-esc="o.partner_id.street"/>, <t t-esc="o.partner_id.street2"/>, <t t-esc="o.partner_id.city"/>, <t t-esc="o.partner_id.country_id.name"/> </p>
+                                    <p>Bank Name    :<t t-esc="o.account_bank_id.name"/></p>
+                                    <p>Swift Code   :<t t-esc="o.swift_code"/></p>
+                                    <p>IBAN         :<t t-esc="o.iban"/></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>SHIPMENT:</th>
+                                <td><t t-esc="o.shipment_condition"/> </td>
+                            </tr>
+                            <tr>
+                                <th>PORT OF DESTINATION:</th>
+                                <td><t t-esc="o.importer_port_id.name"/> </td>
+                            </tr>
+                            <tr>
+                                <th>PACKING:</th>
+                                <td><t t-esc="o.packing_condition"/> </td>
+                            </tr>
+                            <tr>
+                                <th>DOCUMENTS:</th>
+                                <td>
+                                    <ol>
+                                        <t t-foreach="o.required_document_ids" t-as="dc">
+                                            <li><t t-esc="dc.name"/></li>
+                                        </t>
+                                    </ol>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="clearfix" style="margin-top:150px; font-size:1.0em;font-family:'serif';">
+                            <div class="float-left" style="text-align:left"><strong>THE SELLER (seal/sign)</strong></div>
+                            <div class="float-right" style="text-align:right"><strong>THE BUYER (seal/sign)</strong></div>
+                        </div>
+                    </div>
                 </t>
             </t>
         </template>
