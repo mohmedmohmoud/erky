@@ -22,7 +22,7 @@
                 model="erky.contract"
                 name="erky_base.report_draft_erky_contract"
                 file="erky_base.report_draft_erky_contract"
-                report_type="qweb-html"
+                report_type="qweb-pdf"
                 paperformat="paperformat_euro_lowmargin_contract_erky"
         />
 

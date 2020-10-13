@@ -20,9 +20,11 @@
         <field name="model">erky.container.request</field>
         <field name="arch" type="xml">
             <form string="Request Container:">
-                <group>
-                    <h1><span style="border: 1px solid #7c7bad; padding:5px;color:#7c7bad;">SHIPPING INSTRUCTIONS WINDOW</span></h1>
-                </group>
+                <div style="margin-top:10px;">
+            <center>
+              <h1><span style="border: 1px solid #7c7bad; padding:5px;color:#7c7bad;">SHIPPING INSTRUCTIONS WINDOW</span></h1>
+            </center>
+          </div>
                 <group>
                     <field name="is_active"/>
                 </group>
