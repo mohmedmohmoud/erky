@@ -22,23 +22,24 @@
                 model="erky.contract"
                 name="erky_base.report_draft_erky_contract"
                 file="erky_base.report_draft_erky_contract"
-                report_type="qweb-pdf"
+                report_type="qweb-html"
                 paperformat="paperformat_euro_lowmargin_contract_erky"
         />
 
         <template id="report_draft_erky_contract">
-            <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
                 <t t-foreach="docs" t-as="o">
-                    <t t-call="web.external_layout">
-                        <div class="page" style="position:relative;">
-                            <div style="margin-top:70px;">
-                                <strong><center style="text-decoration: underline;font-size: 1.8em;font-family: 'Times New Roman';">EXPORT CONTRACT</center></strong>
+                    <div class="page">
+<!--                        <div class="oe_structure"/>-->
+<!--                        <div class="row">-->
+                            <div>
+                                <strong><center style="text-decoration: underline;font-size: 1.4em;font-family: 'serif';">EXPORT CONTRACT</center></strong>
                             </div>
-                            <div class="clearfix" style="font-size: 1.4em;font-family: 'Times New Roman';font-style:bold;margin-top:50px;">
+                            <div class="clearfix" style="font-size: 1.2em;font-family: 'serif';font-style:bold;margin-top:50px">
                                 <div class="float-left" style="text-align:left"><strong>NO: <t t-esc="o.name"/></strong></div>
                                 <div class="float-right" style="text-align:right"><strong>DATE: <t t-esc="o.date"/></strong></div>
                             </div>
-                            <table style="padding:10px; border-collapse: separate;border-spacing: 0 16px !important;font-size: 1.4em;font-family: 'Times New Roman';">
+                            <table style="padding:0px; border-collapse: separate;border-spacing: 0 10px !important;font-size: 1.0em;font-family: 'serif';">
                                 <tr>
                                     <th style="width:40%">EXPORTER:</th>
                                     <td>
@@ -133,12 +134,12 @@
                                     </td>
                                 </tr>
                             </table>
-                            <div class="clearfix" style="margin-top:200px;font-size: 1.2em;font-family: 'Times New Roman';">
+                            <div class="clearfix" style="margin-top:150px;font-size: 1.0em;font-family: 'serif';">
                                 <div class="float-left" style="text-align:left"><span><strong>EXPORTER SIGNATURE</strong></span></div>
                                 <div class="float-right" style="text-align:right"><span><strong>IMPORTER SIGNATURE</strong></span></div>
                             </div>
                         </div>
-                    </t>
+<!--                    </div>-->
                 </t>
             </t>
         </template>

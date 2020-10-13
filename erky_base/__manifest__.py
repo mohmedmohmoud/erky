@@ -64,6 +64,8 @@
         # 'report/certificate_origin_report.xml',
     ],
 
+    'external_dependencies': {'python': ['inflect']},
+
     'qweb': [
             "static/src/xml/reconcile_shipment.xml",
     ],
