@@ -6,12 +6,10 @@
         <field name="arch" type="xml">
             <form string="Template Report Erky Wiz:">
                 <group>
-                    <field name="report_type" widget="radio"/>
                     <field name="export_form_id" invisible="1"/>
                     <field name="draft_bl_id" invisible="1"/>
-                    <field name="template_from" attrs="{'invisible': [('report_type', '!=', 'default')], 'required': [('report_type', '=', 'default')]}"/>
-                    <field name="template_content" attrs="{'invisible': [('report_type', '!=', 'default')]}"/>
-                    <field name="dynamic_rep_id" attrs="{'invisible': [('report_type', '=', 'default')], 'required': [('report_type', '!=', 'default')]}"/>
+                    <field name="template_from"/>
+                    <field name="template_content"/>
                 </group>
                 <footer>
                     <button string='Print Report' name="print_report" type="object" class="oe_highlight"/>

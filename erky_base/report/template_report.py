@@ -10,11 +10,11 @@ class ReportErkyTemplate(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        print("---------------------", data)
+        print("-------------d--------", data)
         docargs = {}
         datas = data.get('form', False)
         temp = datas[0].get('template_content')
-        print("---------------------", temp)
+        print("----------t-----------", temp)
         erky_report = self.env['ir.actions.report']._get_report_from_name('erky_base.report_erky_template_report')
         if datas:
             active_id = self._context.get('active_id')

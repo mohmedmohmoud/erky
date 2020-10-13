@@ -34,7 +34,7 @@
 <!--                        <button name="action_create_invoice" class="oe_highlight" type="object" string="Create Invoice" states="bl"/>-->
 <!--                        <button name="action_packing_list" class="oe_highlight" type="object" string="Packing List" states="bl"/>-->
                         <button name="action_done" class="oe_highlight" type="object" string="Done" states="packing"/>
-                        <button name="%(erky_template_report_wiz_action)d" class="oe_highlight" type="action" context="{'default_export_form_id': id}" string="Reports"/>
+<!--                        <button name="%(erky_template_report_wiz_action)d" class="oe_highlight" type="action" context="{'default_export_form_id': id}" string="Reports"/>-->
                         <button name="%(form_renew_wizard_action)d" class="oe_highlight" type="action" context="{'default_export_form_id': id}" string="Renew"/>
                         <button name="action_cancel" type="object" string="Cancel" states="mc,bank,ssmo,shipment_ins,shipment"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,mc,bank,ssmo,done" nolabel="1"
