@@ -32,13 +32,13 @@
                     <div class="page">
                         <div class="oe_structure"/>
                             <div>
-                                <strong><center style="text-decoration: underline;font-size: 1.4em;font-family: 'serif';">EXPORT CONTRACT</center></strong>
+                                <strong><center style="text-decoration: underline;font-size: 1.2em;font-family: 'serif';">EXPORT CONTRACT</center></strong>
                             </div>
-                            <div class="clearfix" style="font-size: 1.2em;font-family: 'serif';font-style:bold;margin-top:50px">
+                            <div class="clearfix" style="font-size: 1.0em;font-family: 'serif';font-style:bold;margin-top:50px">
                                 <div class="float-left" style="text-align:left"><strong>NO: <t t-esc="o.name"/></strong></div>
                                 <div class="float-right" style="text-align:right"><strong>DATE: <t t-esc="o.date"/></strong></div>
                             </div>
-                            <table style="padding:0px; border-collapse: separate;border-spacing: 0 10px !important;font-size: 1.0em;font-family: 'serif';">
+                            <table style="padding:0px; border-collapse: separate;border-spacing: 0 10px !important;font-size: 0.9em;font-family: 'serif';">
                                 <tr>
                                     <th style="width:40%">EXPORTER:</th>
                                     <td>
@@ -133,7 +133,7 @@
                                     </td>
                                 </tr>
                             </table>
-                            <div class="clearfix" style="margin-top:150px;font-size: 1.0em;font-family: 'serif';">
+                            <div class="clearfix" style="margin-top:80px;font-size: 0.9em;font-family: 'serif';">
                                 <div class="float-left" style="text-align:left"><span><strong>EXPORTER SIGNATURE</strong></span></div>
                                 <div class="float-right" style="text-align:right"><span><strong>IMPORTER SIGNATURE</strong></span></div>
                             </div>
