@@ -1,0 +1,79 @@
+<odoo>
+  <data>
+
+    <menuitem name="Cheques" id="menu_account_cheque" parent="account.menu_finance" sequence="10"/>
+
+    <record id="account_cheque_tree_view" model="ir.ui.view">
+      <field name="name">account.cheque.tree.view</field>
+      <field name="model">account.cheque</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="cheque_number"/>
+          <field name="date"/>
+          <field name="beneficiary_id"/>
+          <field name="account_holder_id"/>
+          <field name="journal_id"/>
+          <field name="account_number"/>
+          <field name="bank_id"/>
+          <field name="amount"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="account_cheque_from_view" model="ir.ui.view">
+      <field name="name">account.cheque.form.view</field>
+      <field name="model">account.cheque</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+          </header>
+          <sheet>
+            <div class="oe_title">
+              <lable for="name"/>
+              <field name="name"/>
+            </div>
+            <group>
+              <group>
+                <field name="account_holder_id"/>
+                <field name="date"/>
+                <field name="bank_id"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="amount" t-options="{'widget': 'monetary', 'display_currency': currency_id}"/>
+              </group>
+              <group>
+                <field name="beneficiary_id"/>
+                <field name="journal_id"/>
+                <field name="account_number"/>
+                <field name="cheque_number"/>
+              </group>
+            </group>
+            <group>
+              <field name="memo"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_account_inbound_cheque" model="ir.actions.act_window">
+      <field name="name">Accounting Inbound Cheque</field>
+      <field name="res_model">account.cheque</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Inbound Cheque" id="menu_account_inbound_cheque" parent="menu_account_cheque" action="action_account_inbound_cheque" sequence="1"/>
+
+    <record id="action_account_outbound_cheque" model="ir.actions.act_window">
+      <field name="name">Accounting Outbound Cheque</field>
+      <field name="res_model">account.cheque</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Outbound Cheque" id="menu_account_outbound_cheque" parent="menu_account_cheque" action="action_account_outbound_cheque" sequence="2"/>
+
+  </data>
+</odoo>
