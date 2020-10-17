@@ -31,11 +31,14 @@
           </header>
           <sheet>
             <div class="oe_title">
-              <lable for="name"/>
-              <field name="name"/>
+              <h1>
+                <lable for="name"/>
+                <field name="name"/>
+              </h1>
             </div>
             <group>
               <group>
+                <field name="cheque_type" invisible="1"/>
                 <field name="account_holder_id"/>
                 <field name="date"/>
                 <field name="bank_id"/>
@@ -44,6 +47,7 @@
               </group>
               <group>
                 <field name="beneficiary_id"/>
+                <field name="payment_date"/>
                 <field name="journal_id"/>
                 <field name="account_number"/>
                 <field name="cheque_number"/>
@@ -62,6 +66,7 @@
       <field name="res_model">account.cheque</field>
       <field name="view_type">form</field>
       <field name="view_mode">tree,form</field>
+      <field name="domain">[('cheque_type', '=', 'inbound')]</field>
     </record>
 
     <menuitem name="Inbound Cheque" id="menu_account_inbound_cheque" parent="menu_account_cheque" action="action_account_inbound_cheque" sequence="1"/>
@@ -71,6 +76,7 @@
       <field name="res_model">account.cheque</field>
       <field name="view_type">form</field>
       <field name="view_mode">tree,form</field>
+      <field name="domain">[('cheque_type', '=', 'outbound')]</field>
     </record>
 
     <menuitem name="Outbound Cheque" id="menu_account_outbound_cheque" parent="menu_account_cheque" action="action_account_outbound_cheque" sequence="2"/>

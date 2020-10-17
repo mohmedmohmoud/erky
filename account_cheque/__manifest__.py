@@ -24,6 +24,10 @@ You could use this simplified accounting in case you work with an (external) acc
 
     'data': [
         'security/ir.model.access.csv',
-        'views/accounting_cheque_view.xml',
+        'data/account_journal_data.xml',
+        'data/sequence.xml',
+        'views/account_cheque_view.xml',
+        'views/account_journal_view.xml',
+        'views/account_payment_view.xml',
     ],
 }
