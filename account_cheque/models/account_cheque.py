@@ -16,22 +16,22 @@ CHEQUE_STATES = [('draft', 'Draft'),
 class AccountCheque(models.Model):
     _name = "account.cheque"
 
-    name = fields.Char("Ref", required=1, default="NEW")
-    payment_date = fields.Date("Payment Date")
-    date = fields.Date("Date", required=1)
-    journal_id = fields.Many2one("account.journal", string="Journal", required=1)
+    name = fields.Char("Ref", required=1, default="NEW", readonly=1)
+    payment_date = fields.Date("Payment Date", readonly=1)
+    date = fields.Date("Date", required=1, readonly=1)
+    journal_id = fields.Many2one("account.journal", string="Journal", readonly=1, required=1)
     bank_id = fields.Many2one("res.bank", "Bank")
     account_number = fields.Char()
-    account_holder_id = fields.Many2one("res.partner", "Account Holder", required=1)
-    beneficiary_id = fields.Many2one("res.partner", "Beneficiary")
-    memo = fields.Text("Memo")
-    amount = fields.Float("Amount")
-    currency_id = fields.Many2one("res.currency")
-    cheque_number = fields.Char("Cheque Number", Required=1)
-    cheque_type = fields.Selection([('inbound', 'Inbound'), ('outbound', "Outbound")])
-    state = fields.Selection(CHEQUE_STATES, default="draft")
-    payment_id = fields.Many2one("account.payment")
-    cheque_line_ids = fields.One2many("account.cheque.line", "cheque_id")
+    account_holder_id = fields.Many2one("res.partner", "Account Holder", readonly=1, required=1)
+    beneficiary_id = fields.Many2one("res.partner", "Beneficiary", readonly=1)
+    memo = fields.Text("Memo", readonly=1)
+    amount = fields.Float("Amount", readonly=1)
+    currency_id = fields.Many2one("res.currency", readonly=1)
+    cheque_number = fields.Char("Cheque Number", Required=1, readonly=1)
+    cheque_type = fields.Selection([('inbound', 'Inbound'), ('outbound', "Outbound")], readonly=1)
+    state = fields.Selection(CHEQUE_STATES, default="draft", readonly=1)
+    payment_id = fields.Many2one("account.payment", readonly=1)
+    cheque_line_ids = fields.One2many("account.cheque.line", "cheque_id", readonly=1)
 
     @api.model
     def create(self, vals):
@@ -51,23 +51,46 @@ class AccountCheque(models.Model):
         if not partner_id.property_account_receivable_id:
             raise ValidationError("Please check partner receivable account.")
         desc = "STATUS: From Draft -> Under Collection"
-        amount = self.amount
-        mv_vals = {'debit_account': under_collection_account_id.id,
-                   'credit_account': partner_id.property_account_receivable_id,
-                   'partner_id': partner_id.id,
-                   'name': self.name + '[' + desc + ']',
-                   'amount': amount}
-
-        if not self._context.get('without_move', False):
-            move_id = self.create_cheque_move(mv_vals)
-        else:
-            move_id = self.payment_id.move_line_ids and self.payment_id.move_line_ids[0].move_id
+        move_id = self.payment_id.move_line_ids and self.payment_id.move_line_ids[0].move_id
         line_vals = {'datetime': datetime.now(),
                      'desc': desc,
                      'move_id': move_id.id,
                      'cheque_id': self.id}
-        self.env['account.cheque.line'].create(line_vals)
+        self.env['account.cheque.line'].sudo().create(line_vals)
         self.state = "under_collection"
+
+    @api.multi
+    def action_to_bank(self):
+        bank_account_id = self.journal_id.default_debit_account_id
+        under_collection_account_id = self.journal_id.under_collection_account_id
+        partner_id = self.account_holder_id
+        if not bank_account_id:
+            raise ValidationError("Please check bank account.")
+        if not under_collection_account_id:
+            raise ValidationError("Please check under collection account.")
+        desc = "STATUS: From Under Collection -> Bank"
+        amount = self.amount
+        move_vals = {'journal_id': self.journal_id.id,
+                     'date': datetime.today(),
+                     'ref': self.name,
+                     'line_ids': [(0, 0, {'account_id': bank_account_id.id,
+                                          'name': self.name + '[' + desc + ']',
+                                          'partner_id': partner_id.id,
+                                          'debit': amount,
+                                          'credit': 0.0}),
+                                  (0, 0, {'account_id': under_collection_account_id.id,
+                                          'name': self.name + '[' + desc + ']',
+                                          'partner_id': partner_id.id,
+                                          'debit': 0.0,
+                                          'credit': amount})]}
+        move_id = self.env['account.move'].sudo().create(move_vals)
+        move_id.sudo().action_post()
+        line_vals = {'datetime': datetime.now(),
+                     'desc': desc,
+                     'move_id': move_id.id,
+                     'cheque_id': self.id}
+        self.env['account.cheque.line'].sudo().create(line_vals)
+        self.state = "in_bank"
 
     @api.multi
     def action_to_out_standing(self):
@@ -78,50 +101,55 @@ class AccountCheque(models.Model):
         if not partner_id.property_account_payable_id:
             raise ValidationError("Please check partner payable account.")
         desc = "STATUS: From Draft -> Out Standing"
-        amount = self.amount
-        mv_vals = {'debit_account': partner_id.property_account_payable_id,
-                   'credit_account': out_standing_account_id.id,
-                   'partner_id': partner_id.id,
-                   'name': self.name + '[' + desc + ']',
-                   'amount': amount}
-
-        if not self._context.get('without_move', False):
-            move_id = self.create_cheque_move(mv_vals)
-        else:
-            move_id = self.payment_id.move_line_ids and self.payment_id.move_line_ids[0].move_id
+        move_id = self.payment_id.move_line_ids and self.payment_id.move_line_ids[0].move_id
         line_vals = {'datetime': datetime.now(),
                      'desc': desc,
                      'move_id': move_id.id,
                      'cheque_id': self.id}
-        self.env['account.cheque.line'].create(line_vals)
+        self.env['account.cheque.line'].sudo().create(line_vals)
         self.state = 'out_standing'
 
-    def create_cheque_move(self, vals):
+    @api.multi
+    def action_to_withdrawal(self):
+        bank_account_id = self.journal_id.default_credit_account_id
+        out_standing_account_id = self.journal_id.out_standing_account_id
+        partner_id = self.account_holder_id
+        if not bank_account_id:
+            raise ValidationError("Please check bank account.")
+        if not out_standing_account_id:
+            raise ValidationError("Please check out standing account.")
+        desc = "STATUS: From Out Standing -> Withdrawal"
+        amount = self.amount
         move_vals = {'journal_id': self.journal_id.id,
                      'date': datetime.today(),
                      'ref': self.name,
-                     'line_ids': [(0,0, {'account_id': vals.get('debit_account', False),
-                                         'name': vals.get('name', False),
-                                         'partner_id': vals.get('partner_id'),
-                                         'debit': vals.get('amount'),
-                                         'credit': 0.0}),
-                                  (0,0, {'account_id': vals.get('credit_account', False),
-                                         'name': vals.get('name', False),
-                                         'partner_id': vals.get('partner_id'),
-                                         'debit': 0.0,
-                                         'credit': vals.get('amount')})]}
-        move_id = self.env['account.move'].create(move_vals)
-        move_id.action_post()
-        return move_id
+                     'line_ids': [(0, 0, {'account_id': out_standing_account_id.id,
+                                          'name': self.name + '[' + desc + ']',
+                                          'partner_id': partner_id.id,
+                                          'debit': amount,
+                                          'credit': 0.0}),
+                                  (0, 0, {'account_id': bank_account_id.id,
+                                          'name': self.name + '[' + desc + ']',
+                                          'partner_id': partner_id.id,
+                                          'debit': 0.0,
+                                          'credit': amount})]}
+        move_id = self.env['account.move'].sudo().create(move_vals)
+        move_id.sudo().action_post()
+        line_vals = {'datetime': datetime.now(),
+                     'desc': desc,
+                     'move_id': move_id.id,
+                     'cheque_id': self.id}
+        self.env['account.cheque.line'].sudo().create(line_vals)
+        self.state = "withdrawal"
 
 class AccountChequeLines(models.Model):
     _name = "account.cheque.line"
     _order = "id desc, datetime desc"
 
-    datetime = fields.Datetime("Time")
-    desc = fields.Text("Description")
-    move_id = fields.Many2one("account.move", "Move")
-    cheque_id = fields.Many2one("account.cheque")
+    datetime = fields.Datetime("Time", readonly=1)
+    desc = fields.Text("Description", readonly=1, required=1)
+    move_id = fields.Many2one("account.move", "Move", readonly=1)
+    cheque_id = fields.Many2one("account.cheque", readonly=1)
 
 
 

@@ -7,7 +7,7 @@
       <field name="name">account.cheque.tree.view</field>
       <field name="model">account.cheque</field>
       <field name="arch" type="xml">
-        <tree>
+        <tree create="false" edit="false">
           <field name="name"/>
           <field name="cheque_number"/>
           <field name="date"/>
@@ -25,9 +25,11 @@
       <field name="name">account.cheque.form.view</field>
       <field name="model">account.cheque</field>
       <field name="arch" type="xml">
-        <form>
+        <form create="false" edit="false">
           <header>
             <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+            <button name="action_to_bank" string="Deposit In Bank" class="oe_highlight" states="under_collection" type="object"/>
+            <button name="action_to_withdrawal" string="Withdrawal" class="oe_highlight" states="out_standing" type="object"/>
           </header>
           <sheet>
             <div class="oe_title">
