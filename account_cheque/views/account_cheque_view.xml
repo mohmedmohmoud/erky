@@ -56,6 +56,13 @@
             <group>
               <field name="memo"/>
             </group>
+            <field name="cheque_line_ids">
+              <tree>
+                <field name="datetime"/>
+                <field name="desc"/>
+                <field name="move_id"/>
+              </tree>
+            </field>
           </sheet>
         </form>
       </field>

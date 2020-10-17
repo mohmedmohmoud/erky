@@ -15,6 +15,15 @@ class AccountPayment(models.Model):
                 if rec.journal_id:
                     rec.cheque_no = int(rec.journal_id.cheque_no) + 1
 
+    def _get_liquidity_move_line_vals(self, amount):
+        res = super(AccountPayment, self)._get_liquidity_move_line_vals(amount)
+        if self.payment_type == 'inbound' and self.payment_method_code == 'cheque':
+            # compute debit account
+            res['account_id'] = self.journal_id.under_collection_account_id.id
+        if self.payment_type == 'outbound' and self.payment_method_code == 'cheque':
+            res['account_id'] = self.journal_id.out_standing_account_id.id
+        return res
+
     @api.multi
     def post(self):
         for rec in self:
@@ -32,7 +41,14 @@ class AccountPayment(models.Model):
                                'currency_id': rec.currency_id.id,
                                'cheque_number': rec.cheque_no,
                                'bank_id': rec.bank_id.id,
-                               'account_number': rec.account_no
+                               'account_number': rec.account_no,
+                               'payment_id': rec.id,
                                }
-                self.env['account.cheque'].sudo().create(cheque_info)
+                cheque_id = self.env['account.cheque'].sudo().create(cheque_info)
+                res = super(AccountPayment, self).post()
+                if rec.payment_type == 'inbound':
+                    cheque_id.with_context({'without_move': True}).action_to_under_collection()
+                if rec.payment_type == 'outbound':
+                    cheque_id.with_context({'without_move': True}).action_to_out_standing()
+                return res
         return super(AccountPayment, self).post()
