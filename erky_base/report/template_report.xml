@@ -32,8 +32,8 @@
 
         <template id="report_erky_template_report">
             <t t-call="web.basic_layout">
-                    <div class="page">
-                        <div class="oe_structure"/>
+                    <div class="page" style="position: static;">
+<!--                        <div class="oe_structure"/>-->
                             <div><t t-raw="temp"/></div>
                         </div>
             </t>
