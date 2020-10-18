@@ -26,6 +26,7 @@
                         </group>
                         <group>
                             <group>
+                                <field name="customer_broker_id"/>
                                 <field name="internal_contract_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="purchase_contract_id" invisible="1"/>
                                 <field name="export_form_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>

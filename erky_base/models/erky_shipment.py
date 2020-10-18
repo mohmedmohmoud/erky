@@ -51,6 +51,7 @@ class Shipment(models.Model):
     in_container_qty = fields.Integer("In Container Qty", compute="_compute_container_qty")
     shipment_container_ids = fields.One2many("erky.container.shipment", "vehicle_shipment_id")
     is_full_reconciled = fields.Boolean("Fully Reconciled")
+    customer_broker_id = fields.Many2one("res.partner", "Customer Broker")
 
     @api.onchange('driver_id')
     def get_driver_agent(self):

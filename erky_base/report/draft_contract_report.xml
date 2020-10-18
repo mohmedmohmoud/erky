@@ -51,18 +51,18 @@
                                         <t t-esc="o.tax_id"/>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th>IMPORTER:</th>
-                                    <td>
-                                        <t t-esc="o.importer_id.name"/>
-                                    </td>
-                                </tr>
                                 <t t-if="o.commercial_register">
                                     <tr>
                                     <th>COMMERCIAL REGISTER:</th>
                                     <td><t t-esc="o.commercial_register"/></td>
                                 </tr>
                                 </t>
+                                <tr>
+                                    <th>IMPORTER:</th>
+                                    <td>
+                                        <t t-esc="o.importer_id.name"/>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <th>IMPORTER ADDRESS:</th>
                                     <td><t t-esc="o.importer_country_id.name"/></td>

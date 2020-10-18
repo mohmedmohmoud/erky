@@ -474,11 +474,11 @@ class ExportForm(models.Model):
 
                 if lines:
                     vals = {'partner_id': partner.id,
-                            # 'date_invoice': datetime.now(),
+                            'journal_type': 'purchase',
                             'type': 'in_invoice',
                             'reference': self.name,
-                            # 'date_due': datetime.today(),
-                            'invoice_line_ids': lines
+                            'invoice_line_ids': lines,
+                            'currency_id': self.currency_id.id
                     }
                     bill_id = self.env['account.invoice'].create(vals)
                     bill_id.write({'export_form_id': self.id,
@@ -493,11 +493,12 @@ class ExportForm(models.Model):
             for exp in other_cost_ids:
                 if exp.shipment_id and exp.shipment_id.state == "done":
                     exp_for = exp.shipment_id.name + " [" + exp.service_id.name + "]"
-                    self.env['hr.expense'].create({'name': exp_for,
+                    self.env['hr.expense'].sudo().create({'name': exp_for,
                                                    'product_id': exp.service_id.id,
                                                    'unit_amount': exp.amount,
+                                                   'currency_id': self.currency_id.id,
                                                    'quantity': 1,
-                                                    'export_form_id': self.id})
+                                                   'export_form_id': self.id})
 
 
     @api.multi
