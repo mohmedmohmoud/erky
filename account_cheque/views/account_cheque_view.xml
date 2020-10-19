@@ -2,7 +2,6 @@
   <data>
 
     <menuitem name="Cheques" id="menu_account_cheque" parent="account.menu_finance" sequence="10"/>
-
     <record id="account_cheque_tree_view" model="ir.ui.view">
       <field name="name">account.cheque.tree.view</field>
       <field name="model">account.cheque</field>
@@ -17,6 +16,7 @@
           <field name="account_number"/>
           <field name="bank_id"/>
           <field name="amount"/>
+          <field name="state"/>
         </tree>
       </field>
     </record>
@@ -28,8 +28,13 @@
         <form create="false" edit="false">
           <header>
             <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
-            <button name="action_to_bank" string="Deposit In Bank" class="oe_highlight" states="under_collection" type="object"/>
-            <button name="action_to_withdrawal" string="Withdrawal" class="oe_highlight" states="out_standing" type="object"/>
+            <button name="action_to_bank" string="Deposit In Bank" class="oe_highlight" states="under_collection,inbound_return" type="object"/>
+            <button name="action_to_withdrawal" string="Withdrawal" class="oe_highlight" states="out_standing,outbound_return" type="object"/>
+            <button name="action_inbound_return" string="Return Inbound Cheque" class="oe_highlight" states="in_bank,under_collection" type="object"/>
+            <button name="action_outbound_return" string="Return Outbound Cheque" class="oe_highlight" states="withdrawal,out_standing" type="object"/>
+            <button name="action_return_inbound_to_account" string="Return To Account" class="oe_highlight" states="in_bank,under_collection" type="object"/>
+            <button name="action_return_outbound_to_account" string="Return To Account" class="oe_highlight" states="withdrawal,out_standing" type="object"/>
+            <button name="action_to_done" string="Done" class="oe_highlight" states="withdrawal,in_bank,inbound_return,outbound_return" type="object"/>
           </header>
           <sheet>
             <div class="oe_title">

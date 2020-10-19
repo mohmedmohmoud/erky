@@ -62,13 +62,21 @@ class AccountCheque(models.Model):
     @api.multi
     def action_to_bank(self):
         bank_account_id = self.journal_id.default_debit_account_id
-        under_collection_account_id = self.journal_id.under_collection_account_id
+        if self.state == 'under_collection':
+            credit_account_id = self.journal_id.under_collection_account_id
+            if not credit_account_id:
+                raise ValidationError("Please check under collection account.")
+            desc = "STATUS: From Under Collection -> Bank"
+        if self.state == 'inbound_return':
+            credit_account_id = self.journal_id.inbound_return_account_id
+            if not credit_account_id:
+                raise ValidationError("Please check inbound return account.")
+            desc = "STATUS: From Inbound Return -> Bank"
         partner_id = self.account_holder_id
         if not bank_account_id:
             raise ValidationError("Please check bank account.")
-        if not under_collection_account_id:
-            raise ValidationError("Please check under collection account.")
-        desc = "STATUS: From Under Collection -> Bank"
+
+
         amount = self.amount
         move_vals = {'journal_id': self.journal_id.id,
                      'date': datetime.today(),
@@ -78,7 +86,7 @@ class AccountCheque(models.Model):
                                           'partner_id': partner_id.id,
                                           'debit': amount,
                                           'credit': 0.0}),
-                                  (0, 0, {'account_id': under_collection_account_id.id,
+                                  (0, 0, {'account_id': credit_account_id.id,
                                           'name': self.name + '[' + desc + ']',
                                           'partner_id': partner_id.id,
                                           'debit': 0.0,
@@ -112,18 +120,26 @@ class AccountCheque(models.Model):
     @api.multi
     def action_to_withdrawal(self):
         bank_account_id = self.journal_id.default_credit_account_id
-        out_standing_account_id = self.journal_id.out_standing_account_id
+        if self.state == 'out_standing':
+            debit_account_id = self.journal_id.out_standing_account_id
+            if not debit_account_id:
+                raise ValidationError("Please check out standing account.")
+            desc = "STATUS: From Out Standing -> Withdrawal"
+        if self.state == 'outbound_return':
+            debit_account_id = self.journal_id.outbound_return_account_id
+            if not debit_account_id:
+                raise ValidationError("Please check outbound return account.")
+            desc = "STATUS: From Outbound Return -> Withdrawal"
         partner_id = self.account_holder_id
         if not bank_account_id:
             raise ValidationError("Please check bank account.")
-        if not out_standing_account_id:
-            raise ValidationError("Please check out standing account.")
-        desc = "STATUS: From Out Standing -> Withdrawal"
+
+
         amount = self.amount
         move_vals = {'journal_id': self.journal_id.id,
                      'date': datetime.today(),
                      'ref': self.name,
-                     'line_ids': [(0, 0, {'account_id': out_standing_account_id.id,
+                     'line_ids': [(0, 0, {'account_id': debit_account_id.id,
                                           'name': self.name + '[' + desc + ']',
                                           'partner_id': partner_id.id,
                                           'debit': amount,
@@ -141,6 +157,177 @@ class AccountCheque(models.Model):
                      'cheque_id': self.id}
         self.env['account.cheque.line'].sudo().create(line_vals)
         self.state = "withdrawal"
+
+    @api.multi
+    def action_inbound_return(self):
+        if self.cheque_type == 'inbound':
+            debit_account_id = self.journal_id.inbound_return_account_id
+            if not debit_account_id:
+                raise ValidationError("Please check inbound return account.")
+            if self.state == 'under_collection':
+                credit_account_id = self.journal_id.under_collection_account_id
+                desc = "STATUS: From Under Collection -> Inbound Return"
+                if not credit_account_id:
+                    raise ValidationError("Please check under collection account.")
+            if self.state == 'in_bank':
+                credit_account_id = self.journal_id.default_credit_account_id
+                desc = "STATUS: From Bank -> Inbound Return"
+                if not credit_account_id:
+                    raise ValidationError("Please check journal credit account.")
+        partner_id = self.account_holder_id
+        amount = self.amount
+        move_vals = {'journal_id': self.journal_id.id,
+                     'date': datetime.today(),
+                     'ref': self.name,
+                     'line_ids': [(0, 0, {'account_id': debit_account_id.id,
+                                          'name': self.name + '[' + desc + ']',
+                                          'partner_id': partner_id.id,
+                                          'debit': amount,
+                                          'credit': 0.0}),
+                                  (0, 0, {'account_id': credit_account_id.id,
+                                          'name': self.name + '[' + desc + ']',
+                                          'partner_id': partner_id.id,
+                                          'debit': 0.0,
+                                          'credit': amount})]}
+        move_id = self.env['account.move'].sudo().create(move_vals)
+        move_id.sudo().action_post()
+        line_vals = {'datetime': datetime.now(),
+                     'desc': desc,
+                     'move_id': move_id.id,
+                     'cheque_id': self.id}
+        self.env['account.cheque.line'].sudo().create(line_vals)
+        self.state = "inbound_return"
+
+    @api.multi
+    def action_outbound_return(self):
+        if self.cheque_type == 'outbound':
+            credit_account_id = self.journal_id.outbound_return_account_id
+            if not credit_account_id:
+                raise ValidationError("Please check outbound return account.")
+            if self.state == 'out_standing':
+                debit_account_id = self.journal_id.out_standing_account_id
+                desc = "STATUS: From Out Standing -> Outbound Return"
+                if not debit_account_id:
+                    raise ValidationError("Please check Out Standing account.")
+            if self.state == 'withdrawal':
+                debit_account_id = self.journal_id.default_debit_account_id
+                desc = "STATUS: From Withdrawal -> Outbound Return"
+                if not debit_account_id:
+                    raise ValidationError("Please check journal debit account.")
+        partner_id = self.account_holder_id
+        amount = self.amount
+        move_vals = {'journal_id': self.journal_id.id,
+                     'date': datetime.today(),
+                     'ref': self.name,
+                     'line_ids': [(0, 0, {'account_id': debit_account_id.id,
+                                          'name': self.name + '[' + desc + ']',
+                                          'partner_id': partner_id.id,
+                                          'debit': amount,
+                                          'credit': 0.0}),
+                                  (0, 0, {'account_id': credit_account_id.id,
+                                          'name': self.name + '[' + desc + ']',
+                                          'partner_id': partner_id.id,
+                                          'debit': 0.0,
+                                          'credit': amount})]}
+        move_id = self.env['account.move'].sudo().create(move_vals)
+        move_id.sudo().action_post()
+        line_vals = {'datetime': datetime.now(),
+                     'desc': desc,
+                     'move_id': move_id.id,
+                     'cheque_id': self.id}
+        self.env['account.cheque.line'].sudo().create(line_vals)
+        self.state = "outbound_return"
+
+    @api.multi
+    def action_return_inbound_to_account(self):
+        debit_account_id = self.account_holder_id.property_account_receivable_id
+        if not debit_account_id:
+            raise ValidationError("Please check partner receivable account.")
+        credit_account_id = self.journal_id.under_collection_account_id
+        desc = "STATUS: From Under Collection -> Return To Account"
+        if self.state == 'in_bank':
+            credit_account_id = self.journal_id.default_credit_account_id
+            desc = "STATUS: From Bank -> Return To Account"
+        if not credit_account_id:
+            raise ValidationError("Please check credit account.")
+
+        partner_id = self.account_holder_id
+        amount = self.amount
+        move_vals = {'journal_id': self.journal_id.id,
+                     'date': datetime.today(),
+                     'ref': self.name,
+                     'line_ids': [(0, 0, {'account_id': debit_account_id.id,
+                                          'name': self.name + '[' + desc + ']',
+                                          'partner_id': partner_id.id,
+                                          'debit': amount,
+                                          'credit': 0.0}),
+                                  (0, 0, {'account_id': credit_account_id.id,
+                                          'name': self.name + '[' + desc + ']',
+                                          'partner_id': partner_id.id,
+                                          'debit': 0.0,
+                                          'credit': amount})]}
+        move_id = self.env['account.move'].sudo().create(move_vals)
+        move_id.sudo().action_post()
+        line_vals = {'datetime': datetime.now(),
+                     'desc': desc,
+                     'move_id': move_id.id,
+                     'cheque_id': self.id}
+        self.env['account.cheque.line'].sudo().create(line_vals)
+        self.state = "return_account"
+
+    @api.multi
+    def action_return_outbound_to_account(self):
+        credit_account_id = self.account_holder_id.property_account_payable_id
+        if not credit_account_id:
+            raise ValidationError("Please check partner payable account.")
+        debit_account_id = self.journal_id.out_standing_account_id
+        desc = "STATUS: From Outstanding -> Return To Account"
+        if self.state == 'withdrawal':
+            debit_account_id = self.journal_id.default_debit_account_id
+            desc = "STATUS: From Withdrawal -> Return To Account"
+        if not debit_account_id:
+            raise ValidationError("Please check debit account.")
+
+        partner_id = self.account_holder_id
+        amount = self.amount
+        move_vals = {'journal_id': self.journal_id.id,
+                     'date': datetime.today(),
+                     'ref': self.name,
+                     'line_ids': [(0, 0, {'account_id': debit_account_id.id,
+                                          'name': self.name + '[' + desc + ']',
+                                          'partner_id': partner_id.id,
+                                          'debit': amount,
+                                          'credit': 0.0}),
+                                  (0, 0, {'account_id': credit_account_id.id,
+                                          'name': self.name + '[' + desc + ']',
+                                          'partner_id': partner_id.id,
+                                          'debit': 0.0,
+                                          'credit': amount})]}
+        move_id = self.env['account.move'].sudo().create(move_vals)
+        move_id.sudo().action_post()
+        line_vals = {'datetime': datetime.now(),
+                     'desc': desc,
+                     'move_id': move_id.id,
+                     'cheque_id': self.id}
+        self.env['account.cheque.line'].sudo().create(line_vals)
+        self.state = "return_account"
+
+    @api.multi
+    def action_to_done(self):
+        if self.state == 'in_bank':
+            desc = "STATUS: From Bank -> Done"
+        if self.state == 'inbound_return':
+            desc = "STATUS: From Inbound Return -> Done"
+        if self.cheque_type == 'outbound':
+            if self.state == 'withdrawal':
+                desc = "STATUS: From Withdrawal -> Done"
+            if self.state == 'outbound_return':
+                desc = "STATUS: From Outbound Return -> Done"
+        line_vals = {'datetime': datetime.now(),
+                     'desc': desc,
+                     'cheque_id': self.id}
+        self.env['account.cheque.line'].sudo().create(line_vals)
+        self.state = "done"
 
 class AccountChequeLines(models.Model):
     _name = "account.cheque.line"
