@@ -26,9 +26,12 @@ You could use this simplified accounting in case you work with an (external) acc
         'security/ir.model.access.csv',
         'data/account_journal_data.xml',
         'data/sequence.xml',
+        'wizard/printing_cheque_wiz_view.xml',
         'views/account_cheque_view.xml',
         'views/res_bank_view.xml',
         'views/account_journal_view.xml',
         'views/account_payment_view.xml',
+        'views/cheque_user_template_view.xml',
+        'report/printing_cheque_report.xml',
     ],
 }

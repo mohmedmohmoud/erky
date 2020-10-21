@@ -7,6 +7,7 @@ class AccountPayment(models.Model):
     bank_id = fields.Many2one("res.bank", "Bank")
     cheque_date = fields.Date("Cheque Date")
     account_no = fields.Char("Account No")
+    cheque_id = fields.Many2one("account.cheque")
 
     @api.onchange('journal_id')
     def get_cheque_no(self):
@@ -46,6 +47,8 @@ class AccountPayment(models.Model):
                                }
                 cheque_id = self.env['account.cheque'].sudo().create(cheque_info)
                 res = super(AccountPayment, self).post()
+                if cheque_id and self.id:
+                    self.cheque_id = cheque_id.id
                 if rec.payment_type == 'inbound':
                     cheque_id.with_context({'without_move': True}).action_to_under_collection()
                 if rec.payment_type == 'outbound':

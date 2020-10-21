@@ -22,3 +22,6 @@ class ResBank(models.Model):
     desc_h = fields.Float("Description Height")
     desc_x = fields.Float("Description Top-M")
     desc_y = fields.Float("Description Left-M")
+
+    cheque_w = fields.Float("Cheque Width")
+    cheque_h = fields.Float("Cheque Height")

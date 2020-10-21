@@ -9,13 +9,21 @@
                         <notebook>
                             <page string="Cheque Print Setting">
                                 <group>
-                                    <group string="Account Holder" style="border: 1px solid blue;padding:5px;margin:5px;">
+                                    <group>
+                                        <field name="cheque_w"/>
+                                    </group>
+                                    <group>
+                                        <field name="cheque_h"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <group string="Account Holder">
                                         <field name="account_holder_w"/>
                                         <field name="account_holder_h"/>
                                         <field name="account_holder_x"/>
                                         <field name="account_holder_y"/>
                                     </group>
-                                    <group string="Date" style="border: 1px solid blue;padding:5px;margin:5px;">
+                                    <group string="Date">
                                         <field name="date_w"/>
                                         <field name="date_h"/>
                                         <field name="date_x"/>
@@ -23,13 +31,13 @@
                                     </group>
                                 </group>
                                 <group>
-                                    <group string="Amount" style="border: 1px solid blue;padding:5px;margin:5px;">
+                                    <group string="Amount">
                                         <field name="amount_w"/>
-                                        <field name="amount_y"/>
+                                        <field name="amount_h"/>
                                         <field name="amount_x"/>
                                         <field name="amount_y"/>
                                     </group>
-                                    <group string="Description" style="border: 1px solid blue;padding:5px;margin:5px;">
+                                    <group string="Description">
                                         <field name="desc_w"/>
                                         <field name="desc_h"/>
                                         <field name="desc_x"/>

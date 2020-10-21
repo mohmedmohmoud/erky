@@ -1,0 +1,59 @@
+<odoo>
+    <data>
+        <record id="account_cheque_user_template_form_view" model="ir.ui.view">
+            <field name="name">cheque.user.template.form.view</field>
+            <field name="model">cheque.user.template</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="cheque_w"/>
+                        </group>
+                        <group>
+                            <field name="bank_id"/>
+                            <field name="cheque_h"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Account Holder">
+                            <field name="account_holder_w"/>
+                            <field name="account_holder_h"/>
+                            <field name="account_holder_x"/>
+                            <field name="account_holder_y"/>
+                        </group>
+                        <group string="Date">
+                            <field name="date_w"/>
+                            <field name="date_h"/>
+                            <field name="date_x"/>
+                            <field name="date_y"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Amount">
+                            <field name="amount_w"/>
+                            <field name="amount_y"/>
+                            <field name="amount_x"/>
+                            <field name="amount_y"/>
+                        </group>
+                        <group string="Description">
+                            <field name="desc_w"/>
+                            <field name="desc_h"/>
+                            <field name="desc_x"/>
+                            <field name="desc_y"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="cheque_user_template_action" model="ir.actions.act_window">
+            <field name="name">Cheque User Template</field>
+            <field name="res_model">cheque.user.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_cheque_user_template" name="Cheque User Template" parent="menu_account_cheque" sequence="15" action="cheque_user_template_action"/>
+    </data>
+</odoo>
