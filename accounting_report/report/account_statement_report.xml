@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+
+        <report
+            id="report_account_statement"
+            model="account.move"
+            string="Account Statement"
+            report_type="qweb-pdf"
+            name="accounting_report.report_account_statement_template"
+            file="accounting_report.report_account_statement_template"/>
+
+        <menuitem name="Account Statement" id="menu_gold_account_statement_new" parent="accounting_pdf_reports.menu_finance_legal_statement" action="accounting_report.account_statement_wizard_action_new"/>
+
+
+    </data>
+</odoo>

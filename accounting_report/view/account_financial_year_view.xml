@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+        <record model="ir.actions.act_window" id="action_account_financial_year">
+            <field name="name">Account Financial Year</field>
+            <field name="res_model">account.financial.year.op</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_company_id': context.get('company_id',1)}</field>
+        </record>
+
+        <menuitem id="menu_financial_year_accounting" name="Fiscal Year"
+        parent="account.account_account_menu" action="action_account_financial_year" sequence="1"/>
+    </data>
+</odoo>

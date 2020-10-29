@@ -1,0 +1,66 @@
+<odoo>
+    <data>
+        <record id="account_statement_wizard_report_view" model="ir.ui.view">
+            <field name="name">Account Statement Wizard</field>
+            <field name="model">account.statement.report.wizard</field>
+            <field name="inherit_id" ref="account.account_common_report_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="journal_ids" position="replace"/>
+                    <xpath expr="//field[@name='target_move']" position="after">
+                        <field name="account"/>
+                    </xpath>
+                    <xpath expr="//field[@name='date_from']" position="after">
+                        <field name="partner_id" string="Partner"/>
+                    </xpath>
+                    <xpath expr="//field[@name='currency_id']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <record id="account_statement_wizard_action" model="ir.actions.act_window">
+            <field name="name">Account Statement</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.statement.report.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account_statement_wizard_report_view"/>
+            <field name="target">new</field>
+        </record>
+
+        <!--======================================================-->
+
+        <record id="account_statement_wizard_report_view_new" model="ir.ui.view">
+            <field name="name">Account Statement Wizard New</field>
+            <field name="model">account.statement.report.wizard.new</field>
+            <field name="inherit_id" ref="account.account_common_report_view"/>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="journal_ids" position="replace"/>
+                    <xpath expr="//field[@name='target_move']" position="after">
+                        <field name="account"/>
+                    </xpath>
+                    <xpath expr="//field[@name='date_from']" position="after">
+                        <field name="partner_id" string="Partner"/>
+                    </xpath>
+                    <xpath expr="//field[@name='currency_id']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+
+                </data>
+            </field>
+        </record>
+
+        <record id="account_statement_wizard_action_new" model="ir.actions.act_window">
+            <field name="name">Account Statement</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.statement.report.wizard.new</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="account_statement_wizard_report_view_new"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

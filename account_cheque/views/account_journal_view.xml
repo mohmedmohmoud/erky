@@ -24,9 +24,9 @@
                                'required': [('is_outbound_cheque', '=', True)]}"/>
                             </group>
                             <group>
-                                <field name="inbound_return_account_id" attrs="{'invisible': [('is_inbound_cheque', '!=', True)],
+                                <field name="customer_bounced_account_id" attrs="{'invisible': [('is_inbound_cheque', '!=', True)],
                                'required': [('is_inbound_cheque', '=', True)]}"/>
-                                <field name="outbound_return_account_id" attrs="{'invisible': [('is_outbound_cheque', '!=', True)],
+                                <field name="vendor_bounced_account_id" attrs="{'invisible': [('is_outbound_cheque', '!=', True)],
                                'required': [('is_outbound_cheque', '=', True)]}"/>
                             </group>
                         </group>

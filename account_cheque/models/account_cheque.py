@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from odoo import models, fields, api, _
-from odoo.exceptions import  ValidationError
+from odoo.exceptions import ValidationError
 
 CHEQUE_STATES = [('draft', 'Draft'),
                  ('under_collection', "Under Collection"),
@@ -9,12 +9,13 @@ CHEQUE_STATES = [('draft', 'Draft'),
                  ('in_bank', "In Bank"),
                  ('withdrawal', "Withdrawal"),
                  ('return_account', "Return To Account"),
-                 ('inbound_return', "Inbound Return"),
-                 ('outbound_return', "Outbound Return"),
+                 ('in_bounced', "Bounced"),
+                 ('out_bounced', "Bounced"),
                  ('done', 'Done')]
 
 class AccountCheque(models.Model):
     _name = "account.cheque"
+    _order = "id desc, date desc"
 
     name = fields.Char("Ref", required=1, default="NEW", readonly=1)
     payment_date = fields.Date("Payment Date", readonly=1)
@@ -31,6 +32,7 @@ class AccountCheque(models.Model):
     cheque_type = fields.Selection([('inbound', 'Inbound'), ('outbound', "Outbound")], readonly=1)
     state = fields.Selection(CHEQUE_STATES, default="draft", readonly=1)
     payment_id = fields.Many2one("account.payment", readonly=1)
+    accounting_date = fields.Date("Accounting Date")
     cheque_line_ids = fields.One2many("account.cheque.line", "cheque_id", readonly=1)
 
     @api.model
@@ -67,19 +69,18 @@ class AccountCheque(models.Model):
             if not credit_account_id:
                 raise ValidationError("Please check under collection account.")
             desc = "STATUS: From Under Collection -> Bank"
-        if self.state == 'inbound_return':
-            credit_account_id = self.journal_id.inbound_return_account_id
+        if self.state == 'in_bounced':
+            credit_account_id = self.journal_id.customer_bounced_account_id
             if not credit_account_id:
-                raise ValidationError("Please check inbound return account.")
-            desc = "STATUS: From Inbound Return -> Bank"
+                raise ValidationError("Please check customer bounced account.")
+            desc = "STATUS: From Bounced -> Bank"
         partner_id = self.account_holder_id
         if not bank_account_id:
             raise ValidationError("Please check bank account.")
 
-
         amount = self.amount
         move_vals = {'journal_id': self.journal_id.id,
-                     'date': datetime.today(),
+                     'date': self.accounting_date or datetime.today(),
                      'ref': self.name,
                      'line_ids': [(0, 0, {'account_id': bank_account_id.id,
                                           'name': self.name + '[' + desc + ']',
@@ -125,19 +126,18 @@ class AccountCheque(models.Model):
             if not debit_account_id:
                 raise ValidationError("Please check out standing account.")
             desc = "STATUS: From Out Standing -> Withdrawal"
-        if self.state == 'outbound_return':
-            debit_account_id = self.journal_id.outbound_return_account_id
+        if self.state == 'out_bounced':
+            debit_account_id = self.journal_id.vendor_bounced_account_id
             if not debit_account_id:
-                raise ValidationError("Please check outbound return account.")
-            desc = "STATUS: From Outbound Return -> Withdrawal"
+                raise ValidationError("Please check vendor bounced account.")
+            desc = "STATUS: From Bounced -> Withdrawal"
         partner_id = self.account_holder_id
         if not bank_account_id:
             raise ValidationError("Please check bank account.")
 
-
         amount = self.amount
         move_vals = {'journal_id': self.journal_id.id,
-                     'date': datetime.today(),
+                     'date': self.accounting_date or datetime.today(),
                      'ref': self.name,
                      'line_ids': [(0, 0, {'account_id': debit_account_id.id,
                                           'name': self.name + '[' + desc + ']',
@@ -159,25 +159,25 @@ class AccountCheque(models.Model):
         self.state = "withdrawal"
 
     @api.multi
-    def action_inbound_return(self):
+    def action_customer_bounced(self):
         if self.cheque_type == 'inbound':
-            debit_account_id = self.journal_id.inbound_return_account_id
+            debit_account_id = self.journal_id.customer_bounced_account_id
             if not debit_account_id:
-                raise ValidationError("Please check inbound return account.")
+                raise ValidationError("Please check customer bounced account.")
             if self.state == 'under_collection':
                 credit_account_id = self.journal_id.under_collection_account_id
-                desc = "STATUS: From Under Collection -> Inbound Return"
+                desc = "STATUS: From Under Collection -> Bounced"
                 if not credit_account_id:
                     raise ValidationError("Please check under collection account.")
             if self.state == 'in_bank':
                 credit_account_id = self.journal_id.default_credit_account_id
-                desc = "STATUS: From Bank -> Inbound Return"
+                desc = "STATUS: From Bank -> Bounced"
                 if not credit_account_id:
                     raise ValidationError("Please check journal credit account.")
         partner_id = self.account_holder_id
         amount = self.amount
         move_vals = {'journal_id': self.journal_id.id,
-                     'date': datetime.today(),
+                     'date': self.accounting_date or datetime.today(),
                      'ref': self.name,
                      'line_ids': [(0, 0, {'account_id': debit_account_id.id,
                                           'name': self.name + '[' + desc + ']',
@@ -196,28 +196,28 @@ class AccountCheque(models.Model):
                      'move_id': move_id.id,
                      'cheque_id': self.id}
         self.env['account.cheque.line'].sudo().create(line_vals)
-        self.state = "inbound_return"
+        self.state = "in_bounced"
 
     @api.multi
-    def action_outbound_return(self):
+    def action_vendor_bounced(self):
         if self.cheque_type == 'outbound':
-            credit_account_id = self.journal_id.outbound_return_account_id
+            credit_account_id = self.journal_id.vendor_bounced_account_id
             if not credit_account_id:
-                raise ValidationError("Please check outbound return account.")
+                raise ValidationError("Please check vendor bounced account.")
             if self.state == 'out_standing':
                 debit_account_id = self.journal_id.out_standing_account_id
-                desc = "STATUS: From Out Standing -> Outbound Return"
+                desc = "STATUS: From Out Standing -> Bounced"
                 if not debit_account_id:
                     raise ValidationError("Please check Out Standing account.")
             if self.state == 'withdrawal':
                 debit_account_id = self.journal_id.default_debit_account_id
-                desc = "STATUS: From Withdrawal -> Outbound Return"
+                desc = "STATUS: From Withdrawal -> Bounced"
                 if not debit_account_id:
                     raise ValidationError("Please check journal debit account.")
         partner_id = self.account_holder_id
         amount = self.amount
         move_vals = {'journal_id': self.journal_id.id,
-                     'date': datetime.today(),
+                     'date': self.accounting_date or datetime.today(),
                      'ref': self.name,
                      'line_ids': [(0, 0, {'account_id': debit_account_id.id,
                                           'name': self.name + '[' + desc + ']',
@@ -236,7 +236,7 @@ class AccountCheque(models.Model):
                      'move_id': move_id.id,
                      'cheque_id': self.id}
         self.env['account.cheque.line'].sudo().create(line_vals)
-        self.state = "outbound_return"
+        self.state = "out_bounced"
 
     @api.multi
     def action_return_inbound_to_account(self):
@@ -254,7 +254,7 @@ class AccountCheque(models.Model):
         partner_id = self.account_holder_id
         amount = self.amount
         move_vals = {'journal_id': self.journal_id.id,
-                     'date': datetime.today(),
+                     'date': self.accounting_date or datetime.today(),
                      'ref': self.name,
                      'line_ids': [(0, 0, {'account_id': debit_account_id.id,
                                           'name': self.name + '[' + desc + ']',
@@ -291,7 +291,7 @@ class AccountCheque(models.Model):
         partner_id = self.account_holder_id
         amount = self.amount
         move_vals = {'journal_id': self.journal_id.id,
-                     'date': datetime.today(),
+                     'date': self.accounting_date or datetime.today(),
                      'ref': self.name,
                      'line_ids': [(0, 0, {'account_id': debit_account_id.id,
                                           'name': self.name + '[' + desc + ']',
@@ -316,13 +316,13 @@ class AccountCheque(models.Model):
     def action_to_done(self):
         if self.state == 'in_bank':
             desc = "STATUS: From Bank -> Done"
-        if self.state == 'inbound_return':
-            desc = "STATUS: From Inbound Return -> Done"
+        if self.state == 'in_bounced':
+            desc = "STATUS: From Bounced -> Done"
         if self.cheque_type == 'outbound':
             if self.state == 'withdrawal':
                 desc = "STATUS: From Withdrawal -> Done"
-            if self.state == 'outbound_return':
-                desc = "STATUS: From Outbound Return -> Done"
+            if self.state == 'out_bounced':
+                desc = "STATUS: From Bounced -> Done"
         line_vals = {'datetime': datetime.now(),
                      'desc': desc,
                      'cheque_id': self.id}

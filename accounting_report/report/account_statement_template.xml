@@ -1,0 +1,141 @@
+<odoo>
+    <data>
+        <template id="report_account_statement_template">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <div class="page">
+                        <h2><span t-esc="account.company_id.display_name"/>: Account Statement</h2>
+                        <div class="row mt32">
+                            <div class="col-xs-4">
+                                <p>
+                                    <strong>Account :</strong> <span t-esc="data['account'][1]"/><br/>
+                                    <t t-if="partner">
+                                        <strong>Partner :</strong> <span t-esc="partner.name"/><br/>
+                                    </t>
+                                </p>
+                            </div>
+                            <div class="col-xs-4">
+                                <p>
+                                    <t t-if="data['date_from']"><strong>Date from :</strong> <span t-esc="data['date_from']"/><br/></t>
+                                    <t t-if="data['date_to']"><strong>Date to :</strong> <span t-esc="data['date_to']"/></t>
+                                </p>
+                            </div>
+                            <div class="col-xs-4">
+                                <strong>Target Moves:</strong>
+                                <p>
+                                    <span t-if="data['target_move'] == 'all'">All Entries</span>
+                                    <span t-if="data['target_move'] == 'posted'">All Posted Entries</span>
+                                </p>
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr valign="middle">
+                                    <th style="vertical-align: middle;" rowspan="2">Reference</th>
+                                    <th style="vertical-align: middle;" rowspan="2">Journal</th>
+                                    <th style="vertical-align: middle;" rowspan="2">Date</th>
+                                    <th style="vertical-align: middle;" rowspan="2">Narration</th>
+                                    <th style="vertical-align: middle;" width="200" colspan="3">Amount</th>
+                                </tr>
+                                <tr height="50" valign="middle">
+                                    <th align="center">Debit</th>
+                                    <th align="center">Credit</th>
+                                    <th align="center">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--perv balance-->
+                                <t t-set="cash_perv_b" t-value="ob_cash_balance"/>
+                                <!--metal-->
+                                <t t-set="t_credit_amount_curr" t-value="0"/>
+                                <t t-set="t_debit_amount_curr" t-value="0"/>
+                                <!--cash-->
+                                <t t-set="c_debit" t-value="0"/>
+                                <t t-set="c_credit" t-value="0"/>
+                                <t t-set="c_sum_balance" t-value="0"/>
+                                <tr>
+                                    <td colspan="4" width="150" align="left">Opening Balance</td>
+                                    <td colspan="3" width="150" align="right"><t t-esc="ob_cash_balance"/></td>
+                                </tr>
+                                <tr t-foreach="account_move_line" t-as="move_line">
+                                    <!-- Reference -->
+                                    <td class="col-md-2">
+                                        <span t-att-style="style" t-esc="account_move_line[move_line]['move_id'].name"/>
+                                    </td>
+                                    <!-- Journal -->
+                                    <td class="col-md-2">
+                                        <span t-att-style="style" t-esc="account_move_line[move_line]['move_id'].journal_id.name"/>
+                                    </td>
+                                    <!--> Date</-->
+                                    <td class="col-md-2">
+                                        <span t-att-style="style" t-esc="account_move_line[move_line]['date'] "/>
+                                    </td>
+                                    <!--> Narration</-->
+                                    <td class="col-md-2">
+                                        <span t-att-style="style" t-esc="account_move_line[move_line]['name'] "/>
+                                    </td>
+                                    <!-->Cash Debit</-->
+                                    <td class="col-md-2">
+                                        <t t-if="account_move_line[move_line]['amount_currency'] == 0">
+                                            <span t-att-style="style" t-esc="account_move_line[move_line]['debit']"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span></span>
+                                        </t>
+                                    </td>
+                                    <!-->Cash Credit</-->
+                                    <td class="col-md-2">
+                                        <t t-if="account_move_line[move_line]['amount_currency'] == 0">
+                                            <span t-att-style="style" t-esc="account_move_line[move_line]['credit']"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span></span>
+                                        </t>
+                                    </td>
+                                    <t t-if="account_move_line[move_line]['amount_currency'] == 0">
+                                        <t t-set="c_credit" t-value="account_move_line[move_line]['credit']+c_credit"/>
+                                        <t t-set="c_debit" t-value="account_move_line[move_line]['debit']+c_debit"/>
+                                    </t>
+                                    <!--Cash Balance-->
+                                    <td class="col-md-2">
+                                        <t t-if="account_move_line[move_line]['amount_currency'] == 0">
+                                            <span t-att-style="style" t-esc="round((account_move_line[move_line]['balance'] + cash_perv_b),2)"/>
+                                            <div t-if="move_line >= 1">
+                                                <t t-set="cash_perv_b" t-value="account_move_line[move_line]['balance'] + cash_perv_b"/>
+                                            </div>
+                                        </t>
+                                        <t t-else="">
+                                            <span><t t-esc="round(cash_perv_b,2)"/></span>
+                                        </t>
+                                    </td>
+
+                                </tr>
+                                <!--Total-->
+                                <tr class="border-black">
+                                    <td colspan="4">Total</td>
+
+                                    <t t-if="ob_cash_balance &gt; 0">
+                                        <td t-esc="round((float(c_debit) + ob_cash_balance),2)"/>
+                                    </t>
+                                    <t t-else="">
+                                        <td t-esc="round(float(c_debit),)"/>
+                                    </t>
+
+                                    <t t-if="ob_cash_balance &lt; 0">
+                                        <td t-esc="round((float(c_credit) + ob_cash_balance),2)"/>
+                                    </t>
+                                    <t t-else="">
+                                        <td t-esc="float(c_credit)"/>
+                                    </t>
+                                    <td t-esc="round((c_debit-c_credit + ob_cash_balance),2)"/>
+                                    <!--==============================-->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

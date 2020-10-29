@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import  ValidationError
 
 class AccountPayment(models.Model):
     _inherit = "account.payment"
@@ -31,6 +32,9 @@ class AccountPayment(models.Model):
             if rec.payment_type in ['inbound', 'outbound'] and rec.payment_method_code == 'cheque':
                 if rec.payment_type == 'outbound':
                     rec.journal_id.cheque_no = rec.cheque_no
+                if self.cheque_date and self.payment_date:
+                    if self.payment_date > self.cheque_date:
+                        raise ValidationError("Sorry: Cheque date can`t be less than payment date.")
                 cheque_info = {'payment_date': rec.payment_date,
                                'cheque_type': 'inbound' if rec.payment_type == 'inbound' else 'outbound',
                                'date': rec.cheque_date,

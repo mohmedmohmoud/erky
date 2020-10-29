@@ -5,8 +5,8 @@ class AccountJournal(models.Model):
 
     under_collection_account_id = fields.Many2one('account.account', "Under Collection Account")
     out_standing_account_id = fields.Many2one('account.account', "Out Standing Account")
-    inbound_return_account_id = fields.Many2one("account.account", "Inbound Return Account")
-    outbound_return_account_id = fields.Many2one("account.account", "Outbound Return Account")
+    customer_bounced_account_id = fields.Many2one("account.account", "Customer Bounced Account")
+    vendor_bounced_account_id = fields.Many2one("account.account", "Vendor Bounced Account")
     is_inbound_cheque = fields.Boolean("Is Inbound Cheque", compute="check_payment_method_selection")
     is_outbound_cheque = fields.Boolean("Is Outbound Cheque", compute="check_payment_method_selection")
     cheque_no = fields.Char("Cheque No")

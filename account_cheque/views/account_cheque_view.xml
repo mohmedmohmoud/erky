@@ -28,13 +28,19 @@
         <form create="false" edit="false">
           <header>
             <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
-            <button name="action_to_bank" string="Deposit In Bank" class="oe_highlight" states="under_collection,inbound_return" type="object"/>
-            <button name="action_to_withdrawal" string="Withdrawal" class="oe_highlight" states="out_standing,outbound_return" type="object"/>
-            <button name="action_inbound_return" string="Return Inbound Cheque" class="oe_highlight" states="in_bank,under_collection" type="object"/>
-            <button name="action_outbound_return" string="Return Outbound Cheque" class="oe_highlight" states="withdrawal,out_standing" type="object"/>
-            <button name="action_return_inbound_to_account" string="Return To Account" class="oe_highlight" states="in_bank,under_collection" type="object"/>
-            <button name="action_return_outbound_to_account" string="Return To Account" class="oe_highlight" states="withdrawal,out_standing" type="object"/>
-            <button name="action_to_done" string="Done" class="oe_highlight" states="withdrawal,in_bank,inbound_return,outbound_return" type="object"/>
+            <button name="%(action_cheque_wiz)d" string="Deposit In Bank"
+                    context="{'default_cheque_id': id, 'default_accounting_date': date, 'default_journal_id':journal_id, 'journal_hide': False, 'src': 'deposit_in_bank'}" class="oe_highlight" states="under_collection,in_bounced" type="action"/>
+            <button name="%(action_cheque_wiz)d" string="Withdrawal" class="oe_highlight" states="out_standing,out_bounced" type="action"
+                    context="{'default_cheque_id': id, 'default_accounting_date': date, 'default_journal_id':journal_id, 'journal_hide': True, 'src': 'withdrawal'}"/>
+            <button name="%(action_cheque_wiz)d" string="Bounced"
+                    context="{'default_cheque_id': id, 'default_accounting_date': date, 'default_journal_id':journal_id, 'journal_hide': True, 'src': 'customer_bounced'}" states="in_bank,under_collection" type="action"/>
+            <button name="%(action_cheque_wiz)d" string="Bounced"
+                    context="{'default_cheque_id': id, 'default_accounting_date': date, 'default_journal_id':journal_id, 'journal_hide': True, 'src': 'vendor_bounced'}" states="withdrawal,out_standing" type="action"/>
+            <button name="%(action_cheque_wiz)d" string="Return To Account"
+                    context="{'default_cheque_id': id, 'default_accounting_date': date, 'default_journal_id':journal_id, 'journal_hide': True, 'src': 'in_return'}" states="in_bank,under_collection" type="action"/>
+            <button name="%(action_cheque_wiz)d" string="Return To Account"
+                    context="{'default_cheque_id': id, 'default_accounting_date': date, 'default_journal_id':journal_id, 'journal_hide': True, 'src': 'out_return'}" states="withdrawal,out_standing" type="action"/>
+            <button name="action_to_done" string="Done" class="oe_highlight" states="withdrawal,in_bank,in_bounced,out_bounced" type="object"/>
           </header>
           <sheet>
             <div class="oe_title">
