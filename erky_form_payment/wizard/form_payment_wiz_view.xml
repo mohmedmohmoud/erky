@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+        <record id="form_payment_wiz_form_view" model="ir.ui.view">
+            <field name="name">form.payment.wiz.form.view</field>
+            <field name="model">form.payment.wiz</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="form_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="bank_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_confirm_payment" string="Confirm" type="object" class="btn-primary"/>
+                        <button special="cancel" string="Oops, no! (:" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_form_payment_wiz" model="ir.actions.act_window">
+            <field name="name">Export Form Payment</field>
+            <field name="res_model">form.payment.wiz</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
