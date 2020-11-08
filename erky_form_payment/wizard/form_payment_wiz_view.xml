@@ -7,10 +7,19 @@
                 <form>
                     <group>
                         <group>
-                            <field name="form_id" readonly="1"/>
+                            <field name="form_id" invisible="1"/>
+                            <field name="date"/>
+                            <field name="payment_currency_id" readonly="0"/>
+                            <field name="payment_amount" />
                         </group>
                         <group>
                             <field name="bank_id" readonly="1"/>
+                            <label for="payment_currency_rate"/>
+                            <div class="o_row">
+                                <field name="payment_currency_rate" readonly="0"/>
+                                <button name="%(update_currency_rate.update_currency_rate_action)d" context="{'default_currency_id': payment_currency_id}" string="Update Rate" type="action" class="oe_link"/>
+                            </div>
+
                         </group>
                     </group>
                     <footer>

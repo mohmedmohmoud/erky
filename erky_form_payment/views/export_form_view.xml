@@ -1,0 +1,27 @@
+<odoo>
+    <data>
+        <record id="export_form_view_inh_payment" model="ir.ui.view">
+            <field name="name">export.form.view.inh.payment</field>
+            <field name="model">erky.export.form</field>
+            <field name="inherit_id" ref="erky_base.erky_export_form_view"/>
+            <field name="arch" type="xml">
+                <header position="inside">
+                    <button name="%(action_form_payment_wiz)d"
+                            context="{'default_form_id': id, 'default_bank_id': bank_id, 'default_product_id': product_id}" string="Bank Payment" type="action" class="oe_highlight"/>
+                </header>
+                <notebook position="inside">
+                    <page string="Bank Payments">
+                        <field name="form_payment_ids">
+                            <tree>
+                                <field name="importer_id"/>
+                                <field name="payment_currency_id"/>
+                                <field name="payment_rate"/>
+                                <field name="payment_amount"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    </data>
+</odoo>

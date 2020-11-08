@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+        <record id="update_currency_rate_form_view" model="ir.ui.view">
+            <field name="name">update.currency.rate.form.view</field>
+            <field name="model">res.currency.update.wiz</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="currency_id"/>
+                            <field name="rate_symbol"/>
+                            <field name="last_rate"/>
+                        </group>
+                        <group>
+                            <field name="date_time"/>
+                            <field name="currency_unit_label"/>
+                            <field name="new_rate"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="apply_new_currency_rate" string="Apply New Rate" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="update_currency_rate_action" model="ir.actions.act_window">
+            <field name="name">Update Currency Rate</field>
+            <field name="res_model">res.currency.update.wiz</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_update_currency_rate" name="Update Currency Rate" action="update_currency_rate_action" parent="account.account_account_menu" sequence="1" groups="base.group_multi_currency"/>
+
+
+    </data>
+</odoo>
