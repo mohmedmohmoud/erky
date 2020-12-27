@@ -7,10 +7,12 @@
             <field name="arch" type="xml">
                 <header position="inside">
                     <button name="%(action_form_payment_wiz)d"
-                            context="{'default_form_id': id, 'default_bank_id': bank_id, 'default_product_id': product_id}" string="Bank Payment" type="action" class="oe_highlight"/>
+                            context="{'default_form_id': id, 'default_bank_id': bank_id,
+                             'default_product_id': product_id, 'default_payment_currency_id': export_earning_currency_id}" string="Bank Payment" type="action" class="oe_highlight"/>
                 </header>
                 <notebook position="inside">
                     <page string="Bank Payments">
+                        <field name="export_earning_currency_id" invisible="1"/>
                         <field name="form_payment_ids">
                             <tree>
                                 <field name="importer_id"/>

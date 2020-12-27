@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+
 
 class FormPaymentWiz(models.TransientModel):
     _name = "form.payment.wiz"
@@ -18,6 +20,10 @@ class FormPaymentWiz(models.TransientModel):
 
     @api.multi
     def action_confirm_payment(self):
+        if self.bank_id and not self.bank_id.export_earning_currency_id:
+            raise ValidationError("Please set export earning currency in bank [%s]." % (self.bank_id.name))
+        if self.bank_id.export_earning_currency_id.id != self.payment_currency_id.id:
+            raise ValidationError("Payment currency must be same to earning currency of bank.")
         if self.form_id:
             vals = {'form_id': self.form_id.id,
                     'date': self.date,

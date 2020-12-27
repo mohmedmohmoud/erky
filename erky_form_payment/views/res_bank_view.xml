@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <record id="res_bank_form_view_inh_export_earning" model="ir.ui.view">
+            <field name="name">res.bank.form.view.inh.export.earning</field>
+            <field name="model">res.bank</field>
+            <field name="inherit_id" ref="base.view_res_bank_form"/>
+            <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Export Earning Currency">
+                        <group>
+                            <field name="export_earning_currency_id"/>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+    </data>
+</odoo>

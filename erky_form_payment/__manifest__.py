@@ -9,6 +9,7 @@
     'data': [
         'security/ir.model.access.csv',
         'wizard/form_payment_wiz_view.xml',
+        'views/res_bank_view.xml',
         'views/form_payment_view.xml',
         'views/export_form_view.xml',
     ],
