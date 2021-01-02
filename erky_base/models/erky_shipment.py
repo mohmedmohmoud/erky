@@ -16,28 +16,35 @@ class Shipment(models.Model):
     shipment_date = fields.Date("Shipment Date", default=fields.Date.context_today)
     driver_id = fields.Many2one("res.partner", "Driver Name", required=1, domain=[('is_driver', '=', True)])
     phone_no = fields.Char(related="driver_id.phone", string="Driver Phone")
-    product_id = fields.Many2one(related="internal_contract_id.product_id", store=True)
-    product_uom_id = fields.Many2one("uom.uom", string="Product UOM", required=1)
-    qty = fields.Float("Qty", compute="_compute_product_qty", store=True)
-    package_uom_id = fields.Many2one("uom.uom", string="Package UOM", required=1)
-    package_qty = fields.Float("Package Qty", required=1)
-    qty_as_product_unit = fields.Float("Product Qty", compute="_compute_product_qty", store=True)
-    unit_packing_weight = fields.Float(related="package_uom_id.packing_weight", string="Unit Packing Weight")
-    packing_weight = fields.Float("Net Weight")
-    gross_weight = fields.Float("Gross Weight")
-    discharged_qty = fields.Float("Discharged Weight", compute="_compute_product_qty", store=True)
-    discharged_packing_weight = fields.Float("Discharged Weight")
-    base_shipped_weight = fields.Float("Shipped Weight", compute="_compute_product_qty", store=True)
-    origin_shipped_weight = fields.Float("Shipped Weight")
-    origin_shipped_uom_id = fields.Many2one("uom.uom", readonly=1)
-    base_shipped_uom_id = fields.Many2one("uom.uom", readonly=1)
-    discharged_packing_uom_id = fields.Many2one("uom.uom", readonly=1)
-    discharged_uom_id = fields.Many2one("uom.uom", readonly=1)
-    packing_weight_uom_id = fields.Many2one(related="package_uom_id.packing_uom_id", store=True, string="Packing Weight UOM")
     front_plate_no = fields.Char("Front Plate No")
     back_plate_no = fields.Char("Back Plate No")
     source_location = fields.Many2one("erky.location", "Origin", domain=[('is_origin', '=', True)])
     destination_location = fields.Many2one("erky.location", "Destination", required=1, domain=[('is_dest', '=', True)])
+    customer_broker_id = fields.Many2one("res.partner", "Customer Broker")
+    product_id = fields.Many2one(related="internal_contract_id.product_id", store=True)
+    product_uom_id = fields.Many2one("uom.uom", string="Product UOM", required=1)
+
+    package_qty = fields.Float("Package Qty", required=1)
+    package_uom_id = fields.Many2one("uom.uom", string="Package UOM", required=1, domain=[('is_weight_packing', '=', True)])
+    net_weight = fields.Float("Net Weight/KGS")
+    gross_weight = fields.Float("Gross Weight/KGS")
+    package_as_ton_weight = fields.Float("Package Weight/TON")
+
+    # SHIPMENT WEIGHT
+    sh_weight_kgs_1 = fields.Float('SH Weight - 1/KGS')
+    sh_weight_kgs_2 = fields.Float('SH Weight - 2/KGS')
+    sh_weight_kgs_net = fields.Float('SH Weight - NET/KGS', compute='_get_sh_net_weight', store=True)
+    sh_weight_ton = fields.Float('SH Weight/TON')
+    sh_weight_package_uom = fields.Float('SH Weight/Package UOM')
+    sh_weight_attachment_id = fields.Binary("SH Weight Attachment", attachment=True,)
+    # DISCHARGE WEIGHT
+    ds_weight_kgs_1 = fields.Float('DS Weight - 1/KGS')
+    ds_weight_kgs_2 = fields.Float('DS Weight - 2/KGS')
+    ds_weight_kgs_net = fields.Float('DS Weight - NET/KGS', compute='_get_ds_net_weight', store=True)
+    ds_weight_ton = fields.Float('DS Weight/TON')
+    ds_weight_package_uom = fields.Float('DS Weight/Package UOM')
+    ds_weight_attachment_id = fields.Binary("DS Weight Attachment", attachment=True)
+
     unit_cost = fields.Float("Unit Cost", required=1)
     total_other_cost = fields.Float("Total Other Cost", compute="_compute_cost", store=True)
     total_packing_cost = fields.Float("Total Packing Cost", compute="_compute_cost", store=True)
@@ -47,92 +54,99 @@ class Shipment(models.Model):
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=False,
                                   default=lambda self: self.env.user.company_id.currency_id, required=1)
     note = fields.Text("Note")
-    state = fields.Selection([('draft', "Waiting Shipment"), ('discharge', "Waiting Discharge"), ('done', "Done"), ('canceled', "Canceled")], default='draft')
-    in_container_qty = fields.Integer("In Container Qty", compute="_compute_container_qty")
+    state = fields.Selection([('draft', "Draft"), ('under_shipment', "Under Shipment"), ('under_discharge', 'Under Discharge'), ('done', "Done"), ('canceled', "Canceled")], default='draft')
     shipment_container_ids = fields.One2many("erky.container.shipment", "vehicle_shipment_id")
-    is_full_reconciled = fields.Boolean("Fully Reconciled")
-    customer_broker_id = fields.Many2one("res.partner", "Customer Broker")
+
+    @api.constrains('sh_weight_kgs_1', 'sh_weight_kgs_2', 'ds_weight_kgs_1', 'ds_weight_kgs_2')
+    def check_net_weight(self):
+        for rec in self:
+            sh_weight_kgs_net = rec.sh_weight_kgs_2 - rec.sh_weight_kgs_1
+            if sh_weight_kgs_net <= 0:
+                raise ValidationError("SH Weight - 2/KGS Must Be Greater Than SH Weight - 1/KGS")
+
+            ds_weight_kgs_net = rec.ds_weight_kgs_2 - rec.ds_weight_kgs_1
+            if ds_weight_kgs_net <= 0:
+                raise ValidationError("DS Weight - 2/KGS Must Be Greater Than DS Weight - 1/KGS")
+
+    @api.onchange('package_uom_id', 'package_qty')
+    def set_default_weights(self):
+        for rec in self:
+            package_uom_id = rec.package_uom_id
+            rec.net_weight = self.package_qty * package_uom_id.net_weight_kgs
+            rec.gross_weight = self.package_qty * package_uom_id.gross_weight_kgs
+            rec.package_as_ton_weight = self.package_qty * package_uom_id.weight_in_ton
+            if not rec.sh_weight_kgs_2:
+                rec.sh_weight_kgs_2 = rec.net_weight
+            if not rec.ds_weight_kgs_2:
+                rec.ds_weight_kgs_2 = rec.net_weight
+
+
+    @api.depends('sh_weight_kgs_1', 'sh_weight_kgs_2', 'package_uom_id')
+    def _get_sh_net_weight(self):
+        for rec in self:
+            sh_weight_kgs_net = rec.sh_weight_kgs_2 - rec.sh_weight_kgs_1
+            rec.sh_weight_kgs_net = sh_weight_kgs_net
+
+    @api.depends('ds_weight_kgs_1', 'ds_weight_kgs_2', 'package_uom_id')
+    def _get_ds_net_weight(self):
+        for rec in self:
+            ds_weight_kgs_net = rec.ds_weight_kgs_2 - rec.ds_weight_kgs_1
+            rec.ds_weight_kgs_net = ds_weight_kgs_net
+
+    @api.onchange('sh_weight_kgs_net', 'package_uom_id')
+    def _get_sh_ton_weigh(self):
+        self.sh_weight_ton = self.sh_weight_kgs_net/1000
+
+    @api.onchange('ds_weight_kgs_net', 'package_uom_id')
+    def _get_ds_ton_weight(self):
+        self.ds_weight_ton = self.ds_weight_kgs_net/1000
+
+    @api.onchange('sh_weight_ton', 'package_uom_id')
+    def _get_sh_package_weight(self):
+        if self.package_uom_id.weight_in_ton != 0 and self.sh_weight_ton:
+            self.sh_weight_package_uom = self.sh_weight_ton / (self.package_uom_id.weight_in_ton)
+
+    @api.onchange('ds_weight_ton', 'package_uom_id')
+    def _get_ds_package_weight(self):
+        if self.package_uom_id.weight_in_ton != 0 and self.ds_weight_ton:
+            self.ds_weight_package_uom = self.ds_weight_ton / (self.package_uom_id.weight_in_ton)
+
 
     @api.onchange('driver_id')
     def get_driver_agent(self):
         for rec in self:
             rec.agent_id = self.driver_id.agent_id.id
 
-    @api.depends("package_qty", "discharged_packing_weight", "origin_shipped_weight")
-    def _compute_product_qty(self):
-        for rec in self:
-            if rec.package_uom_id:
-                rounding_method = rec._context.get('rounding_method', 'UP')
-                rec.qty = rec.package_uom_id._compute_quantity(rec.package_qty, rec.product_uom_id,
-                                                                     rounding_method=rounding_method)
-            if rec.product_uom_id and rec.packing_weight_uom_id:
-                qty_as_product_unit = rec.package_qty * rec.unit_packing_weight
-                rec.qty_as_product_unit = rec.packing_weight_uom_id._compute_quantity(qty_as_product_unit,
-                                                                   rec.product_uom_id,
-                                                                     rounding_method=rounding_method)
-            if rec.discharged_packing_uom_id and rec.discharged_uom_id:
-                rec.discharged_qty = rec.discharged_packing_uom_id._compute_quantity(rec.discharged_packing_weight, rec.discharged_uom_id,
-                                                               rounding_method=rounding_method)
-            if rec.origin_shipped_uom_id and rec.base_shipped_uom_id:
-                rec.base_shipped_weight = rec.origin_shipped_uom_id._compute_quantity(rec.origin_shipped_weight,
-                                                                                     rec.base_shipped_uom_id,
-                                                                                     rounding_method=rounding_method)
-
-    def get_shipment_reconciled_qty(self):
-        reconciled_qty = sum(self.env['erky.shipment.reconcile'].search([('contract_id', '=', self.internal_contract_id.id),
-                                                                         ('shipment_id', '=', self.id)]).mapped("qty"))
-        return reconciled_qty
-
-
-    @api.depends("unit_cost", "qty", "shipment_cost_ids")
+    @api.depends("unit_cost", "shipment_cost_ids")
     def _compute_cost(self):
         for rec in self:
-            rec.total_packing_cost = rec.unit_cost * rec.qty_as_product_unit
+            rec.total_packing_cost = rec.unit_cost * rec.package_as_ton_weight
             if rec.shipment_cost_ids:
                 other_cost = sum(rec.shipment_cost_ids.mapped("amount"))
                 rec.total_other_cost = other_cost
-                rec.total_cost = other_cost + (rec.unit_cost * rec.qty_as_product_unit)
-
+                rec.total_cost = other_cost + (rec.unit_cost * rec.package_as_ton_weight)
 
     @api.model
     def create(self, vals):
         if vals.get('name', _('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('erky.vehicle.shipment') or _('New')
         res = super(Shipment, self).create(vals)
-        self.create_shipment_reconcile(res)
+        # self.create_shipment_reconcile(res)
         return res
 
-    def create_shipment_reconcile(self, res):
-        if res:
-            contract_id = res.internal_contract_id or False
-            export_form_id = res.export_form_id or False
-            if export_form_id:
-                qty = res.qty_as_product_unit
-                form_reconciled_qty = export_form_id.get_form_reconciled_qty()
-                form_remain_qty = export_form_id.qty - form_reconciled_qty
-                if res.qty_as_product_unit > form_remain_qty:
-                    qty = form_remain_qty
-                else:
-                    res.is_full_reconciled = True
-
-                if contract_id and export_form_id and res and qty > 0:
-                    self.env['erky.shipment.reconcile'].create({'contract_id': contract_id.id,
-                                                                'form_export_id': export_form_id.id,
-                                                                'shipment_id': res.id,
-                                                                'qty': qty})
-
     @api.multi
-    def action_submit(self):
+    def action_shipment(self):
         for rec in self:
-            rec.discharged_uom_id = rec.product_uom_id.id
-            rec.discharged_packing_uom_id = rec.packing_weight_uom_id.id
-            rec.state = 'discharge'
+            rec.state = 'under_shipment'
 
     @api.multi
     def action_discharge(self):
         for rec in self:
-            self.check_shipment_moved_to_container()
-            self.check_discharged_qty()
+            rec.state = 'under_discharge'
+
+    @api.multi
+    def action_done(self):
+        for rec in self:
             rec.state = 'done'
 
     @api.multi
@@ -140,81 +154,41 @@ class Shipment(models.Model):
         for rec in self:
             rec.state = 'canceled'
 
-    def check_shipment_moved_to_container(self):
-        for rec in self:
-            if not rec.shipment_container_ids:
-                raise ValidationError(_("No containers. Check container shipment please."))
-
-    @api.constrains("qty", "export_form_id", "shipment_container_ids")
-    def check_shipment_qty(self):
-        for rec in self:
-            shipment_container_ids = rec.shipment_container_ids
-            if rec.qty < 0:
-                raise ValidationError(_("Qty Must Be Greater Than Zero."))
-            if shipment_container_ids:
-                container_shipment_qty = sum(shipment_container_ids.mapped('shipment_qty'))
-                if container_shipment_qty > rec.package_qty:
-                    raise ValidationError(_("Container Shipment Qty Can't Be Greater Than Vehicle Shipment Qty"))
-
-    def check_discharged_qty(self):
-        for rec in self:
-            if rec.discharged_qty < 1 or self.discharged_packing_weight < 1:
-                raise ValidationError("Discharge Qty Must Be Greater Than Zero.")
-            if rec.discharged_qty > rec.qty_as_product_unit:
-                raise ValidationError("Discharge Qty Can not be greater than shipment qty.")
 
 
-
-
-    @api.depends("shipment_container_ids.shipment_qty")
-    def _compute_container_qty(self):
-        for rec in self:
-            rec.in_container_qty = sum(rec.shipment_container_ids.mapped('shipment_qty'))
-
-    @api.depends("package_qty", "package_uom_id")
-    def _compute_shipment_qty(self):
-        for rec in self:
-            if rec.package_uom_id.is_packing_unit:
-                shipment_qty = rec.package_qty
-                packing_weight = rec.unit_packing_weight
-                rec.packing_weight = shipment_qty * packing_weight
-                rec.gross_weight = shipment_qty * rec.package_uom_id.unit_weight
 
 class ShipmentContainer(models.Model):
     _name = "erky.container.shipment"
 
-    name = fields.Char(required=0)
     vehicle_shipment_id = fields.Many2one("erky.vehicle.shipment", "Vehicle Shipment")
+    name = fields.Char(required=0)
     container_size = fields.Selection([('20_feet', "20 Feet"), ('40_feet', "40 Feet")])
+    export_form_id = fields.Many2one(related="vehicle_shipment_id.export_form_id", string="Export Form", store=True)
+    internal_contract_id = fields.Many2one(related="export_form_id.contract_id", string="Contract", required=0,
+                                           store=True)
+    purchase_contract_id = fields.Many2one(related="export_form_id.purchase_contract_id", string="Purchase_Contract",
+                                           required=0, store=True)
     shipment_qty = fields.Integer("Shipment Qty", required=0)
-    packing_weight = fields.Float("Total Packing Weight", compute="_compute_shipment_qty", store=True)
-    gross_weight = fields.Float("Gross Weight", compute="_compute_shipment_qty", store=True)
-    shipment_uom_id = fields.Many2one("uom.uom", "Shipment UOM", required=0)
-    unit_packing_weight = fields.Float(related="vehicle_shipment_id.unit_packing_weight", store="True",
-                                       string="Unit Packing Weight")
-    packing_weight = fields.Float("Total Packing Weight", compute="_compute_shipment_qty", store=True)
-    packing_uom_id = fields.Many2one(related="vehicle_shipment_id.packing_weight_uom_id", string="Packing UOM")
-    export_form_id = fields.Many2one("erky.export.form", string="Export Form", required=1)
-    internal_contract_id = fields.Many2one(related="export_form_id.contract_id", string="Contract", required=0, store=True)
-    purchase_contract_id = fields.Many2one(related="export_form_id.purchase_contract_id", string="Purchase_Contract", required=0, store=True)
+    shipment_uom_id = fields.Many2one(related="vehicle_shipment_id.package_uom_id", string="UOM", store=True, required=0)
+    net_weight = fields.Float("Net Weight/KGS")
+    gross_weight = fields.Float("Gross Weight/KGS")
+    ton_weight = fields.Float("Weight/TON")
+
 
     _sql_constraints = [
         ('container_ref_uniq', 'unique(name, container_size, export_form_id)', 'The container ref must be unique !'),
     ]
 
-    @api.onchange('name')
-    def name_domain(self):
-        container_ids = self.export_form_id.container_ids
-        return {'domain': {'name': [('id', 'in', container_ids.ids)]}}
 
-    @api.depends("shipment_qty", "shipment_uom_id")
-    def _compute_shipment_qty(self):
+    @api.onchange("shipment_qty", "shipment_uom_id")
+    def _get_default_weight(self):
         for rec in self:
-            if rec.shipment_uom_id.is_packing_unit:
-                shipment_qty = rec.shipment_qty
-                unit_packing_weight = rec.unit_packing_weight
-                rec.packing_weight = shipment_qty * unit_packing_weight
-                rec.gross_weight = shipment_qty * rec.shipment_uom_id.unit_weight
+            if rec.shipment_uom_id and rec.shipment_uom_id.is_weight_packing:
+                package_uom_id = rec.shipment_uom_id
+                qty = rec.shipment_qty
+                rec.net_weight = qty * package_uom_id.net_weight_kgs
+                rec.gross_weight = qty * package_uom_id.gross_weight_kgs
+                rec.ton_weight = qty * package_uom_id.weight_in_ton
 
 class ShipmentCost(models.Model):
     _name = "erky.shipment.cost"

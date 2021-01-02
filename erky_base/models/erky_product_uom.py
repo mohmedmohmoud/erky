@@ -5,7 +5,8 @@ class ProductUOM(models.Model):
 
     _inherit = "uom.uom"
 
-    is_packing_unit = fields.Boolean("Is Packing")
-    packing_weight = fields.Float("Packing Weight", digits=dp.get_precision('Packing Weight'))
-    unit_weight = fields.Float("Unit Weight", digits=dp.get_precision('Packing Weight'))
-    packing_uom_id = fields.Many2one("uom.uom", "Packing Unit")
+    description = fields.Char("Description")
+    is_weight_packing = fields.Boolean("Is Weight Packing")
+    net_weight_kgs = fields.Float("Net Weight/KGS", digits=dp.get_precision('Packing Weight'), help="Product Weight Without UOM Weight.")
+    gross_weight_kgs = fields.Float("Gross Weight/KGS", digits=dp.get_precision('Packing Weight'), help="Product Weight + UOM Weight.")
+    weight_in_ton = fields.Float("Weight/TON", digits=dp.get_precision('Packing Weight'))

@@ -6,9 +6,10 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button name="action_submit" string="Submit" class="oe_highlight" type="object" states="draft"/>
-                        <button name="action_discharge" string="Set To Done" class="oe_highlight" type="object" states="discharge"/>
-                        <button name="action_canceled" string="Cancel" type="object" states="draft,discharge"/>
+                        <button name="action_shipment" string="Under Shipment" class="oe_highlight" type="object" states="draft"/>
+                        <button name="action_discharge" string="Under Discharge" class="oe_highlight" type="object" states="under_shipment"/>
+                        <button name="action_done" string="Done" class="oe_highlight" type="object" states="under_discharge"/>
+                        <button name="action_canceled" string="Cancel" type="object" states="under_shipment,under_discharge"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,discharge,done"/>
                     </header>
                     <sheet>
@@ -42,26 +43,16 @@
                         <group>
                             <group>
                                 <field name="product_id" readonly="1"/>
-
                                 <label for="package_qty"/>
                                 <div class="o_row">
                                     <field name="package_qty" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                     <field name="package_uom_id" options="{'no_create': True, 'no_open': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 </div>
-                                <label for="qty_as_product_unit"/>
-                                <div class="o_row">
-                                    <field name="qty_as_product_unit"/>
-                                    <field name="product_uom_id" readonly="1"/>
-                                </div>
+                                <field name="package_as_ton_weight" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                             <group>
-                                <field name="unit_packing_weight" readonly="1"/>
-                                <label for="packing_weight"/>
-                                <div class="o_row">
-                                    <field name="packing_weight"/>
-                                    <field name="packing_weight_uom_id" readonly="1"/>
-                                </div>
-                                <field name="gross_weight"/>
+                                <field name="net_weight" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="gross_weight" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                         </group>
                         <group>
@@ -73,33 +64,30 @@
                             </group>
                         </group>
                         <group>
+                            <group string="Under Shipment Weight" attrs="{'invisible': [('state', '=', 'draft')]}">
+                                <field name="sh_weight_kgs_1" attrs="{'readonly': [('state', '!=', 'under_shipment')]}"/>
+                                <field name="sh_weight_kgs_2" attrs="{'readonly': [('state', '!=', 'under_shipment')]}"/>
+                                <field name="sh_weight_kgs_net"/>
+                                <field name="sh_weight_ton" attrs="{'readonly': [('state', '!=', 'under_shipment')]}"/>
+                                <field name="sh_weight_package_uom" attrs="{'readonly': [('state', '!=', 'under_shipment')]}"/>
+                                <field name="sh_weight_attachment_id" attrs="{'readonly': [('state', '!=', 'under_shipment')]}"/>
+                            </group>
+                            <group string="Under Discharge Weight" attrs="{'invisible': [('state', 'in', ['draft', 'under_shipment'])]}">
+                                <field name="ds_weight_kgs_1" attrs="{'readonly': [('state', '!=', 'under_discharge')]}"/>
+                                <field name="ds_weight_kgs_2" attrs="{'readonly': [('state', '!=', 'under_discharge')]}"/>
+                                <field name="ds_weight_kgs_net"/>
+                                <field name="ds_weight_ton" attrs="{'readonly': [('state', '!=', 'under_discharge')]}"/>
+                                <field name="ds_weight_package_uom" attrs="{'readonly': [('state', '!=', 'under_discharge')]}"/>
+                                <field name="ds_weight_attachment_id" attrs="{'readonly': [('state', '!=', 'under_discharge')]}"/>
+                            </group>
+                        </group>
+                        <group>
                             <group>
                                 <field name="currency_id" invisible="0" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </group>
                             <group>
                                 <field name="unit_cost" widget='monetary' attrs="{'readonly': [('state', '!=', 'draft')]}" options="{'currency_field': 'currency_id'}"/>
                             </group>
-
-                        </group>
-                        <group string="Vehicle Shipment">
-                            <label for="origin_shipped_weight"/>
-                            <div class="o_row">
-                                <field name="origin_shipped_weight" attrs="{'required': [('state', '=', 'draft')], 'readonly': [('state', '!=', 'draft')]}"/>
-                                <field name="origin_shipped_uom_id" readonly="1"/>
-                                --->
-                                <field name="base_shipped_weight"/>
-                                <field name="base_shipped_uom_id" readonly="1"/>
-                            </div>
-                        </group>
-                        <group string="Vehicle Discharge" attrs="{'invisible': [('state', '=', 'draft')]}">
-                                <label for="discharged_packing_weight"/>
-                                <div class="o_row">
-                                    <field name="discharged_packing_weight" attrs="{'required': [('state', '=', 'discharge')], 'readonly': [('state', '!=', 'discharge')]}"/>
-                                    <field name="discharged_packing_uom_id" attrs="{'required': [('state', '=', 'discharge')], 'readonly': [('state', '!=', 'discharge')]}"/>
-                                    --->
-                                    <field name="discharged_qty" attrs="{'required': [('state', '=', 'discharge')], 'readonly': [('state', '!=', 'discharge')]}"/>
-                                    <field name="discharged_uom_id" attrs="{'required': [('state', '=', 'discharge')], 'readonly': [('state', '!=', 'discharge')]}"/>
-                                </div>
                         </group>
                         <group>
                             <field name="note" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
@@ -127,21 +115,20 @@
                                 </group>
                             </page>
                             <page string="Containers">
-                                <field name="shipment_container_ids" context="{'default_internal_contract_id': internal_contract_id,
-                                    'default_export_form_id': export_form_id, 'default_shipment_uom_id': package_uom_id}"
-                                    attrs="{'invisible': [('shipment_type', '!=', 'container_shipment'),('state', 'not in', ['discharge', 'done'])]}">
+                                <field name="shipment_container_ids"
+                                    attrs="{'invisible': [('shipment_type', '!=', 'container_shipment'),('state', 'not in', ['under_discharge', 'done'])]}">
                                     <tree editable="bottom">
                                         <field name="internal_contract_id" invisible="1"/>
                                         <field name="purchase_contract_id" invisible="1"/>
-                                        <field name="export_form_id" invisible="1"/>
+                                        <field name="export_form_id" invisible="1" required="1"/>
                                         <field name="vehicle_shipment_id" invisible="1"/>
-                                        <field name="name"/>
+                                        <field name="name" required="1"/>
                                         <field name="container_size"/>
-                                        <field name="shipment_qty" sum="Shipment Qty"/>
+                                        <field name="shipment_qty" sum="Shipment Qty/Package UOM" required="1"/>
                                         <field name="shipment_uom_id"/>
-                                        <field name="packing_weight" sum="Packing Weight"/>
-                                        <field name="gross_weight" sum="Gross Weight"/>
-                                        <field name="packing_uom_id"/>
+                                        <field name="net_weight" sum="Net Weight/KGS"/>
+                                        <field name="gross_weight" sum="Gross Weight/KGS"/>
+                                        <field name="ton_weight" sum="Ton Weight"/>
                                     </tree>
                                 </field>
                             </page>
@@ -161,8 +148,8 @@
                     <field name="agent_id"/>
                     <field name="driver_id"/>
                     <field name="product_id"/>
-                    <field name="qty" sum="Total Qty"/>
-                    <field name="unit_cost" sum="Total Shipment Cost"/>
+                    <field name="package_as_ton_weight" string="Weight/TON" sum="Total Qty"/>
+                    <field name="total_cost" sum="Total Shipment Cost"/>
                 </tree>
             </field>
         </record>

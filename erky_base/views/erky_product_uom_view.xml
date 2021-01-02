@@ -6,13 +6,11 @@
             <field name="inherit_id" ref="uom.product_uom_form_view"/>
             <field name="arch" type="xml">
                 <field name="active" position="after">
-                    <field name="is_packing_unit"/>
-                    <label for="packing_weight"/>
-                    <div class="o_row">
-                        <field name="packing_weight" attrs="{'invisible': [('is_packing_unit', '=', False)], 'required': [('is_packing_unit', '=', True)]}"/>
-                        <field name="packing_uom_id" attrs="{'invisible': [('is_packing_unit', '=', False)], 'required': [('is_packing_unit', '=', True)]}"/>
-                    </div>
-                    <field name="unit_weight" attrs="{'invisible': [('is_packing_unit', '=', False)], 'required': [('is_packing_unit', '=', True)]}"/>
+                    <field name="description"/>
+                    <field name="is_weight_packing"/>
+                    <field name="net_weight_kgs" attrs="{'invisible': [('is_weight_packing', '=', False)], 'required': [('is_weight_packing', '=', True)]}"/>
+                    <field name="gross_weight_kgs" attrs="{'invisible': [('is_weight_packing', '=', False)], 'required': [('is_weight_packing', '=', True)]}"/>
+                    <field name="weight_in_ton" attrs="{'invisible': [('is_weight_packing', '=', False)], 'required': [('is_weight_packing', '=', True)]}"/>
                 </field>
             </field>
         </record>

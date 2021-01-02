@@ -29,10 +29,10 @@ class ExportForm(models.Model):
     unit_contract_price = fields.Float(related="purchase_contract_id.unit_price", string="Contract Price", store=True)
     contract_currency_id = fields.Many2one(related="purchase_contract_id.currency_id", string="Contract Currency")
     package_uom_id = fields.Many2one("uom.uom", "Package UOM")
-    packing_weight_uom_id = fields.Many2one(related="package_uom_id.packing_uom_id", store=True, string="Packing Weight UOM")
-    net_shipment_qty = fields.Float(string="Net Ship Qty", store=True, compute="_compute_all_form_qty")
-    gross_shipment_qty = fields.Float(string="Gross Ship Qty", store=True, compute="_compute_all_form_qty")
-    weight_in_package_uom = fields.Text(string="Weight Package UOM", compute="_compute_weight_in_package_uom")
+    # packing_weight_uom_id = fields.Many2one(related="package_uom_id.packing_uom_id", store=True, string="Packing Weight UOM")
+    # net_shipment_qty = fields.Float(string="Net Ship Qty", store=True, compute="_compute_all_form_qty")
+    # gross_shipment_qty = fields.Float(string="Gross Ship Qty", store=True, compute="_compute_all_form_qty")
+    # weight_in_package_uom = fields.Text(string="Weight Package UOM", compute="_compute_weight_in_package_uom")
     bank_id = fields.Many2one(related="contract_id.bank_id", store=True, string="Bank", required=0)
     bank_branch_id = fields.Many2one(related="contract_id.bank_branch_id", store=True, string="Bank Branch")
     exporter_port_id = fields.Many2one(related="contract_id.exporter_port_id", store=True, string="Exporter Port")
@@ -89,44 +89,44 @@ class ExportForm(models.Model):
     # =================Container Request================
     container_request_ids = fields.One2many("erky.container.request", "export_form_id")
     # ================= Reconcile ===============
-    outstanding_shipment_widget = fields.Text(compute='_get_outstanding_shipment_info_JSON')
-    shipment_widget = fields.Text(compute='_get_shipment_info_JSON')
+    # outstanding_shipment_widget = fields.Text(compute='_get_outstanding_shipment_info_JSON')
+    # shipment_widget = fields.Text(compute='_get_shipment_info_JSON')
     fully_reconciled = fields.Boolean()
     is_notify = fields.Boolean()
 
-    @api.one
-    def _get_outstanding_shipment_info_JSON(self):
-        self.outstanding_shipment_widget = json.dumps(False)
-        if self.state == 'shipment' and not self.fully_reconciled:
-            domain = [('internal_contract_id', '=', self.contract_id.id), ('is_full_reconciled', '=', False)]
-            shipment_ids = self.env['erky.vehicle.shipment'].search(domain)
-            info = {}
-            if shipment_ids and not self.fully_reconciled and self.shipped_qty != self.qty:
-                info.update({'title': 'Outstanding Shipment', 'content': [], 'outstanding': True, 'export_form_id': self.id})
-                for sh in shipment_ids:
-                    qty = sum(self.env['erky.shipment.reconcile'].search([('contract_id', '=', sh.internal_contract_id.id),
-                                                                          ('shipment_id', '=', sh.id)
-                                                                         ]).mapped("qty"))
+    # @api.one
+    # def _get_outstanding_shipment_info_JSON(self):
+    #     self.outstanding_shipment_widget = json.dumps(False)
+    #     if self.state == 'shipment' and not self.fully_reconciled:
+    #         domain = [('internal_contract_id', '=', self.contract_id.id), ('is_full_reconciled', '=', False)]
+    #         shipment_ids = self.env['erky.vehicle.shipment'].search(domain)
+    #         info = {}
+    #         if shipment_ids and not self.fully_reconciled and self.shipped_qty != self.qty:
+    #             info.update({'title': 'Outstanding Shipment', 'content': [], 'outstanding': True, 'export_form_id': self.id})
+    #             for sh in shipment_ids:
+    #                 qty = sum(self.env['erky.shipment.reconcile'].search([('contract_id', '=', sh.internal_contract_id.id),
+    #                                                                       ('shipment_id', '=', sh.id)
+    #                                                                      ]).mapped("qty"))
+    #
+    #                 qty = sh.qty_as_product_unit - qty
+    #                 info['content'].append({
+    #                     'id': sh.id,
+    #                     'shipment_ref': sh.name,
+    #                     'qty': qty,
+    #                     'product_uom': sh.product_uom_id.name,
+    #                     'package_qty': sh.package_qty,
+    #                     'package_uom': sh.package_uom_id.name,
+    #                     'weight_qty': sh.packing_weight,
+    #                     'packing_uom': sh.packing_weight_uom_id.name
+    #                 })
+    #
+    #             self.outstanding_shipment_widget = json.dumps(info)
 
-                    qty = sh.qty_as_product_unit - qty
-                    info['content'].append({
-                        'id': sh.id,
-                        'shipment_ref': sh.name,
-                        'qty': qty,
-                        'product_uom': sh.product_uom_id.name,
-                        'package_qty': sh.package_qty,
-                        'package_uom': sh.package_uom_id.name,
-                        'weight_qty': sh.packing_weight,
-                        'packing_uom': sh.packing_weight_uom_id.name
-                    })
-
-                self.outstanding_shipment_widget = json.dumps(info)
-
-    def _get_shipment_info_JSON(self):
-        self.shipment_widget = json.dumps(False)
-
-        info = {'title': _('Less Shipment'), 'outstanding': False, 'content': self._get_shipment_vals()}
-        self.shipment_widget = json.dumps(info)
+    # def _get_shipment_info_JSON(self):
+    #     self.shipment_widget = json.dumps(False)
+    #
+    #     info = {'title': _('Less Shipment'), 'outstanding': False, 'content': self._get_shipment_vals()}
+    #     self.shipment_widget = json.dumps(info)
 
     def _get_shipment_vals(self):
         lines = []
@@ -188,15 +188,15 @@ class ExportForm(models.Model):
                 rec.shipped_qty = shipped_qty
                 rec.remain_qty = rec.qty - shipped_qty
 
-    @api.depends("vehicle_shipment_ids", "qty")
-    def _compute_all_form_qty(self):
-        for rec in self:
-            shipment_ids = rec.vehicle_shipment_ids
-            if shipment_ids:
-                net_shipment_qty = sum(shipment_ids.mapped('packing_weight'))
-                gross_shipment_qty = sum(shipment_ids.mapped('gross_weight'))
-                rec.net_shipment_qty = net_shipment_qty
-                rec.gross_shipment_qty = gross_shipment_qty
+    # @api.depends("vehicle_shipment_ids", "qty")
+    # def _compute_all_form_qty(self):
+    #     for rec in self:
+    #         shipment_ids = rec.vehicle_shipment_ids
+    #         if shipment_ids:
+    #             net_shipment_qty = sum(shipment_ids.mapped('packing_weight'))
+    #             gross_shipment_qty = sum(shipment_ids.mapped('gross_weight'))
+    #             rec.net_shipment_qty = net_shipment_qty
+    #             rec.gross_shipment_qty = gross_shipment_qty
 
     @api.model
     def create(self, vals):
@@ -345,8 +345,8 @@ class ExportForm(models.Model):
                     'default_package_qty': default_shipment_qty,
                     'default_product_uom_id': self.product_uom_id.id,
                     'default_package_uom_id': self.package_uom_id.id,
-                    'default_origin_shipped_uom_id': self.packing_weight_uom_id.id,
-                    'default_base_shipped_uom_id':  self.product_uom_id.id
+                    # 'default_origin_shipped_uom_id': self.packing_weight_uom_id.id,
+                    # 'default_base_shipped_uom_id':  self.product_uom_id.id
                     })
         return {
             'name': "Add Shipment",

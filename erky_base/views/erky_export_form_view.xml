@@ -119,11 +119,11 @@
                                 <field name="shipped_qty"/>
                                 <field name="remain_qty"/>
                             </group>
-                            <group string="Packaging And Shipments" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo'])]}">
-                                <field name="package_uom_id" attrs="{'required': [('state', 'in', ['shipment_ins'])], 'readonly': [('state', '!=', 'shipment_ins')]}"/>
-                                <field name="net_shipment_qty"/>
-                                <field name="gross_shipment_qty"/>
-                            </group>
+<!--                            <group string="Packaging And Shipments" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo'])]}">-->
+<!--                                <field name="package_uom_id" attrs="{'required': [('state', 'in', ['shipment_ins'])], 'readonly': [('state', '!=', 'shipment_ins')]}"/>-->
+<!--                                <field name="net_shipment_qty"/>-->
+<!--                                <field name="gross_shipment_qty"/>-->
+<!--                            </group>-->
                         </group>
                         <notebook>
                             <!--=======================SSMO====================-->
@@ -141,12 +141,12 @@
                                     </group>
                                 </group>
 
-                                <group class="oe_subtotal_footer oe_right">
-                                    <field name="outstanding_shipment_widget" colspan="2" nolabel="1" widget="shipment" attrs="{'invisible': [('state', 'not in', 'shipment')]}"/>
-                                </group>
-                                <group class="oe_right">
-                                    <field name="shipment_widget" colspan="4" nolabel="1" widget="shipment" attrs="{'invisible': [('state', 'not in', 'shipment')]}"/>
-                                </group>
+<!--                                <group class="oe_subtotal_footer oe_right">-->
+<!--                                    <field name="outstanding_shipment_widget" colspan="2" nolabel="1" widget="shipment" attrs="{'invisible': [('state', 'not in', 'shipment')]}"/>-->
+<!--                                </group>-->
+<!--                                <group class="oe_right">-->
+<!--                                    <field name="shipment_widget" colspan="4" nolabel="1" widget="shipment" attrs="{'invisible': [('state', 'not in', 'shipment')]}"/>-->
+<!--                                </group>-->
                             </page>
                             <!--=======================Container Shipment====================-->
                             <page string="Shipment Instruction" attrs="{'invisible': [('state', 'in', ['draft','mc','bank','ssmo'])]}">
