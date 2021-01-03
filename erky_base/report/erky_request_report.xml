@@ -12,9 +12,65 @@
         <template id="report_erky_request">
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
-                <div class="page" style="position:relative;">
+                <div class="page" dir="rtl" lang="ar" style="position:relative;">
+                    <style>
+                        @import url(https://fonts.googleapis.com/earlyaccess/amiri.css);
+                        @import url(https://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
+                        @import url(https://fonts.googleapis.com/earlyaccess/droidarabicnaskh.css);
+                        @import url(https://fonts.googleapis.com/earlyaccess/lateef.css);
+                        @import url(https://fonts.googleapis.com/earlyaccess/scheherazade.css);
+                        @import url(https://fonts.googleapis.com/earlyaccess/thabit.css);
+
+                        *{
+                          direction:rtl;
+                          color:#444;
+                        }
+
+                        h3{
+                          background:#222;
+                          color:#f9f9f9;
+                           padding:5px;
+                        }
+
+                        .amiri{font-family: 'Amiri', serif;}
+                        .droid-arabic-kufi{font-family: 'Droid Arabic Kufi', serif;}
+                        .droid-arabic-naskh{font-family: 'Droid Arabic Naskh', serif;}
+                        .lateef{font-family: 'Lateef', serif;}
+                        .scheherazade{font-family: 'Scheherazade', serif;}
+                        .thabit{font-family: 'Thabit', serif;}
+                     </style>
+
                     <t t-foreach="docs" t-as="o">
-                        <p><t t-raw="o.request_body"/></p>
+                        <t t-if="o.request_type == 'from_request'">
+                            <div class="droid-arabic-kufi" dir="rtl" lang="ar" style="text-align:right;">
+                                <p>الرقم:<t t-esc="o.request_no"/> </p>
+                                <p>التاريخ: <t t-esc="o.date"/> </p>
+                                <p>السيد مدير بنك: <t t-esc="o.internal_contract_id.bank_id.name"/> - الفرع: <t t-esc="o.internal_contract_id.bank_branch_id.name"/> </p>
+                                <p>السلام عليكم ورحمة الله تعالى وبركاته ،،، </p>
+                                <center><strong><p style="text-decoration: underline;">الموضوع / استخراج شهادة EX</p></strong></center>
+                                <center><p>بالاشارة للموضوع اعلاه، نرجو من سعادتكم استخراج استمارة صادر <t t-esc="o.internal_contract_id.product_id.name"/> بالكمية (<t t-esc="o.internal_contract_id.qty"/> <t t-esc="o.internal_contract_id.product_uom_id.name"/>) برقم العقد (<t t-esc="o.internal_contract_id.name"/>) لصالح شركة <t t-esc="o.internal_contract_id.importer_id.name"/></p></center>
+                                <center><p>وتفضلو بقبول فائق الشكر والتقدير،</p></center>
+                            </div>
+                            <div class="droid-arabic-kufi" dir="rtl" lang="ar" style="text-align:left;">
+                                <p><t t-esc="o.requested_by"/></p>
+                            </div>
+                        </t>
+
+                        <t t-if="o.request_type == 'pledge_request'">
+                            <div class="droid-arabic-kufi" dir="rtl" lang="ar" style="text-align:right;">
+                                <p>الرقم:<t t-esc="o.request_no"/> </p>
+                                <p>التاريخ: <t t-esc="o.date"/> </p>
+                                <p>السيد مدير بنك: <t t-esc="o.internal_contract_id.bank_id.name"/> - الفرع: <t t-esc="o.internal_contract_id.bank_branch_id.name"/> </p>
+                                <p>السلام عليكم ورحمة الله تعالى وبركاته ،،، </p>
+                                <center><strong><p style="text-decoration: underline;">الموضوع / تعهد جلب حصيلة صادر</p></strong></center>
+                                <center><p>بالاشارة للموضوع اعلاه نتعهد نحن شركة اركي للحلول المتكاملة المحدودة بجلب حصيلة صادر لعدد <t t-esc="o.internal_contract_id.qty"/> <t t-esc="o.internal_contract_id.product_uom_id.name"/>  ل <t t-esc="o.internal_contract_id.product_id.name"/> بالرقم <t t-esc="o.internal_contract_id.name"/> خلال الفترة التي سمح بها بنك السودان المركزي.</p></center>
+                                <center><p>وتفضلو بقبول فائق الشكر والتقدير،</p></center>
+                            </div>
+                            <div class="droid-arabic-kufi" dir="rtl" lang="ar" style="text-align:left;">
+                                <p><t t-esc="o.requested_by"/></p>
+                            </div>
+                        </t>
+
                     </t>
                 </div>
                 </t>

@@ -20,8 +20,8 @@ class ExportForm(models.Model):
     exporter_id = fields.Many2one(related="contract_id.exporter_id", store=True, string="Exporter")
     importer_id = fields.Many2one(related="contract_id.importer_id", store=True, string="Importer")
     qty = fields.Integer("Qty", default=1)
-    shipped_qty = fields.Float("Shipped Qty", compute="compute_form_qty")
-    remain_qty = fields.Float("Remain Qty", compute="compute_form_qty")
+    shipped_qty = fields.Float("Shipped Qty", compute="_compute_form_qty")
+    remain_qty = fields.Float("Remain Qty", compute="_compute_form_qty")
     product_id = fields.Many2one(related="contract_id.product_id", store=True)
     product_uom_id = fields.Many2one(
         'uom.uom', 'Product Unit of Measure', related='product_id.uom_id',
@@ -178,13 +178,11 @@ class ExportForm(models.Model):
                           '40_feet_len': len(feet40_shipment), '20_feet_qty': sum(feet40_shipment.mapped('shipment_qty'))}
         return container_info
 
-    def compute_form_qty(self):
+    @api.depends('container_shipment_ids')
+    def _compute_form_qty(self):
         for rec in self:
-            reconciled_shipment_ids = self.env['erky.shipment.reconcile'].search([('contract_id', '=', rec.contract_id.id),
-                                                                                  ('export_form_id', '=', rec.id)])
-
-            if reconciled_shipment_ids:
-                shipped_qty = sum(reconciled_shipment_ids.mapped('qty'))
+            if self.container_shipment_ids:
+                shipped_qty = sum(self.container_shipment_ids.mapped('ton_weight'))
                 rec.shipped_qty = shipped_qty
                 rec.remain_qty = rec.qty - shipped_qty
 

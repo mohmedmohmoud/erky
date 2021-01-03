@@ -3,7 +3,7 @@
     <data>
         <template id="assets_backend" name="shipment assets" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
-<!--                <link rel="stylesheet" href="/account/static/src/css/account_bank_and_cash.css"/>-->
+<!--                <link rel="stylesheet" href="/erky_base/static/src/css/style.css"/>-->
                 <script type="text/javascript" src="/erky_base/static/src/js/shipment_widget.js"></script>
             </xpath>
         </template>

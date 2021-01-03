@@ -71,14 +71,12 @@ class Shipment(models.Model):
     @api.onchange('package_uom_id', 'package_qty')
     def set_default_weights(self):
         for rec in self:
-            package_uom_id = rec.package_uom_id
+            package_uom_id = self.package_uom_id
             rec.net_weight = self.package_qty * package_uom_id.net_weight_kgs
             rec.gross_weight = self.package_qty * package_uom_id.gross_weight_kgs
             rec.package_as_ton_weight = self.package_qty * package_uom_id.weight_in_ton
-            if not rec.sh_weight_kgs_2:
-                rec.sh_weight_kgs_2 = rec.net_weight
-            if not rec.ds_weight_kgs_2:
-                rec.ds_weight_kgs_2 = rec.net_weight
+            rec.sh_weight_kgs_2 = self.net_weight
+            rec.ds_weight_kgs_2 = self.net_weight
 
 
     @api.depends('sh_weight_kgs_1', 'sh_weight_kgs_2', 'package_uom_id')

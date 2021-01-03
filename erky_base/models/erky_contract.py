@@ -122,9 +122,7 @@ class ErkyContract(models.Model):
     @api.multi
     def action_create_request(self):
         ctx = self.env.context.copy()
-        ctx.update({'default_internal_contract_id': self.id,
-                    'default_purchase_contract_id': self.purchase_contract_id.id,
-                    })
+        ctx.update({'default_internal_contract_id': self.id})
         return {
             'name': "Erky Request",
             'res_model': 'erky.request',
@@ -220,8 +218,11 @@ class ErkyRequests(models.Model):
     _rec_name = "request_type"
 
     internal_contract_id = fields.Many2one("erky.contract", "M.C Contract", required=1, readonly=1)
-    purchase_contract_id = fields.Many2one("erky.purchase.contract", "Purchase Contract", required=1, readonly=1)
+    purchase_contract_id = fields.Many2one(related='internal_contract_id.purchase_contract_id', string="Purchase Contract", required=0, readonly=1)
     state = fields.Selection([('draft', "Draft"), ('done', "Done")], default='draft', readonly=1)
+    request_no = fields.Char("Request No", required=1)
+    date = fields.Date("Date", default=fields.Date.context_today, required=1)
+    requested_by = fields.Text("Request By", required=1, default="م/ ايمن خليفة عبد القادر (المدير  العام)")
     request_type = fields.Selection([('from_request', "Form Request"),
                                      ('pledge_request', "Pledge request")], required=1,
                                     string="Request Type")

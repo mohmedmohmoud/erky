@@ -27,7 +27,7 @@
                         </group>
                         <group>
                             <group>
-                                <field name="customer_broker_id"/>
+                                <field name="customer_broker_id" attrs="{'readonly': [('state', '=', 'done')]}"/>
                                 <field name="internal_contract_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="purchase_contract_id" invisible="1"/>
                                 <field name="export_form_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
@@ -65,20 +65,20 @@
                         </group>
                         <group>
                             <group string="Under Shipment Weight" attrs="{'invisible': [('state', '=', 'draft')]}">
-                                <field name="sh_weight_kgs_1" attrs="{'readonly': [('state', '!=', 'under_shipment')]}"/>
-                                <field name="sh_weight_kgs_2" attrs="{'readonly': [('state', '!=', 'under_shipment')]}"/>
+                                <field name="sh_weight_kgs_1" attrs="{'readonly': [('state', 'not in', ['draft','under_shipment'])]}"/>
+                                <field name="sh_weight_kgs_2" attrs="{'readonly': [('state', 'not in', ['draft','under_shipment'])]}"/>
                                 <field name="sh_weight_kgs_net"/>
-                                <field name="sh_weight_ton" attrs="{'readonly': [('state', '!=', 'under_shipment')]}"/>
-                                <field name="sh_weight_package_uom" attrs="{'readonly': [('state', '!=', 'under_shipment')]}"/>
-                                <field name="sh_weight_attachment_id" attrs="{'readonly': [('state', '!=', 'under_shipment')]}"/>
+                                <field name="sh_weight_ton" attrs="{'readonly': [('state', 'not in', ['draft','under_shipment'])]}"/>
+                                <field name="sh_weight_package_uom" attrs="{'readonly': [('state', 'not in', ['draft','under_shipment'])]}"/>
+                                <field name="sh_weight_attachment_id" attrs="{'readonly': [('state', 'not in', ['draft','under_shipment'])]}"/>
                             </group>
                             <group string="Under Discharge Weight" attrs="{'invisible': [('state', 'in', ['draft', 'under_shipment'])]}">
-                                <field name="ds_weight_kgs_1" attrs="{'readonly': [('state', '!=', 'under_discharge')]}"/>
-                                <field name="ds_weight_kgs_2" attrs="{'readonly': [('state', '!=', 'under_discharge')]}"/>
+                                <field name="ds_weight_kgs_1" attrs="{'readonly': [('state', 'not in', ['draft','under_discharge'])]}"/>
+                                <field name="ds_weight_kgs_2" attrs="{'readonly': [('state', 'not in', ['draft','under_discharge'])]}"/>
                                 <field name="ds_weight_kgs_net"/>
-                                <field name="ds_weight_ton" attrs="{'readonly': [('state', '!=', 'under_discharge')]}"/>
-                                <field name="ds_weight_package_uom" attrs="{'readonly': [('state', '!=', 'under_discharge')]}"/>
-                                <field name="ds_weight_attachment_id" attrs="{'readonly': [('state', '!=', 'under_discharge')]}"/>
+                                <field name="ds_weight_ton" attrs="{'readonly': [('state', 'not in', ['draft','under_discharge'])]}"/>
+                                <field name="ds_weight_package_uom" attrs="{'readonly': [('state', 'not in', ['draft','under_discharge'])]}"/>
+                                <field name="ds_weight_attachment_id" attrs="{'readonly': [('state', 'not in', ['draft','under_discharge'])]}"/>
                             </group>
                         </group>
                         <group>
@@ -116,7 +116,9 @@
                             </page>
                             <page string="Containers">
                                 <field name="shipment_container_ids"
-                                    attrs="{'invisible': [('shipment_type', '!=', 'container_shipment'),('state', 'not in', ['under_discharge', 'done'])]}">
+                                    attrs="{'invisible': [('shipment_type', '!=', 'container_shipment'),
+                                    ('state', 'not in', ['under_discharge', 'done'])],
+                                     'readonly': [('state', '=', 'done')]}">
                                     <tree editable="bottom">
                                         <field name="internal_contract_id" invisible="1"/>
                                         <field name="purchase_contract_id" invisible="1"/>
