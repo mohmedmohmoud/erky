@@ -61,15 +61,15 @@
                                         <li>- PORT OF LOADING: <t t-esc="docs.export_form_id.contract_id.exporter_port_id.name"/></li>
                                         <li>- PORT OF DISCHARGE: <t t-esc="docs.export_form_id.discharge_port_id.name"/></li>
                                         <li>- COMMODITY: <t t-esc="docs.product_id.name"/></li>
-                                        <li>- PACKING: IN NEW POLYPROPYLENE <t t-esc="docs.package_uom_id.name"/> OF <t t-esc="docs.package_uom_id.packing_weight"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/> EACH.</li>
+                                        <li>- PACKING: IN NEW POLYPROPYLENE <t t-esc="docs.package_uom_id.name"/> OF <t t-esc="docs.package_uom_id.net_weight_kgs"/> KGS EACH.</li>
                                         <li>- QUANTITY: <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/> = <t t-esc="docs.gross_qty"/> KGS GROSS</li>
                                         <li>- B/L NO: <t t-esc="docs.name"/>, DATE:<t t-esc="docs.date"/>, PORT-SUDAN.</li>
                                     </ul>
                                 <br/>
                                 <li style="text-decoration: underline;">WEIGHT / QUANTITY:</li>
                                     <ul style="text-decoration: none;list-style: none;">
-                                        <li>- <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/>      = <t t-esc="docs.gross_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/> GROSS</li>
-                                        <li>- <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/>      = <t t-esc="docs.net_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/> NET</li>
+                                        <li>- <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/>      = <t t-esc="docs.gross_qty"/> KGS GROSS</li>
+                                        <li>- <t t-esc="docs.pack_qty"/> <t t-esc="docs.package_uom_id.name"/>      = <t t-esc="docs.net_qty"/> KGS NET</li>
                                     </ul>
                                 <br/>
                                 <li style="text-decoration: underline;">NO OF CONTAINERS:</li>
@@ -90,8 +90,8 @@
                                     <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="count"/></td>
                                     <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="l.container_ref"/></td>
                                     <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="l.seal_no"/></td>
-                                    <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="l.gross_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></td>
-                                    <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="l.net_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></td>
+                                    <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="l.gross_qty"/> KGS</td>
+                                    <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="l.net_qty"/> KGS</td>
                                     <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"><t t-esc="l.qty"/></td>
                                     <t t-set="count" t-value="count + 1"/>
                                 </tr>
@@ -100,10 +100,10 @@
                                         <td style="border:2px solid black;text-align:center;margin:0;padding:5px;"></td>
                                         <td style="border:2px solid black;text-align:center;margin:0;padding:5px;" colspan="2"><strong>TOTAL</strong></td>
                                         <td style="border:2px solid black;text-align:center;margin:0;padding:5px;">
-                                            <strong><t t-esc="docs.gross_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></strong>
+                                            <strong><t t-esc="docs.gross_qty"/> KGS</strong>
                                         </td>
                                         <td style="border:2px solid black;text-align:center;margin:0;padding:5px;">
-                                            <strong><t t-esc="docs.net_qty"/> <t t-esc="docs.package_uom_id.packing_uom_id.name"/></strong>
+                                            <strong><t t-esc="docs.net_qty"/>KGS</strong>
                                         </td>
                                         <td style="border:2px solid black;text-align:center;margin:0;padding:5px;">
                                             <strong><t t-esc="docs.pack_qty"/></strong>
