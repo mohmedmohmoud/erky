@@ -68,16 +68,16 @@
                                 <field name="sh_weight_kgs_1" attrs="{'readonly': [('state', 'not in', ['draft','under_shipment'])]}"/>
                                 <field name="sh_weight_kgs_2" attrs="{'readonly': [('state', 'not in', ['draft','under_shipment'])]}"/>
                                 <field name="sh_weight_kgs_net"/>
-                                <field name="sh_weight_ton" attrs="{'readonly': [('state', 'not in', ['draft','under_shipment'])]}"/>
-                                <field name="sh_weight_package_uom" attrs="{'readonly': [('state', 'not in', ['draft','under_shipment'])]}"/>
+                                <field name="sh_weight_ton" invisible="1" attrs="{'readonly': [('state', 'not in', ['draft','under_shipment'])]}"/>
+                                <field name="sh_weight_package_uom" invisible="1" attrs="{'readonly': [('state', 'not in', ['draft','under_shipment'])]}"/>
                                 <field name="sh_weight_attachment_id" attrs="{'readonly': [('state', 'not in', ['draft','under_shipment'])]}"/>
                             </group>
                             <group string="Under Discharge Weight" attrs="{'invisible': [('state', 'in', ['draft', 'under_shipment'])]}">
                                 <field name="ds_weight_kgs_1" attrs="{'readonly': [('state', 'not in', ['draft','under_discharge'])]}"/>
                                 <field name="ds_weight_kgs_2" attrs="{'readonly': [('state', 'not in', ['draft','under_discharge'])]}"/>
                                 <field name="ds_weight_kgs_net"/>
-                                <field name="ds_weight_ton" attrs="{'readonly': [('state', 'not in', ['draft','under_discharge'])]}"/>
-                                <field name="ds_weight_package_uom" attrs="{'readonly': [('state', 'not in', ['draft','under_discharge'])]}"/>
+                                <field name="ds_weight_ton" invisible="1" attrs="{'readonly': [('state', 'not in', ['draft','under_discharge'])]}"/>
+                                <field name="ds_weight_package_uom" invisible="1" attrs="{'readonly': [('state', 'not in', ['draft','under_discharge'])]}"/>
                                 <field name="ds_weight_attachment_id" attrs="{'readonly': [('state', 'not in', ['draft','under_discharge'])]}"/>
                             </group>
                         </group>

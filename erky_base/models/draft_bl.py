@@ -13,10 +13,10 @@ class DraftBL(models.Model):
     product_uom_id = fields.Many2one(related="export_form_id.product_uom_id", string="UOM", store=True)
     package_uom_id = fields.Many2one(related="export_form_id.package_uom_id", string="Packing UOM", store=True)
     bl_line_ids = fields.One2many("erky.bl.line", "bl_id")
-    total_qty = fields.Float("Total Qty", compute="_compute_total_qty", store=True)
-    net_qty = fields.Float("Net Qty", compute="_compute_total_qty", store=True)
-    gross_qty = fields.Float("Gross Qty", compute="_compute_total_qty", store=True)
-    pack_qty = fields.Float("Pack Qty", compute="_compute_total_qty", store=True)
+    total_qty = fields.Float("Total Qty/Ton", compute="_compute_total_qty", store=True)
+    net_qty = fields.Float("Net Qty/Kgs", compute="_compute_total_qty", store=True)
+    gross_qty = fields.Float("Gross Qty/Kgs", compute="_compute_total_qty", store=True)
+    pack_qty = fields.Float("Pack Qty/Package UOM", compute="_compute_total_qty", store=True)
     invoice_id = fields.Many2one("account.invoice")
     vessel_name = fields.Char("Vessel Name")
     departure_date = fields.Date("Departure Date")
@@ -78,10 +78,8 @@ class DraftBL(models.Model):
         qty = sum(self.bl_line_ids.mapped("net_qty"))
         gross_qty = sum(self.bl_line_ids.mapped("gross_qty"))
         pack_qty = sum(self.bl_line_ids.mapped("qty"))
-        rounding_method = self._context.get('rounding_method', 'UP')
-        if self.package_uom_id.packing_uom_id and self.product_uom_id:
-            self.total_qty = self.package_uom_id.packing_uom_id._compute_quantity(qty, self.product_uom_id,
-                                                                   rounding_method=rounding_method)
+        if self.package_uom_id.weight_in_ton:
+            self.total_qty = pack_qty * self.package_uom_id.weight_in_ton
         self.net_qty = qty
         self.gross_qty = gross_qty
         self.pack_qty = pack_qty
@@ -124,16 +122,16 @@ class BLLines(models.Model):
     container_ref = fields.Char("Container Ref", required=1)
     container_size = fields.Selection([('20feet', "20 F"), ('40feet', "40 F")], string="Container Size", required=True, default='20feet')
     seal_no = fields.Char("Seal No")
-    qty = fields.Float("Qty")
-    net_qty = fields.Float("Net Qty", compute="_compute_qty")
-    gross_qty = fields.Float("Gross Qty", compute="_compute_qty")
+    qty = fields.Float("Qty/Packing UOM")
+    net_qty = fields.Float("Net Qty/Kgs")
+    gross_qty = fields.Float("Gross Qty/Kgs")
 
-    @api.depends("qty", "bl_id")
+    @api.onchange("qty", "bl_id")
     def _compute_qty(self):
         for rec in self:
-            if rec.package_uom_id.is_packing_unit:
-                rec.net_qty = rec.qty * rec.package_uom_id.packing_weight
-                rec.gross_qty = rec.qty * rec.package_uom_id.unit_weight
+            if rec.package_uom_id.is_weight_packing:
+                rec.net_qty = rec.qty * rec.package_uom_id.net_weight_kgs
+                rec.gross_qty = rec.qty * rec.package_uom_id.gross_weight_kgs
 
 class AnalysisResult(models.Model):
     _name = "erky.analysis.result"
