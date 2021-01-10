@@ -8,3 +8,4 @@ class ResCompany(models.Model):
     location_dest_id = fields.Many2one("stock.location", string="Destination Location")
     days_notify_before = fields.Integer("Day To Notify Before", default=5)
     notify_user_ids = fields.Many2many("res.users", 'notify_users_rel',  string="Notify Users")
+    save_printed_docx_path = fields.Char("Docx Path")

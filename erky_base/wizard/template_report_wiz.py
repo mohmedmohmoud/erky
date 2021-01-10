@@ -1,5 +1,6 @@
 
-from datetime import datetime
+import docx
+from htmldocx import HtmlToDocx
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
@@ -19,6 +20,7 @@ class ErkyTemplateReportWiz(models.TransientModel):
     template_from = fields.Selection(REPORT_SELECTION, string="Export Form", required=1)
     template_content = fields.Html(string="Preview")
     draft_bl_id = fields.Many2one('erky.draft.bl')
+    printed_document = fields.Binary(readonly=1, string="Printed Document/DOCX")
 
     @api.onchange('template_from')
     def _get_template_content(self):
@@ -49,10 +51,26 @@ class ErkyTemplateReportWiz(models.TransientModel):
             return body_msg[obj.id]
 
     def print_report(self):
+        self.docx_document()
         data = {'ids': self.env.context.get('active_ids', [])}
         res = self.read(['template_content'])
-        print ("rs",res)
         data['form'] = res
         return self.env.ref('erky_base.action_report_template_erky').report_action(self, data=data)
+
+    def docx_document(self):
+        doc = docx.Document()
+
+        new_parser = HtmlToDocx()
+        new_parser.add_html_to_document(self.template_content, doc)
+        docx_path = self.env.user.company_id.save_printed_docx_path
+        if not docx_path:
+            raise ValidationError("Please check company config for docx path.")
+        doc.save(docx_path + 'my_document.docx')
+        import base64
+        with open(docx_path + "my_document.docx", "rb") as pdf_file:
+            encoded_string = base64.b64encode(pdf_file.read())
+        self.printed_document = encoded_string
+
+
 
 

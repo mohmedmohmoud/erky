@@ -18,6 +18,11 @@
                         <field name="notify_user_ids"/>
                     </group>
                 </page>
+                <page string="Docx">
+                    <group>
+                        <field name="save_printed_docx_path" placeholder="/home/mohamed/docx/"/>
+                    </group>
+                </page>
             </notebook>
         </field>
     </record>

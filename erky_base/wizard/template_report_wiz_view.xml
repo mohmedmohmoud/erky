@@ -10,6 +10,7 @@
                     <field name="draft_bl_id" invisible="1"/>
                     <field name="template_from"/>
                     <field name="template_content"/>
+                    <field name="printed_document" />
                 </group>
                 <footer>
                     <button string='Print Report' name="print_report" type="object" class="oe_highlight"/>
